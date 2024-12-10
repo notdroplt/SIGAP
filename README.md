@@ -40,7 +40,7 @@ Casos de uso:
 - [ ] Pesquisa de itens por características 
 - [ ] Galeria de imagens dos itens perdidos
 
-## Funcão 4: Relatório e histórico de itens
+## Função 4: Relatório e histórico de itens
 
 - Responsável: Luis Gustavo
 
