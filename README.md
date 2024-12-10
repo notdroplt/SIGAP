@@ -11,6 +11,10 @@ Subfunções:
 - [ ] Controle de itens recuperados
 - [ ] Carregamento de fotos de itens encontrados / perdidos
 
+Casos de uso:
+- [ ] Cadastro de itens perdidos ou recuperados
+- [ ] Controle de itens dentro do sistema
+
 ## Função 2: Gestão de usuários
 
 - Responsável: Kleber Martins
@@ -20,6 +24,10 @@ Subfunções:
 - [ ] Cadastro de usuários
 - [ ] Controle de usuários comuns e funcionários dos achados e pedidos
 
+Casos de uso:
+- [ ] Cadastro de usuários de funcionários e alunos
+- [ ] Controle de usuários dentro do sistema
+
 ## Função 3: Pesquisa de itens
 
 - Responsável: Edson Geraldo
@@ -27,6 +35,10 @@ Subfunções:
 Subfunções:
 - [ ] Identificação de itens
 - [ ] Mecanismo de busca por características específicas
+
+Casos de uso:
+- [ ] Pesquisa de itens por características 
+- [ ] Galeria de imagens dos itens perdidos
 
 ## Funcão 4: Relatório e histórico de itens
 
@@ -36,9 +48,17 @@ Subfunções:
 - [ ] Registro dos itens encontrados e perdidos
 - [ ] Mecanismo de estatísticas atualizadas sobre aspectos de todos os itens
 
+Casos de uso:
+- [ ] Gerar relatório de itens perdidos e encontrados
+- [ ] Gerar gráficos das incidências de perdas e achados nos locais 
+
 ## Função 5: Notificação de itens
 
 - Responsável: Arthur Freitas
 
 Subfunções:
 - [ ] Enviar mensagens via e-mail sobre itens encontrados correspondentes ao item perdido
+
+Casos de uso:
+- [ ] Controle de emails de alunos e funionários
+- [ ] Controle e gestão do sistema de emails
