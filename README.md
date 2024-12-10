@@ -60,5 +60,5 @@ Subfunções:
 - [ ] Enviar mensagens via e-mail sobre itens encontrados correspondentes ao item perdido
 
 Casos de uso:
-- [ ] Controle de emails de alunos e funionários
-- [ ] Controle e gestão do sistema de emails
+- [ ] Controle de e-mails de alunos e funcionários
+- [ ] Controle e gestão do sistema de e-mails
