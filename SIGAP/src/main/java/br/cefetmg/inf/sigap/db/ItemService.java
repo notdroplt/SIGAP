@@ -4,6 +4,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import java.util.Date;
+import java.util.List;
 
 public final class ItemService {
     /**
@@ -27,6 +28,14 @@ public final class ItemService {
         } finally {
             em.close();
         }
+    }
+
+    public static List getItemPorNome(String nome) {
+        EntityManager em = emFac.createEntityManager();
+        return em.createQuery("SELECT item from Item item WHERE Item.nome LIKE :nome")
+                .setParameter("nome", nome)
+                .setMaxResults(15)
+                .getResultList();
     }
 
     public void close() {

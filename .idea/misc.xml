@@ -5,6 +5,7 @@
     <option name="originalFiles">
       <list>
         <option value="$PROJECT_DIR$/br.cefetmg.inf.sigap/pom.xml" />
+        <option value="$PROJECT_DIR$/SIGAP/pom.xml" />
       </list>
     </option>
   </component>

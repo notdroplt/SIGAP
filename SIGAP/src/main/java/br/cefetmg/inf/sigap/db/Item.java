@@ -12,7 +12,7 @@ import javax.persistence.*;
  * @author Arthur Tolomelli
  */
 @Entity
-@Table(name = "item")
+@Table(name = "Item")
 public final class Item {
 
     /**

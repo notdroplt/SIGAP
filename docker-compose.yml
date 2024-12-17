@@ -1,0 +1,25 @@
+services:
+  app:
+    build: .
+    ports:
+      - "8080"
+    depends_on:
+      - db
+    environment:
+      DATABASE_HOST: db
+      DATABASE_PORT: 5432
+      DATABASE_USER: postgres
+      DATABASE_PASSWORD: password
+      DATABASE_NAME: sigap-table
+
+  db:
+    image: postgres:alpine
+    environment:
+      POSTGRES_DB: sigap-table
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
