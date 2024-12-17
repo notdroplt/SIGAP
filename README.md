@@ -38,7 +38,7 @@ Subfunções:
 
 Casos de uso:
 - [ ] Pesquisa de itens por características 
-- [ ] Galeria de imagens dos itens perdidos
+- [ ] Histórico de pesquisas com sugestões de itens relacionados
 
 ## Função 4: Relatório e histórico de itens
 
