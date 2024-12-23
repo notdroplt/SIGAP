@@ -1,10 +1,12 @@
 package br.cefetmg.inf.sigap.db;
 
+import br.cefetmg.inf.sigap.db.Usuario;
+
 public class UsuarioDao {
-    public void adicionarUsuario(Usuario usuario){
+    public static void adicionarUsuario(Usuario usuario){
 
     }
-    public void VerificarUsuario(long identificador, String senha){
+    public static void VerificarUsuario(long identificador, String senha){
 
     }
 }
