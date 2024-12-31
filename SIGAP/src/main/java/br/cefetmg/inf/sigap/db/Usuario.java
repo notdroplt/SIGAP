@@ -5,13 +5,13 @@ public class Usuario {
     private String nome;
     private String email;
     private String senha;
-    private long matricula;
+    private long cpf;
 
-    public Usuario(String nome, String email, String senha, long matricula) {
+    public Usuario(String nome, String email, String senha, long cpf) {
         this.nome = nome;
         this.email = email;
         this.senha = senha;
-        this.matricula = matricula;
+        this.cpf = cpf;
     }
 
     public String getNome() {
@@ -38,11 +38,11 @@ public class Usuario {
         this.senha = senha;
     }
 
-    public long getMatricula() {
-        return matricula;
+    public long getCpf() {
+        return cpf;
     }
 
-    public void setMatricula(long matricula) {
-        this.matricula = matricula;
+    public void setCpf(long cpf) {
+        this.cpf = cpf;
     }
 }
