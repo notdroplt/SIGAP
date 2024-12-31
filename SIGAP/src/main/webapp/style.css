@@ -1,0 +1,130 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+    color: #333;
+    line-height: 1.6;
+}
+
+.container {
+    background-color: white;
+    border: 1px solid #ddd;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    overflow: hidden;
+    height: auto;
+}
+
+header {
+    background-color: #173a7a;
+    color: white;
+    text-align: center;
+    padding: 20px 10px;
+}
+
+header .title h1 {
+    font-size: 22px;
+    margin-bottom: 5px;
+}
+
+header .title span {
+    font-size: 14px;
+}
+
+.alert {
+    padding: 15px;
+    background-color: #ffefef;
+    color: #d9534f;
+    text-align: center;
+    font-size: 14px;
+    border-bottom: 1px solid #ddd;
+}
+
+.alert a {
+    color: #337ab7;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.alert a:hover {
+    text-decoration: underline;
+}
+
+.login-box {
+    max-width: 600px;
+    padding: 30px 20px;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.login-box h2 {
+    margin-bottom: 20px;
+    font-size: 20px;
+    color: #173a7a;
+}
+
+.login-box label {
+    display: block;
+    text-align: left;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #555;
+}
+
+.login-box input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.login-box input:focus {
+    outline: none;
+    border-color: #173a7a;
+    box-shadow: 0 0 5px rgba(23, 58, 122, 0.3);
+}
+
+.login-box button {
+    width: 100%;
+    padding: 10px;
+    background-color: #F0F0F0;
+    color: #555;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.login-box button:hover {
+    background-color: #0c2c5d;
+}
+
+.help-links {
+    padding: 15px;
+    text-align: center;
+    background-color: #f4f4f4;
+    border-top: 1px solid #ddd;
+    margin-top: auto;
+
+}
+
+.help-links a {
+    color: #337ab7;
+    text-decoration: none;
+    font-weight: bold;
+    margin: 0 10px;
+}
+
+.help-links a:hover {
+    text-decoration: underline;
+}
