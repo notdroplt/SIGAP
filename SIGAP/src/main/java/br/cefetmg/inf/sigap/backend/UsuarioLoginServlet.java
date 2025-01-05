@@ -22,9 +22,11 @@ public class UsuarioLoginServlet extends HttpServlet {
         String senha = request.getParameter("senha");
         long cpf = Long.parseLong(request.getParameter("cpf"));
 
-        String token = UsuarioService.login(cpf, senha);
-
-        HttpSession session = request.getSession(true);
-        session.setAttribute("Token", token);
+        int token;
+        if (UsuarioService.login(cpf, senha)) {
+           token  = UsuarioService.getToken(cpf, senha);
+           HttpSession session = request.getSession(true);
+           session.setAttribute("Token", token);
+        }
     }
 }

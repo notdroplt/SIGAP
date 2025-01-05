@@ -21,9 +21,11 @@ public class UsuarioCadastroServlet extends HttpServlet {
         long cpf = Long.parseLong(request.getParameter("cpf"));
 
         Usuario usuario = new Usuario(nome, email, senha, cpf);
-        String token = UsuarioService.criarUsuario(usuario);
-
-        HttpSession session = request.getSession(true);
-        session.setAttribute("Token", token);
+        int token;
+        if(UsuarioService.criarUsuario(usuario)) {
+            token = UsuarioService.getToken(cpf, senha);
+            HttpSession session = request.getSession(true);
+            session.setAttribute("Token", token);
+        }
     }
 }
