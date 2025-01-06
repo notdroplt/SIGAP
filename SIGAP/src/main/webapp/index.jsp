@@ -1,3 +1,23 @@
+<%@ page import="jakarta.servlet.http.Cookie" %>
+<%@ page import="jakarta.servlet.http.HttpServletResponse" %>
+<%
+    Cookie[] cookies = request.getCookies();
+    boolean redirecionar = false;
+
+    if (cookies != null) {
+        for (Cookie atual : cookies) {
+            if (atual.getName().length() >= 10 && atual.getName().substring(0, 10).equals("1nomeAluno")) {
+                redirecionar = true;
+                break;
+            }
+        }
+    }
+
+    if (redirecionar) {
+        response.sendRedirect("notificacao.jsp");
+        return;
+    }
+%>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
@@ -18,6 +38,7 @@
     <main>
         <div class="alert">
             <p><strong>ATENÇÃO!</strong><br>O seu login é o seu CPF e sua senha é a mesma cadastrada na <a href="#">Identificação Única</a>.<br>O sistema diferencia letras maiúsculas de minúsculas na senha.</p>
+
         </div>
 
 

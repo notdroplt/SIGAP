@@ -1,8 +1,10 @@
 package br.cefetmg.inf.sigap.db;
 
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
+
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import java.util.Date;
 import java.util.List;
 
@@ -10,28 +12,30 @@ public final class ItemService {
     /**
      * Factory para geração de entities para transações do banco de dados
      */
-    private static final EntityManagerFactory emFac =
-            Persistence.createEntityManagerFactory("itemunit");
+    private static final SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
 
+    private ItemService() {
+
+    }
 
     public static void adicionarItemPerdido(String nome, Date data, String descricao, String lugar, String foto) {
         Item perdido = ItemFactory.criarItemPerdido(nome, data, descricao, lugar, foto);
-        EntityManager em = emFac.createEntityManager();
+
+        Session s = sessionFactory.openSession();
         try {
-            em.getTransaction().begin();
-            em.persist(perdido);
-            em.getTransaction().commit();
+            s.getTransaction().begin();
+            s.persist(perdido);
+            s.getTransaction().commit();
         } catch (Exception e) {
-            if (em.getTransaction().isActive()) {
-                em.getTransaction().rollback();
-            }
+            if (s.getTransaction().isActive())
+                s.getTransaction().rollback();
         } finally {
-            em.close();
+            s.close();
         }
     }
 
     public static List getItemPorNome(String nome) {
-        EntityManager em = emFac.createEntityManager();
+        EntityManager em = sessionFactory.createEntityManager();
         return em.createQuery("SELECT item from Item item WHERE Item.nome LIKE :nome")
                 .setParameter("nome", nome)
                 .setMaxResults(15)
@@ -39,6 +43,6 @@ public final class ItemService {
     }
 
     public void close() {
-        emFac.close();
+        sessionFactory.close();
     }
 }

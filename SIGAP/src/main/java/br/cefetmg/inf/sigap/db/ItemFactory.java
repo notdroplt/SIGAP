@@ -1,10 +1,6 @@
 package br.cefetmg.inf.sigap.db;
 
-import org.json.JSONObject;
-
-import java.io.*;
 import java.util.Date;
-import java.util.stream.Collectors;
 
 /**
  * Classe Factory para geração de itens perdidos ou achados
@@ -13,17 +9,6 @@ import java.util.stream.Collectors;
  * @author Arthur Tolomelli
  */
 public final class ItemFactory {
-    private static final JSONObject schema;
-    static {
-        try (BufferedReader br = new BufferedReader(new FileReader("item-schema.json"))) {
-            String str = br.lines().collect(Collectors.joining(System.lineSeparator()));
-            schema = new JSONObject(str);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-
     /**
      * Cria um item que foi perdido
      * @param nome nome do item perdido
