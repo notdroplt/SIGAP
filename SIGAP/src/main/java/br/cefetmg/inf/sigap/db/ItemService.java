@@ -12,7 +12,7 @@ public final class ItemService {
     /**
      * Factory para geração de entities para transações do banco de dados
      */
-    private static final SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
+    private static final SessionFactory sessionFactory = new Configuration().configure("hibernate.cfg.xml").buildSessionFactory();
 
     private ItemService() {
 

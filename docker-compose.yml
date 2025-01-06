@@ -1,20 +1,23 @@
 networks:
   net:
+    driver: bridge
 
 services:
   app:
     networks:
       - net
     build: .
-    ports:
-      - "8080:8080"
+    expose:
+      - "8080"
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     develop:
       watch:
         - action: rebuild
           path: .
           target: /app
+
   db:
     image: postgres:latest
     networks:
@@ -24,9 +27,13 @@ services:
       POSTGRES_DB: sigap_bd
       POSTGRES_PASSWORD: sigap
     ports:
-      - "5432:5432"
+      - 5432:5432
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U sigap -d sigap_bd" ]
+      interval: 10s
+      retries: 5
 
 volumes:
   postgres_data:

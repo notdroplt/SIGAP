@@ -5,18 +5,20 @@
 <hibernate-configuration>
     <session-factory>
         <!-- Database connection settings -->
-        <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
-        <property name="hibernate.connection.url">jdbc:postgresql://postgres:5432/sigap_bd</property>
-        <property name="hibernate.connection.username">sigap</property>
-        <property name="hibernate.connection.password">sigap</property>
+        <property name="connection.driver_class">org.postgresql.Driver</property>
+        <property name="connection.url">jdbc:postgresql://db:5432/sigap_bd</property>
+        <property name="connection.username">sigap</property>
+        <property name="connection.password">sigap</property>
 
         <!-- Hibernate settings -->
-        <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
-        <property name="hibernate.show_sql">true</property>
-        <property name="hibernate.format_sql">true</property>
+        <property name="dialect">org.hibernate.dialect.PostgreSQL9Dialect</property>
+        <property name="show_sql">true</property>
+        <property name="format_sql">true</property>
 
         <!-- Automatically create/drop tables based on entity mappings -->
-        <property name="hibernate.hbm2ddl.auto">validate</property>
-        <property name="hibernate.generate_statistics">true</property>
+        <property name="hbm2ddl.auto">create</property>
+        <property name="generate_statistics">true</property>
+        <mapping class="br.cefetmg.inf.sigap.db.Item"/>
+
     </session-factory>
 </hibernate-configuration>
