@@ -2,7 +2,7 @@ package br.cefetmg.inf.sigap.db;
 
 import java.util.Date;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 /**
  * Classe responsável pela estrutura interna e pelo acesso
