@@ -18,7 +18,6 @@
         return;
     }
 %>
-
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
@@ -27,8 +26,6 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
-
 <div class="container">
     <header>
         <div class="title">
@@ -40,7 +37,8 @@
 
     <main>
         <div class="alert">
-            <p><strong>ATENO!</strong><br>O seu login é o seu CPF e sua senha é a mesma cadastrada na <a href="#">Identificação Única</a>.<br>O sistema diferencia letras maiúsculas de minúsculas na senha.</p>
+            <p><strong>ATENÇÃO!</strong><br>O seu login é o seu CPF e sua senha é a mesma cadastrada na <a href="#">Identificação Única</a>.<br>O sistema diferencia letras maiúsculas de minúsculas na senha.</p>
+
         </div>
 
 
@@ -61,6 +59,5 @@
         </div>
     </main>
 </div>
-
 </body>
 </html>
