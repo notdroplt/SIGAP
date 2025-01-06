@@ -1,10 +1,10 @@
 package br.cefetmg.inf.sigap.db;
 
 public class UsuarioService {
-    public static Boolean criarUsuario(Usuario usuario){
+    public static boolean criarUsuario(Usuario usuario){
         return UsuarioDao.adicionarUsuario(usuario);
     }
-    public static Boolean login(long identificador, String senha){
+    public static boolean login(long identificador, String senha){
         return UsuarioDao.VerificarUsuario(identificador, senha);
     }
     public static int getToken(long identificador, String senha){

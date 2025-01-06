@@ -44,9 +44,9 @@
 
         <div class="login-box">
             <h2>Entrar no Sistema</h2>
-            <form action="#">
+            <form action="LoginServlet" method="POST">
                 <label for="usuario">Usuário:</label>
-                <input type="text" id="usuario" name="usuario" placeholder="CPF">
+                <input type="text" id="usuario" name="cpf" placeholder="CPF">
                 <label for="senha">Senha:</label>
                 <input type="password" id="senha" name="senha" placeholder="Senha">
                 <button type="submit">Entrar</button>
@@ -54,7 +54,7 @@
         </div>
 
         <div class="help-links">
-            <p><a href="#">Cadastre-se</a> | <a href="#">Esqueci minha senha</a></p>
+            <p><a href="Cadastro.jsp">Cadastre-se</a> | <a href="#">Esqueci minha senha</a></p>
 
         </div>
     </main>

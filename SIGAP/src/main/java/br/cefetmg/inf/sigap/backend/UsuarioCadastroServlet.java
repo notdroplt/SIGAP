@@ -7,7 +7,7 @@ import java.io.*;
 import br.cefetmg.inf.sigap.db.UsuarioService;
 import br.cefetmg.inf.sigap.db.Usuario;
 
-@WebServlet(name = "UsuarioServle", urlPatterns = "/api/UsuarioServle")
+@WebServlet(urlPatterns = "/CadastroServlet")
 public class UsuarioCadastroServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

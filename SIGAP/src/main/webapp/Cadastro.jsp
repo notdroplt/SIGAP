@@ -19,7 +19,7 @@
 
         <div class="login-box">
             <h2>Cadastre-se no Sistema</h2>
-            <form action="#">
+            <form action="CadastroServlet" method="POST">
                 <label for="cpf">CPF:</label>
                 <input type="text" id="cpf" name="cpf" placeholder="CPF">
                 <label for="nome">Nome:</label>
@@ -33,7 +33,7 @@
         </div>
 
         <div class="help-links">
-            <p><a href="#">Login</a> | <a href="#">Esqueci minha senha</a></p>
+            <p><a href="index.jsp">Login</a> | <a href="#">Esqueci minha senha</a></p>
 
         </div>
     </main>
