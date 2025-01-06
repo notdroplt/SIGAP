@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Item",
+  "description": "forma em que um item é enviado ao sistema",
+  "type": "object",
+  "properties": {
+    "nome": {
+      "description": "nome do item perdido",
+      "type": "string",
+      "maxLength": 40
+    },
+    "dataPerdido": {
+      "description": "data em que o item foi perdido",
+      "type": "string",
+      "format": "date-time"
+    },
+    "dataAchado": {
+      "description": "data em que o item foi achado",
+      "type": "string",
+      "format": "date-time"
+    },
+    "dataDevolvido": {
+      "description": "data em que o item foi devolvido",
+      "type": "string",
+      "format": "date-time"
+    },
+    "local": {
+      "description": "local em que o item está guardado",
+      "type": "string",
+      "maxLength": 3
+    },
+    "descricao": {
+      "description": "descrição do produto",
+      "type": "string",
+      "maxLength": 144
+    },
+    "lugarAchado": {
+      "description": "lugar onde o item foi achado",
+      "type": "string",
+      "maxLength": 144
+    },
+    "lugarPerdido": {
+      "description": "lugar onde o item foi achado",
+      "type": "string"
+    },
+    "status": {
+      "description": "status do item perdido",
+      "enum": ["red", "amber", "green"]
+    },
+    "email": {
+      "type": "string",
+      "format": "email"
+    }
+  }
+}
