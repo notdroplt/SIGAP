@@ -1,5 +1,6 @@
 package br.cefetmg.inf.sigap.db;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import jakarta.persistence.*;
@@ -13,13 +14,13 @@ import jakarta.persistence.*;
  */
 @Entity
 @Table(name = "Item")
-public final class Item {
+public final class Item implements Serializable {
 
     /**
      * Identificação do item perdido dentro do sistema
      */
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     private long id;
 
     /**
