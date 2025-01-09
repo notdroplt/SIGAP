@@ -7,13 +7,18 @@ RUN apt-get update && \
 
 COPY SIGAP .
 
-RUN mvn clean package
+RUN mvn package
+
+RUN echo $(ls -la /root/.m2/repository/org/postgresql/postgresql)
 
 FROM tomcat:jre21 AS jre-run
 
 RUN mkdir -p $CATALINA_HOME/webapps/
 
+COPY --from=jdk-build /app/src/main/resources/hibernate.cfg.xml $CATALINA_HOME/webapps/SIGAP.war
+
 COPY --from=jdk-build /app/target/*.war $CATALINA_HOME/webapps/SIGAP.war
+COPY --from=jdk-build /root/.m2/repository/org/postgresql/postgresql/42.7.2/postgresql-42.7.2.jar $CATALINA_HOME/lib/
 
 EXPOSE 8080
 

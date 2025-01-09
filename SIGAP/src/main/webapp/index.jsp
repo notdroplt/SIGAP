@@ -1,22 +1,63 @@
-<!DOCTYPE html>
+<%@ page import="jakarta.servlet.http.Cookie" %>
+<%@ page import="jakarta.servlet.http.HttpServletResponse" %>
+<%
+    Cookie[] cookies = request.getCookies();
+    boolean redirecionar = false;
+
+    if (cookies != null) {
+        for (Cookie atual : cookies) {
+            if (atual.getName().length() >= 10 && atual.getName().substring(0, 10).equals("1nomeAluno")) {
+                redirecionar = true;
+                break;
+            }
+        }
+    }
+
+    if (redirecionar) {
+        response.sendRedirect("notificacao.jsp");
+        return;
+    }
+%>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Requisição de Relatório</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>CEFET-MG - SIGAA</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Preencha os campos abaixo para determinar o intervalo de tempo que o relatório irá abranger:</h1>
-        <form id="relatorioForm">
-            <label for="dataInicio">Data de início:</label>
-            <input type="date" id="dataInicio" name="dataInicio" required>
-            <label for="dataFim">Data de término:</label>
-            <input type="date" id="dataFim" name="dataFim" required>
-            <button type="submit">Gerar Relatório</button>
-        </form>
-    </div>
-    <script src="scripts.js"></script>
+<div class="container">
+    <header>
+        <div class="title">
+            <h1>CEFET-MG - SIGAP -</h1>
+            <span>Sistema Integrado de GestÃ£o de Achados e Perdidos</span>
+        </div>
+
+    </header>
+
+    <main>
+        <div class="alert">
+            <p><strong>ATENÃ‡ÃƒO!</strong><br>O seu login Ã© o seu CPF e sua senha Ã© a mesma cadastrada na <a href="#">IdentificaÃ§Ã£o Ãšnica</a>.<br>O sistema diferencia letras maiÃºsculas de minÃºsculas na senha.</p>
+
+        </div>
+
+
+        <div class="login-box">
+            <h2>Entrar no Sistema</h2>
+            <form action="LoginServlet" method="POST">
+                <label for="usuario">UsuÃ¡rio:</label>
+                <input type="text" id="usuario" name="cpf" placeholder="CPF">
+                <label for="senha">Senha:</label>
+                <input type="password" id="senha" name="senha" placeholder="Senha">
+                <button type="submit">Entrar</button>
+            </form>
+        </div>
+
+        <div class="help-links">
+            <p><a href="Cadastro.jsp">Cadastre-se</a> | <a href="#">Esqueci minha senha</a></p>
+
+        </div>
+    </main>
+</div>
 </body>
 </html>

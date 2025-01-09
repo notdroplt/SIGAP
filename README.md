@@ -38,9 +38,9 @@ Subfunções:
 
 Casos de uso:
 - [ ] Pesquisa de itens por características 
-- [ ] 
+- [ ] Histórico de pesquisas com sugestões de itens relacionados
 
-## Funcão 4: Relatório e histórico de itens
+## Função 4: Relatório e histórico de itens
 
 - Responsável: Luis Gustavo
 
@@ -50,7 +50,7 @@ Subfunções:
 
 Casos de uso:
 - [ ] Gerar relatório de itens perdidos e encontrados
-- [ ] 
+- [ ] Gerar gráficos das incidências de perdas e achados nos locais 
 
 ## Função 5: Notificação de itens
 
@@ -60,5 +60,5 @@ Subfunções:
 - [ ] Enviar mensagens via e-mail sobre itens encontrados correspondentes ao item perdido
 
 Casos de uso:
-- [ ] Controle de emails de alunos e funionários
-- [ ] Controle e gestão do sistema de emails
+- [ ] Controle de e-mails de alunos e funcionários
+- [ ] Controle e gestão do sistema de e-mails
