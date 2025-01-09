@@ -19,7 +19,7 @@
 
         <div class="login-box">
             <h2>Cadastre-se no Sistema</h2>
-            <form action="CadastroServlet" method="POST">
+            <form action="email.jsp" method="POST">
                 <label for="cpf">CPF:</label>
                 <input type="text" id="cpf" name="cpf" placeholder="CPF">
                 <label for="nome">Nome:</label>
