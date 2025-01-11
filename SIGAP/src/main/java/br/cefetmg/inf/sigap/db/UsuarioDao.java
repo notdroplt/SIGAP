@@ -78,7 +78,23 @@ public class UsuarioDao {
         String email = usuario.getEmail();
         int token = rand.nextInt();
 
-        String sql = "INSERT INTO usuario (token, cpf, nome, senha, email) VALUES ("+ token + ", " + cpf + ", " + nome + ", " + senha + ", " + email + ")";
+        String sql = "SELECT 1 FROM usuario WHERE token = " + token;
+        try {
+            Statement statement = conn.createStatement();
+            ResultSet result = statement.executeQuery(sql);
+            while (result.next()){
+                token = rand.nextInt();
+                result = statement.executeQuery(sql);
+            }
+
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+
+        sql = "INSERT INTO usuario (token, cpf, nome, senha, email) " +
+        "VALUES ("+ token + ", " + cpf + ", " + nome + ", " + senha + ", " + email + ")";
         try {
             Statement statement = conn.createStatement();
             statement.executeUpdate(sql);
