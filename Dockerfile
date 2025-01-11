@@ -9,17 +9,20 @@ COPY SIGAP .
 
 RUN mvn package
 
-RUN echo $(ls -la /root/.m2/repository/org/postgresql/postgresql)
+FROM alpine:edge AS jre-run
+RUN apk add --no-cache openjdk21-jre-headless
 
-FROM tomcat:jre21 AS jre-run
+RUN mkdir -p /opt/tomcat/webapps
 
-RUN mkdir -p $CATALINA_HOME/webapps/
+RUN wget https://dlcdn.apache.org/tomcat/tomcat-11/v11.0.2/bin/apache-tomcat-11.0.2.tar.gz
 
-COPY --from=jdk-build /app/src/main/resources/hibernate.cfg.xml $CATALINA_HOME/webapps/SIGAP.war
+RUN tar xvzf apache-tomcat-11.0.2.tar.gz --strip-components 1 --directory /opt/tomcat
 
-COPY --from=jdk-build /app/target/*.war $CATALINA_HOME/webapps/SIGAP.war
-COPY --from=jdk-build /root/.m2/repository/org/postgresql/postgresql/42.7.2/postgresql-42.7.2.jar $CATALINA_HOME/lib/
+RUN rm -rf /opt/tomcat/webapps
+
+COPY --from=jdk-build /app/target/*.war /opt/tomcat/webapps/SIGAP.war
+COPY --from=jdk-build /root/.m2/repository/org/postgresql/postgresql/42.7.2/postgresql-42.7.2.jar /opt/tomcat/lib/
 
 EXPOSE 8080
 
-CMD ["catalina.sh", "run"]
+CMD ["/opt/tomcat/bin/catalina.sh", "run"]

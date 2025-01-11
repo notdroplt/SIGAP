@@ -7,8 +7,8 @@ services:
     networks:
       - net
     build: .
-    expose:
-      - "8080"
+    ports:
+      - 8080:8080
     depends_on:
       db:
         condition: service_healthy
@@ -19,19 +19,19 @@ services:
           target: /app
 
   db:
-    image: postgres:latest
+    image: postgres:alpine
     networks:
       - net
     environment:
       POSTGRES_USER: sigap
-      POSTGRES_DB: sigap_bd
       POSTGRES_PASSWORD: sigap
+      POSTGRES_DB: sigap
     ports:
       - 5432:5432
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U sigap -d sigap_bd" ]
+      test: [ "CMD-SHELL", "pg_isready", "-U", "sigap", "-d", "sigap" ]
       interval: 10s
       retries: 5
 
