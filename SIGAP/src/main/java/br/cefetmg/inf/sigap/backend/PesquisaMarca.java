@@ -7,7 +7,7 @@ import java.io.*;
 
 @WebServlet(name = "PesquisaMarca", urlPatterns = {"/PesquisaMarca"})
 
-public class PesquisaNome extends HttpServlet {
+public class PesquisaMarca extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
