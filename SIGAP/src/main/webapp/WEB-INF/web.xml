@@ -10,5 +10,11 @@
             <page-encoding>UTF-8</page-encoding>
         </jsp-property-group>
     </jsp-config>
+
+    <servlet>
+        <servlet-name>InitServlet</servlet-name>
+        <servlet-class>br.cefetmg.inf.sigap.backend.InitServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
 </web-app>
 
