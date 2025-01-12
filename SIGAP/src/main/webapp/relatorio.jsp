@@ -1,79 +1,63 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="java.util.Map, java.util.List" %>
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Relatório de Itens</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f9;
-        }
-        .container {
-            max-width: 800px;
-            margin: 50px auto;
-            background: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
-        canvas {
-            max-width: 100%;
-            height: auto;
-        }
-    </style>
+    <title>Relatório</title>
+    <link rel="stylesheet" href="relatorio.css">
 </head>
 <body>
-<div class="container">
-    <h1>Relatório de Itens Perdidos e Achados</h1>
-    <canvas id="relatorioGrafico"></canvas>
-</div>
+    <header>
+        <h1>Relatório - <%= request.getAttribute("tipoRelatorio") != null ? request.getAttribute("tipoRelatorio") : "Nenhum Relatório" %></h1>
+    </header>
+    <main>
+        <%
+            Map<String, Integer> dados = (Map<String, Integer>) request.getAttribute("dados");
+            List<br.cefetmg.inf.sigap.db.Item> itens = (List<br.cefetmg.inf.sigap.db.Item>) request.getAttribute("itens");
+        %>
 
-<script>
-    async function carregarDados() {
-        try {
-            const response = await fetch('/relatorio');
-            if (!response.ok) throw new Error("Erro ao carregar os dados do servidor.");
-
-            const data = await response.json();
-
-            const labels = Object.keys(data);
-            const valores = Object.values(data);
-
-            const ctx = document.getElementById('relatorioGrafico').getContext('2d');
-            new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: 'Quantidade de Itens',
-                        data: valores,
-                        backgroundColor: 'rgba(54, 162, 235, 0.6)',
-                        borderColor: 'rgba(54, 162, 235, 1)',
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: { display: false },
-                        tooltip: { callbacks: { label: (context) => `${context.raw} itens` } }
-                    },
-                    scales: {
-                        y: { beginAtZero: true }
-                    }
-                }
-            });
-        } catch (error) {
-            console.error("Erro ao carregar o gráfico:", error);
-        }
-    }
-
-    carregarDados();
-</script>
+        <% if (dados != null) { %>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Categoria</th>
+                        <th>Quantidade</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% for (Map.Entry<String, Integer> entry : dados.entrySet()) { %>
+                        <tr>
+                            <td><%= entry.getKey() %></td>
+                            <td><%= entry.getValue() %></td>
+                        </tr>
+                    <% } %>
+                </tbody>
+            </table>
+        <% } else if (itens != null) { %>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th>Local</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% for (br.cefetmg.inf.sigap.db.Item item : itens) { %>
+                        <tr>
+                            <td><%= item.getId() %></td>
+                            <td><%= item.getNome() %></td>
+                            <td><%= item.getLocal() %></td>
+                            <td><%= item.getStatus() %></td>
+                        </tr>
+                    <% } %>
+                </tbody>
+            </table>
+        <% } else { %>
+            <p>Nenhum dado disponível para exibição.</p>
+        <% } %>
+    </main>
 </body>
 </html>

@@ -5,49 +5,65 @@ package br.cefetmg.inf.sigap.db;
  * @author luisg
  */
 
-import java.sql.*;
+import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-public final class RelatorioService {
-    private static RelatorioService single = null;
+public class RelatorioService {
 
-    private static final String jdbcURL = "jdbc:postgresql://db:5432/sigap";
-    private static final String username = "sigap";
-    private static final String password = "sigap";
+    private static RelatorioService instance;
+    private final ItemService itemService;
 
-    private RelatorioService() {}
-
-    public static RelatorioService getInstance() {
-        if (single == null) {
-            single = new RelatorioService();
-        }
-        return single;
+    private RelatorioService() {
+        this.itemService = ItemService.getInstance();
     }
 
-    private Connection getConnection() throws ClassNotFoundException, SQLException {
-        Class.forName("org.postgresql.Driver");
-        return DriverManager.getConnection(jdbcURL, username, password);
+    public static synchronized RelatorioService getInstance() {
+        if (instance == null) {
+            instance = new RelatorioService();
+        }
+        return instance;
     }
 
     public Map<String, Integer> getQuantidadeItensPorLocal() {
-        Map<String, Integer> dados = new HashMap<>();
+        List<Item> itens = itemService.getItens();
+        Map<String, Integer> quantidadePorLocal = new HashMap<>();
 
-        String sql = "SELECT local, COUNT(*) AS quantidade FROM Item GROUP BY local ORDER BY local;";
-
-        try (Connection conn = getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql);
-             ResultSet rs = stmt.executeQuery()) {
-
-            while (rs.next()) {
-                dados.put(rs.getString("local"), rs.getInt("quantidade"));
-            }
-
-        } catch (Exception e) {
-            throw new RuntimeException("Erro ao obter os dados para o relatório", e);
+        for (Item item : itens) {
+            String local = item.getLocal() != null ? item.getLocal() : "Desconhecido";
+            quantidadePorLocal.put(local, quantidadePorLocal.getOrDefault(local, 0) + 1);
         }
 
-        return dados;
+        return quantidadePorLocal;
+    }
+
+    public Map<String, Integer> getQuantidadeItensPorStatus() {
+        List<Item> itens = itemService.getItens();
+        Map<String, Integer> quantidadePorStatus = new HashMap<>();
+
+        for (Item item : itens) {
+            String status = item.getStatus() != null ? item.getStatus().name() : "Desconhecido";
+            quantidadePorStatus.put(status, quantidadePorStatus.getOrDefault(status, 0) + 1);
+        }
+
+        return quantidadePorStatus;
+    }
+
+    public Map<String, Integer> getQuantidadeItensPorPeriodo(String inicio, String fim) {
+        List<Item> itensPorPeriodo = itemService.getItemPorPeriodo(LocalDate.parse(inicio), LocalDate.parse(fim));
+        Map<String, Integer> quantidadePorPeriodo = new HashMap<>();
+
+        for (Item item : itensPorPeriodo) {
+            String local = item.getLocal() != null ? item.getLocal() : "Desconhecido";
+            quantidadePorPeriodo.put(local, quantidadePorPeriodo.getOrDefault(local, 0) + 1);
+        }
+
+        return quantidadePorPeriodo;
+    }
+
+    public List<Item> getItensPorNome(String nome) {
+        return itemService.getItemPorNome(nome);
     }
 }
 
