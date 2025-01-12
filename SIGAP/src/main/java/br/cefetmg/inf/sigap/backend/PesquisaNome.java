@@ -14,7 +14,7 @@ public class PesquisaNome extends HttpServlet {
             response.setContentType("text/html;charset=UTF-8");
             try (PrintWriter out = response.getWriter()) {
                 String nomeItem = request.getParameter("nomeItem");
-                ItemService alvo = getItemPorNome("nomeItem");
+                ItemService alvo = getItemPorNome(nomeItem);
 
                 if (alvo != null){
                     out.print("<div class=\"acoes\"><span>"+ alvo.getNome() +"</span><input type=\"button\""
@@ -22,8 +22,8 @@ public class PesquisaNome extends HttpServlet {
                 }
                 else {
                     out.print("<center>Nenhum Item com este nome encontrado.</center>"
-                            + "<center><button type=\"button\" style=\"margin-top: 1em;\">"
-                            + "</a></button></center>");
+                            + "<center><button type=\"button\" style=\"margin-top: 1em;\" "
+                            + "onclick=\"window.location.reload();\">Tentar Novamente</button></center>");
                 }
             }
         }
