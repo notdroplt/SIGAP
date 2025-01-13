@@ -1,10 +1,6 @@
 package br.cefetmg.inf.sigap.db;
 
-import org.json.JSONObject;
-
-import java.io.*;
-import java.util.Date;
-import java.util.stream.Collectors;
+import java.time.LocalDate;
 
 /**
  * Classe Factory para geração de itens perdidos ou achados
@@ -13,17 +9,6 @@ import java.util.stream.Collectors;
  * @author Arthur Tolomelli
  */
 public final class ItemFactory {
-    private static final JSONObject schema;
-    static {
-        try (BufferedReader br = new BufferedReader(new FileReader("item-schema.json"))) {
-            String str = br.lines().collect(Collectors.joining(System.lineSeparator()));
-            schema = new JSONObject(str);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-
     /**
      * Cria um item que foi perdido
      * @param nome nome do item perdido
@@ -33,8 +18,8 @@ public final class ItemFactory {
      * @param foto foto desse item ou similar
      * @return Item criado com status perdido
      */
-    public static Item criarItemPerdido(String nome, Date data, String descricao, String lugarPerdido, String foto) {
-        return new Item(nome, data, null, null, null,
+    public static Item criarItemPerdido(Long uid, String nome, LocalDate data, String descricao, String lugarPerdido, String campus, String foto) {
+        return new Item(uid, nome, data, null, null, campus,
                 descricao, null, lugarPerdido, foto, StatusItem.PERDIDO);
     }
 
@@ -48,8 +33,8 @@ public final class ItemFactory {
      * @param foto foto do item encontrado
      * @return Item criado com status encontrado
      */
-    public static Item criarItemAchado(String nome, Date data, String local, String descricao, String lugarAchado, String foto) {
-        return new Item(nome, null, data, null, local,
+    public static Item criarItemAchado(String nome, LocalDate data, String local, String descricao, String lugarAchado, String foto) {
+        return new Item(null, nome, null, data, null, local,
                 descricao, lugarAchado, null, foto, StatusItem.ENCONTRADO);
     }
 }

@@ -1,25 +1,39 @@
+networks:
+  net:
+    driver: bridge
+
 services:
   app:
+    networks:
+      - net
     build: .
     ports:
-      - "8080"
+      - 8080:8080
     depends_on:
-      - db
-    environment:
-      DATABASE_HOST: db
-      DATABASE_PORT: 5432
-      DATABASE_USER: postgres
-      DATABASE_PASSWORD: password
-      DATABASE_NAME: sigap-table
+      db:
+        condition: service_healthy
+    develop:
+      watch:
+        - action: rebuild
+          path: .
+          target: /app
 
   db:
     image: postgres:alpine
+    networks:
+      - net
     environment:
-      POSTGRES_DB: sigap-table
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: password
+      POSTGRES_USER: sigap
+      POSTGRES_PASSWORD: sigap
+      POSTGRES_DB: sigap
+    ports:
+      - 5432:5432
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready", "-U", "sigap", "-d", "sigap" ]
+      interval: 10s
+      retries: 5
 
 volumes:
   postgres_data:

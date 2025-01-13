@@ -7,14 +7,22 @@ RUN apt-get update && \
 
 COPY SIGAP .
 
-RUN mvn clean package
+RUN mvn package
 
-FROM tomcat:jre21 AS jre-run
+FROM alpine:edge AS jre-run
+RUN apk add --no-cache openjdk21-jre-headless
 
-RUN mkdir -p $CATALINA_HOME/webapps/
+RUN mkdir -p /opt/tomcat/webapps
 
-COPY --from=jdk-build /app/target/*.war $CATALINA_HOME/webapps/SIGAP.war
+RUN wget https://dlcdn.apache.org/tomcat/tomcat-11/v11.0.2/bin/apache-tomcat-11.0.2.tar.gz
+
+RUN tar xvzf apache-tomcat-11.0.2.tar.gz --strip-components 1 --directory /opt/tomcat
+
+RUN rm -rf /opt/tomcat/webapps
+
+COPY --from=jdk-build /app/target/*.war /opt/tomcat/webapps/SIGAP.war
+COPY --from=jdk-build /root/.m2/repository/org/postgresql/postgresql/42.7.2/postgresql-42.7.2.jar /opt/tomcat/lib/
 
 EXPOSE 8080
 
-CMD ["catalina.sh", "run"]
+CMD ["/opt/tomcat/bin/catalina.sh", "run"]
