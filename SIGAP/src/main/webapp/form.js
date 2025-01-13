@@ -13,5 +13,6 @@ const submit = (endpoint, ev) => {
     fetch(endpoint, {
         method: "POST",
         body: JSON.stringify(obj)
-    })
+    }).then(res => res.json())
+      .then(console.log)
 }

@@ -21,11 +21,14 @@
             <h2>Cadastre-se no Sistema</h2>
             <form action="email.jsp" method="POST">
                 <label for="cpf">CPF:</label>
-                <input type="text" id="cpf" name="cpf" placeholder="CPF">
+                <input type="cpf" id="cpf" name="cpf" placeholder="CPF">
+
                 <label for="nome">Nome:</label>
                 <input type="text" id="nome" name="nome" placeholder="Nome completo">
+
                 <label for="email">Email:</label>
-                <input type="text" id="email" name="email" placeholder="Email">
+                <input type="email" id="email" name="email" placeholder="Email">
+
                 <label for="senha">Senha:</label>
                 <input type="password" id="senha" name="senha" placeholder="Senha">
                 <button type="submit">Entrar</button>

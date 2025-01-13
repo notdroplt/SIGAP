@@ -1,8 +1,6 @@
 package br.cefetmg.inf.sigap.db;
 
-import java.util.Date;
-
-import jakarta.persistence.*;
+import java.time.LocalDate;
 
 /**
  * Classe responsável pela estrutura interna e pelo acesso
@@ -11,70 +9,62 @@ import jakarta.persistence.*;
  * @version 0.1
  * @author Arthur Tolomelli
  */
-@Entity
-@Table(name = "Item")
-public final class Item {
+public class Item{
 
     /**
      * Identificação do item perdido dentro do sistema
      */
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
+
+    /**
+     * Identificação do usuário que submeteu esse item
+     */
+    private Long uid;
 
     /**
      * Nome do item perdido
      */
-    @Column(name = "nome", nullable = false, length = 40)
-    private final String nome;
+    private String nome;
 
     /**
      * Data em que o item foi perdido
      */
-    @Column(name = "perdido", nullable = false)
-    private final Date dataPerdido;
+    private LocalDate dataPerdido;
 
     /**
      * Data em que o item foi encontrado
      */
-    @Column(name = "achado", nullable = true)
-    private final Date dataAchado;
+    private LocalDate dataAchado;
 
     /**
      * Data em que o item foi devolvido
      */
-    @Column(name = "devolvido", nullable = true)
-    private final Date dataDevolvido;
+    private LocalDate dataDevolvido;
 
     /**
      * Local onde o item está
      */
-    @Column(name = "local", nullable = false, length = 3)
-    private final String local;
+    private String local;
 
     /**
      * Descrição do item perdido
      */
-    @Column(name = "descricao", nullable = false, length = 144)
-    private final String descricao;
+    private String descricao;
 
     /**
      * Descrição do lugar onde foi achado
      */
-    @Column(name = "lugarA", nullable = true, length = 144)
-    private final String lugarAchado;
+    private String lugarAchado;
 
     /**
      * Descrição do lugar onde foi perdido
      */
-    @Column(name = "lugarP", nullable = false, length = 144)
-    private final String lugarPerdido;
+    private String lugarPerdido;
 
     /**
      * Caminho para a foto do item/similar dentro do sistema
      */
-    @Column(name = "foto", nullable = false)
-    private final String foto;
+    private String foto;
 
     /**
      * Status do item que foi perdido
@@ -94,8 +84,9 @@ public final class Item {
      * @param lugarPerdido lugar em que foi perdido
      * @param foto caminho da foto do item
      */
-    public Item(String nome, Date dataPerdido, Date dataAchado, Date dataDevolvido, String local, String descricao,
+    public Item(Long uid, String nome, LocalDate dataPerdido, LocalDate dataAchado, LocalDate dataDevolvido, String local, String descricao,
                 String lugarAchado, String lugarPerdido, String foto, StatusItem status) {
+        this.uid = uid;
         this.nome = nome;
         this.dataPerdido = dataPerdido;
         this.dataAchado = dataAchado;
@@ -108,7 +99,11 @@ public final class Item {
         this.status = status;
     }
 
-    public long getId() {
+    public Item() {
+
+    }
+
+    public Long getId() {
         return id;
     }
 
@@ -116,15 +111,15 @@ public final class Item {
         return nome;
     }
 
-    public Date getDataPerdido() {
+    public LocalDate getDataPerdido() {
         return dataPerdido;
     }
 
-    public Date getDataAchado() {
+    public LocalDate getDataAchado() {
         return dataAchado;
     }
 
-    public Date getDataDevolvido() {
+    public LocalDate getDataDevolvido() {
         return dataDevolvido;
     }
 
@@ -148,6 +143,46 @@ public final class Item {
         return foto;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public void setDataPerdido(LocalDate dataPerdido) {
+        this.dataPerdido = dataPerdido;
+    }
+
+    public void setDataAchado(LocalDate dataAchado) {
+        this.dataAchado = dataAchado;
+    }
+
+    public void setDataDevolvido(LocalDate dataDevolvido) {
+        this.dataDevolvido = dataDevolvido;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
+
+    public void setLocal(String local) {
+        this.local = local;
+    }
+
+    public void setFoto(String foto) {
+        this.foto = foto;
+    }
+
+    public void setLugarAchado(String lugarAchado) {
+        this.lugarAchado = lugarAchado;
+    }
+
+    public void setLugarPerdido(String lugarPerdido) {
+        this.lugarPerdido = lugarPerdido;
+    }
+
     public StatusItem getStatus() {
         return status;
     }
@@ -156,5 +191,11 @@ public final class Item {
         this.status = status;
     }
 
+    public Long getUid() {
+        return uid;
+    }
 
+    public void setUid(Long uid) {
+        this.uid = uid;
+    }
 }
