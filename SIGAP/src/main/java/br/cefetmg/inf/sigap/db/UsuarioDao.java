@@ -7,7 +7,6 @@ public class UsuarioDao {
     private static Connection conectarDB(){
         String driver = "org.postgresql.Driver";
         String protocol = "jdbc:postgresql://db:5432/sigap";
-        String database = "sigap_bd";
         String username = "sigap";
         String password = "sigap";
 
