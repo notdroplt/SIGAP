@@ -6,7 +6,7 @@ import java.util.Random;
 public class UsuarioDao {
     private static Connection conectarDB(){
         String driver = "org.postgresql.Driver";
-        String protocol = "jdbc:postgresql://localhost:5432/postgres?";
+        String protocol = "jdbc:postgresql://db:5432/sigap";
         String database = "sigap_bd";
         String username = "sigap";
         String password = "sigap";
@@ -27,7 +27,7 @@ public class UsuarioDao {
         }
 
         try {
-            conn = DriverManager.getConnection(protocol + database, username, password);
+            conn = DriverManager.getConnection(protocol, username, password);
             conn.setAutoCommit(true);
         } catch (SQLException e) {
             e.printStackTrace();
