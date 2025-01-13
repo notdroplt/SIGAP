@@ -4,18 +4,22 @@ import jakarta.servlet.http.*;
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.*;
 import java.io.*;
+import java.util.List;
 import br.cefetmg.inf.sigap.db.ItemService;
-import br.cefetmg.inf.sigap.db.Item.java;
+import br.cefetmg.inf.sigap.db.Item;
 
 @WebServlet(name = "PesquisaNome", urlPatterns = {"/PesquisaNome"})
 
 public class PesquisaNome extends HttpServlet {
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
             response.setContentType("text/html;charset=UTF-8");
             try (PrintWriter out = response.getWriter()) {
                 String nomeItem = request.getParameter("nomeItem");
-                List<Item> alvos = ItemService.getItemPorNome(nomeItem);
+                ItemService servicoItem = ItemService.getInstance();
+
+                List<Item> alvos = servicoItem.getItemPorNome(nomeItem);
 
                 if (alvos != null && !alvos.isEmpty()){
                     for (Item item : alvos) {
