@@ -4,7 +4,8 @@ import jakarta.servlet.http.*;
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.*;
 import java.io.*;
-import br.cefetmg.inf.sigap.db.*;
+import br.cefetmg.inf.sigap.db.ItemService;
+import br.cefetmg.inf.sigap.db.Item.java;
 
 @WebServlet(name = "PesquisaNome", urlPatterns = {"/PesquisaNome"})
 
@@ -14,11 +15,13 @@ public class PesquisaNome extends HttpServlet {
             response.setContentType("text/html;charset=UTF-8");
             try (PrintWriter out = response.getWriter()) {
                 String nomeItem = request.getParameter("nomeItem");
-                ItemService alvo = getItemPorNome(nomeItem);
+                List<Item> alvos = ItemService.getItemPorNome(nomeItem);
 
-                if (alvo != null){
-                    out.print("<div class=\"acoes\"><span>"+ alvo.getNome() +"</span><input type=\"button\""
-                            + " value=\"Adicionar\" onclick=\"adicionaritem('"+ alvo.getNome() +"')\"></div>");
+                if (alvos != null && !alvos.isEmpty()){
+                    for (Item item : alvos) {
+                        out.print("<div class=\"acoes\"><span>" + item.getNome() + "</span><input type=\"button\""
+                                  + " value=\"Adicionar\" onclick=\"adicionaritem('" + item.getNome() + "')\"></div>");
+                    }
                 }
                 else {
                     out.print("<center>Nenhum Item com este nome encontrado.</center>"
