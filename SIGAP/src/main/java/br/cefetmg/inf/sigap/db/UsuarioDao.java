@@ -37,7 +37,6 @@ public class UsuarioDao {
     public static void createTable(){
         System.out.println("---START CREATE TABLE---");
         Connection conn = conectarDB();
-        String sql = "DROP TABLE IF EXISTS usuario";
         String sql2 = "CREATE TABLE IF NOT EXISTS usuario (" +
                 "    token INT PRIMARY KEY," +
                 "    cpf BIGINT NOT NULL," +
@@ -47,13 +46,12 @@ public class UsuarioDao {
                 ");";
         try {
             Statement statement = conn.createStatement();
-            statement.executeUpdate(sql);
             statement.executeUpdate(sql2);
             statement.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        sql = "SELECT column_name " +
+        String sql = "SELECT column_name " +
                 "FROM information_schema.columns " +
                 "WHERE table_name = 'usuario';";
         try {
@@ -100,7 +98,7 @@ public class UsuarioDao {
         String email = usuario.getEmail();
         int token = rand.nextInt();
 
-        String sql = "SELECT 1 FROM usuario WHERE id = ?";
+        String sql = "SELECT 1 FROM usuario WHERE token = ?";
         try {
             PreparedStatement statement = conn.prepareStatement(sql);
             statement.setInt(1,token);
@@ -116,10 +114,10 @@ public class UsuarioDao {
             return false;
         }
 
-        sql = "INSERT INTO usuario (id, cpf, nome, senha, email) " +
+        String sql2 = "INSERT INTO usuario (token, cpf, nome, senha, email) " +
         "VALUES (?, ?, ?, ?, ?)";
         try {
-            PreparedStatement statement = conn.prepareStatement(sql);
+            PreparedStatement statement = conn.prepareStatement(sql2);
             statement.setInt(1,token);
             statement.setLong(2,cpf);
             statement.setString(3,nome);
@@ -127,6 +125,8 @@ public class UsuarioDao {
             statement.setString(5,email);
             statement.executeUpdate();
             statement.close();
+            System.out.println("Usuário criado com sucesso!");
+            System.out.println("Token: " + token);
             System.out.println("---END CREATE USER---");
             return true;
         } catch (SQLException e) {
@@ -145,10 +145,13 @@ public class UsuarioDao {
             statement.setString(2,senha);
             ResultSet result = statement.executeQuery();
             if (result.next()){
+                System.out.println("Usuário logado com sucesso!");
+                System.out.println("Token: " + result.getInt("token"));
                 System.out.println("---END LOGIN---");
                 return true;
             }
             else {
+                System.out.println("Usuário não encontrado!");
                 System.out.println("---END LOGIN---");
                 return false;
             }
