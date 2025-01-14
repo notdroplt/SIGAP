@@ -1,4 +1,6 @@
-package br.cefetmg.inf.sigap.db;
+package br.cefetmg.inf.sigap.dao;
+
+import br.cefetmg.inf.sigap.dto.Usuario;
 
 import java.sql.*;
 import java.util.Random;
@@ -34,41 +36,7 @@ public class UsuarioDao {
         return conn;
     }
 
-    public static void createTable(){
-        System.out.println("---START CREATE TABLE---");
-        Connection conn = conectarDB();
-        String sql2 = "CREATE TABLE IF NOT EXISTS usuario (" +
-                "    token INT PRIMARY KEY," +
-                "    cpf BIGINT NOT NULL," +
-                "    nome VARCHAR(255) NOT NULL," +
-                "    senha VARCHAR(255) NOT NULL," +
-                "    email VARCHAR(255) NOT NULL" +
-                ");";
-        try {
-            Statement statement = conn.createStatement();
-            statement.executeUpdate(sql2);
-            statement.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        String sql = "SELECT column_name " +
-                "FROM information_schema.columns " +
-                "WHERE table_name = 'usuario';";
-        try {
-            Statement statement = conn.createStatement();
-            ResultSet result = statement.executeQuery(sql);
-            while (result.next()) {
-                String columnName = result.getString("column_name");
-                System.out.println(columnName);
-            }
-            statement.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        System.out.println("---END CREATE TABLE---");
-    }
-
-    public static int getToken(long cpf, String senha){
+    public static int getId(long cpf, String senha){
         Connection conn = conectarDB();
         String sql = "SELECT token FROM usuario WHERE cpf = ? AND senha =?";
         try {
@@ -77,7 +45,7 @@ public class UsuarioDao {
             statement.setString(2, senha);
             ResultSet result = statement.executeQuery();
             if (result.next()){
-                return result.getInt("token");
+                return result.getInt("id");
             }
             else {
                 return 0;
@@ -90,43 +58,24 @@ public class UsuarioDao {
     public static boolean adicionarUsuario(Usuario usuario){
         System.out.println("---START CREATE USER---");
         Connection conn = conectarDB();
-        createTable();
         Random rand = new Random();
         long cpf = usuario.getCpf();
         String senha = usuario.getSenha();
         String nome = usuario.getNome();
         String email = usuario.getEmail();
-        int token = rand.nextInt();
 
-        String sql = "SELECT 1 FROM usuario WHERE token = ?";
-        try {
-            PreparedStatement statement = conn.prepareStatement(sql);
-            statement.setInt(1,token);
-            ResultSet result = statement.executeQuery();
-            while (result.next()){
-                token = rand.nextInt();
-                result = statement.executeQuery();
-            }
 
-            statement.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-
-        String sql2 = "INSERT INTO usuario (token, cpf, nome, senha, email) " +
-        "VALUES (?, ?, ?, ?, ?)";
+        String sql2 = "INSERT INTO usuario (cpf, nome, senha, email) " +
+        "VALUES (?, ?, ?, ?)";
         try {
             PreparedStatement statement = conn.prepareStatement(sql2);
-            statement.setInt(1,token);
-            statement.setLong(2,cpf);
-            statement.setString(3,nome);
-            statement.setString(4,senha);
-            statement.setString(5,email);
+            statement.setLong(1,cpf);
+            statement.setString(2,nome);
+            statement.setString(3,senha);
+            statement.setString(4,email);
             statement.executeUpdate();
             statement.close();
             System.out.println("Usuário criado com sucesso!");
-            System.out.println("Token: " + token);
             System.out.println("---END CREATE USER---");
             return true;
         } catch (SQLException e) {
@@ -137,7 +86,6 @@ public class UsuarioDao {
     public static boolean VerificarUsuario(long cpf, String senha){
         System.out.println("---START LOGIN---");
         Connection conn = conectarDB();
-        createTable();
         String sql = "SELECT * FROM usuario WHERE cpf = ? AND senha = ?";
         try {
             PreparedStatement statement = conn.prepareStatement(sql);
@@ -146,7 +94,7 @@ public class UsuarioDao {
             ResultSet result = statement.executeQuery();
             if (result.next()){
                 System.out.println("Usuário logado com sucesso!");
-                System.out.println("Token: " + result.getInt("token"));
+                System.out.println("Id: " + result.getInt("id"));
                 System.out.println("---END LOGIN---");
                 return true;
             }
@@ -160,12 +108,12 @@ public class UsuarioDao {
             return false;
         }
     }
-    public static Usuario getUserData(int token){
+    public static Usuario getUserData(int id){
         Connection conn = conectarDB();
-        String sql = "SELECT * FROM usuario WHERE token = ?";
+        String sql = "SELECT * FROM usuario WHERE id = ?";
         try {
             PreparedStatement statement = conn.prepareStatement(sql);
-            statement.setInt(1,token);
+            statement.setInt(1,id);
             ResultSet result = statement.executeQuery();
             if (result.next()){
                 String nome = result.getString("nome");

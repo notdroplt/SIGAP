@@ -1,10 +1,10 @@
-package br.cefetmg.inf.sigap.db;
+package br.cefetmg.inf.sigap.backend;
 
 import java.util.Properties;
 
+import br.cefetmg.inf.sigap.dto.Item;
 import jakarta.mail.*;
 import jakarta.mail.internet.*;
-import java.util.*;
 
 public class Notificar {
     public static void notificar(Item mandar, String nome, String email)
