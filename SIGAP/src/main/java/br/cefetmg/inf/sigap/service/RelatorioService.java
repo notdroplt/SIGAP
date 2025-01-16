@@ -1,9 +1,11 @@
-package br.cefetmg.inf.sigap.db;
+package br.cefetmg.inf.sigap.service;
 
 /**
  *
  * @author luisg
  */
+
+import br.cefetmg.inf.sigap.dto.Item;
 
 import java.time.LocalDate;
 import java.util.HashMap;

@@ -1,6 +1,6 @@
 package br.cefetmg.inf.sigap.backend;
 
-import br.cefetmg.inf.sigap.db.ItemService;
+import br.cefetmg.inf.sigap.service.ItemService;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 import org.json.JSONObject;

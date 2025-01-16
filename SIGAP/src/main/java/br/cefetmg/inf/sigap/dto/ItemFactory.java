@@ -1,4 +1,4 @@
-package br.cefetmg.inf.sigap.db;
+package br.cefetmg.inf.sigap.dto;
 
 import java.time.LocalDate;
 

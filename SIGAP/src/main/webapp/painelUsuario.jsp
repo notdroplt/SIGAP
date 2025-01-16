@@ -12,11 +12,43 @@
             <h1>CEFET-MG - SIGAP -</h1>
             <span>Sistema Integrado de Gestão de Achados e Perdidos</span>
         </div>
-
     </header>
-
     <main>
-
+        <%@ page import="br.cefetmg.inf.sigap.dto.Usuario" %>
+        <%@ page import="br.cefetmg.inf.sigap.service.UsuarioService" %>
+        <%
+            HttpSession sessao = request.getSession(false);
+            if (sessao != null) {
+                Integer token = (Integer) sessao.getAttribute("Token");
+                if (token != null) {
+                    Usuario usuario = UsuarioService.getUserData(token);
+                    if (usuario != null) {
+                        %>
+                        <h1>Bem-vindo, <%= usuario.getNome() %>!</h1>
+                        <formsection>
+                            <h2>Seus dados:</h2>
+                            <p><strong>Nome:</strong> <%= usuario.getNome() %></p>
+                            <p><strong>CPF:</strong> <%= usuario.getCpf() %></p>
+                            <p><strong>Email:</strong> <%= usuario.getEmail() %></p>
+                        </formsection>>
+                        <form
+                        <%
+                    } else {
+                        %>
+                        <p>Erro ao recuperar os dados do usuário.</p>
+                        <%
+                        }
+                } else {
+                    %>
+                    <p>Token não encontrado na sessão.</p>
+                    <%
+                }
+        } else {
+        %>
+        <p>Sessão não encontrada.</p>
+        <%
+            }
+        %>
     </main>
 </div>
 </body>

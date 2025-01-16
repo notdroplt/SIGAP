@@ -4,7 +4,7 @@ package br.cefetmg.inf.sigap.controller;
  *
  * @author luisg
  */
-import br.cefetmg.inf.sigap.db.GraficoService;
+import br.cefetmg.inf.sigap.service.GraficoService;
 import com.google.gson.Gson;
 
 import jakarta.servlet.ServletException;

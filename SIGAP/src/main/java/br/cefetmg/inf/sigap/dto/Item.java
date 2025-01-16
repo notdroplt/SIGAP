@@ -1,4 +1,4 @@
-package br.cefetmg.inf.sigap.db;
+package br.cefetmg.inf.sigap.dto;
 
 import java.time.LocalDate;
 
@@ -197,5 +197,21 @@ public class Item{
 
     public void setUid(Long uid) {
         this.uid = uid;
+    }
+
+    public Boolean copare(Item comparando)
+    {
+        if(comparando.nome.equals(nome))
+            if(dataAchado.isAfter(comparando.dataPerdido) || dataAchado.isEqual(comparando.dataPerdido))
+                if(lugarAchado!=null && comparando.lugarPerdido!=null)
+                {
+                    if(comparando.lugarPerdido.equals(lugarAchado))
+                    {
+                        return true;
+                    } 
+                }   else{
+                    return true;
+                }
+        return false;
     }
 }

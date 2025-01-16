@@ -3,10 +3,7 @@ package br.cefetmg.inf.sigap.backend;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServlet;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 public class InitServlet extends HttpServlet {
 
@@ -30,9 +27,9 @@ public class InitServlet extends HttpServlet {
                 "CREATE TABLE IF NOT EXISTS usuario (\n" +
                 "    id BIGINT NOT NULL PRIMARY KEY GENERATED ALWAYS AS IDENTITY,\n" +
                 "    nome VARCHAR(255) NOT NULL,\n" +
-                "    cpf VARCHAR(11) NOT NULL,\n" +
+                "    cpf BIGINT NOT NULL,\n" +
                 "    email VARCHAR(255) NOT NULL,\n" +
-                "    senha BIGINT NOT NULL\n" +
+                "    senha VARCHAR(255) NOT NULL\n" +
                 ");\n";
 
         String[] extensions = new String[] {

@@ -1,6 +1,6 @@
 package br.cefetmg.inf.sigap.backend;
 
-import br.cefetmg.inf.sigap.db.UsuarioService;
+import br.cefetmg.inf.sigap.service.UsuarioService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -27,16 +27,23 @@ public class UsuarioLoginServlet extends HttpServlet {
         Pattern pattern = Pattern.compile("\\d+");
         Matcher matcher = pattern.matcher(request.getParameter("cpf"));
         while (matcher.find()) {
-            System.out.println(matcher.group());
             cpfString.append(matcher.group());
         }
 
         long cpf = Long.parseLong(cpfString.toString());
-        int token;
+        int id;
+        response.setContentType("text/html");
+        response.getWriter().println("<html><body>");
         if (UsuarioService.login(cpf, senha)) {
-           token  = UsuarioService.getToken(cpf, senha);
-           HttpSession session = request.getSession(true);
-           session.setAttribute("Token", token);
+            id = UsuarioService.getToken(cpf, senha);
+            HttpSession session = request.getSession(true);
+            session.setAttribute("Token", id);
+            response.getWriter().println("<h1>Login successful!</h1>");
+            response.getWriter().println("<p>Token: " + id + "</p>");
+        } else {
+            response.getWriter().println("<h1>Login failed!</h1>");
         }
+        response.getWriter().println("</body></html>");
+
     }
 }
