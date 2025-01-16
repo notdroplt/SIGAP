@@ -21,7 +21,7 @@
             <h2>Cadastre-se no Sistema</h2>
             <form action="email.jsp" method="POST">
                 <label for="cpf">CPF:</label>
-                <input type="cpf" id="cpf" name="cpf" placeholder="CPF">
+                <input type="email" id="cpf" name="cpf" placeholder="CPF">
 
                 <label for="nome">Nome:</label>
                 <input type="text" id="nome" name="nome" placeholder="Nome completo">
