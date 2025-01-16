@@ -132,4 +132,35 @@ public class UsuarioDao {
             return null;
         }
     }
+    public static boolean atualizarUsuario(int id, Usuario usuario) {
+        Connection conn = conectarDB();
+        String sql = "UPDATE usuario SET nome = ?, email = ?, cpf = ? WHERE id = ?";
+        try {
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setString(1, usuario.getNome());
+            statement.setString(2, usuario.getEmail());
+            statement.setLong(3, usuario.getCpf());
+            statement.setInt(4, id);
+            statement.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    public static boolean atualizarSenha(int id, String senha, String senhaOld){
+        Connection conn = conectarDB();
+        String sql = "UPDATE usuario SET senha = ? WHERE id = ? AND senha = ?";
+        try {
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setString(1,senha);
+            statement.setInt(2,id);
+            statement.setString(3,senhaOld);
+            statement.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }

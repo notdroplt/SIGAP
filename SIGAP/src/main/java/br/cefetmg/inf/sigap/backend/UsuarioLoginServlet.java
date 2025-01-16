@@ -35,11 +35,12 @@ public class UsuarioLoginServlet extends HttpServlet {
         response.setContentType("text/html");
         response.getWriter().println("<html><body>");
         if (UsuarioService.login(cpf, senha)) {
-            id = UsuarioService.getToken(cpf, senha);
+            id = UsuarioService.getId(cpf, senha);
             HttpSession session = request.getSession(true);
             session.setAttribute("Token", id);
             response.getWriter().println("<h1>Login successful!</h1>");
             response.getWriter().println("<p>Token: " + id + "</p>");
+            response.sendRedirect("painelUsuario.jsp");
         } else {
             response.getWriter().println("<h1>Login failed!</h1>");
         }

@@ -38,7 +38,7 @@ public class UsuarioCadastroServlet extends HttpServlet {
         Usuario usuario = new Usuario(nome, email, senha, cpf);
         int id;
         if (UsuarioService.criarUsuario(usuario)) {
-            id = UsuarioService.getToken(cpf, senha);
+            id = UsuarioService.getId(cpf, senha);
             HttpSession session = request.getSession(true);
             session.setAttribute("Token", id);
 
@@ -48,6 +48,7 @@ public class UsuarioCadastroServlet extends HttpServlet {
             out.println("<p>Email: " + email + "</p>");
             out.println("<p>Token: " + id + "</p>");
             out.println("</body></html>");
+            response.sendRedirect("painelUsuario.jsp");
         } else {
             out.println("<html><body>");
             out.println("<h1>Erro ao criar usuário!</h1>");

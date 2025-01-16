@@ -128,3 +128,10 @@ header .title span {
 .help-links a:hover {
     text-decoration: underline;
 }
+.sector{
+    padding: 15px;
+    text-align: center;
+    background-color: #f4f4f4;
+    border-top: 1px solid #ddd;
+    margin-top: auto;
+}
