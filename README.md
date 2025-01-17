@@ -20,12 +20,12 @@ Casos de uso:
 - Responsável: Kleber Martins
 
 Subfunções:
-- [ ] Fornecimento de dados
-- [ ] Cadastro de usuários
+- [x] Fornecimento de dados
+- [x] Cadastro de usuários
 - [ ] Controle de usuários comuns e funcionários dos achados e pedidos
 
 Casos de uso:
-- [ ] Cadastro de usuários de funcionários e alunos
+- [x] Cadastro de usuários de funcionários e alunos
 - [ ] Controle de usuários dentro do sistema
 
 ## Função 3: Pesquisa de itens
