@@ -27,12 +27,19 @@
         props.put("mail.smtp.starttls.enable", "true");
 
         // Criando a sessão de e-mail
-        Session mailSession = Session.getInstance(props, new Authenticator() {
-            protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(username, password);
-            }
-        });
+        Session mailSession = null;
+        try {
+            mailSession = Session.getInstance(props, new Authenticator() {
+                protected PasswordAuthentication getPasswordAuthentication() {
+                    return new PasswordAuthentication(username, password);
+                 }
+            });
+        }
+        catch (Exception e) {
+            System.out.println("Erro ao criar a sessão de e-mail: " + e.getMessage());
+            response.sendRedirect("CadastroServlet");
 
+        }
         try {
             Message message = new MimeMessage(mailSession);
             message.setFrom(new InternetAddress(username));
@@ -43,7 +50,8 @@
             Transport.send(message);
             out.println("<p>E-mail enviado com sucesso!</p>");
         } catch (MessagingException e) {
-            out.println("<p>Erro ao enviar e-mail: " + e.getMessage() + "</p>");
+            System.out.println("Erro ao enviar o e-mail: " + e.getMessage());
+            response.sendRedirect("CadastroServlet");
         }
         
     %>
