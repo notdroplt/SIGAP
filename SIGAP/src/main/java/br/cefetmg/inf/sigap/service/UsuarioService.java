@@ -4,6 +4,9 @@ import br.cefetmg.inf.sigap.dto.Usuario;
 import br.cefetmg.inf.sigap.dao.UsuarioDao;
 
 import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -21,10 +24,13 @@ public class UsuarioService {
     public static boolean criarUsuario(Usuario usuario){
         return UsuarioDao.adicionarUsuario(usuario);
     }
-    public static boolean login(long cpf, String senha){
+    public static boolean login(long cpf, byte[] senha){
         return UsuarioDao.VerificarUsuario(cpf, senha);
     }
-    public static int getId(long cpf, String senha){
+    public static boolean verificarUsuario(int id, byte[] senha){
+        return UsuarioDao.VerificarUsuario(id, senha);
+    }
+    public static int getId(long cpf, byte[] senha){
         return UsuarioDao.getId(cpf, senha);
     }
     public static Usuario getUserData(int id){
@@ -35,8 +41,18 @@ public class UsuarioService {
     public static boolean trocarAutoridade(int id, int auth, int authId){return UsuarioDao.trocarAutoridade(id, auth, authId);}
     public static boolean verificarAutoridade(int id, int auth){return UsuarioDao.verificarAutoridade(id, auth);}
     public static boolean atualizarUsuario(Usuario usuario){return UsuarioDao.atualizarUsuario(usuario);}
-    public static boolean atualizarSenha(int id, String senha, String senhaOld){return UsuarioDao.atualizarSenha(id, senha, senhaOld);}
+    public static boolean atualizarSenha(int id, byte[] senha, byte[] senhaOld){return UsuarioDao.atualizarSenha(id, senha, senhaOld);}
     public static boolean atualizarUsuario(int authId, Usuario usuario){return UsuarioDao.atualizarUsuario(authId, usuario );}
+    public static byte[] hashSenha(String senha){
+        MessageDigest digest = null;
+        try {
+            digest = MessageDigest.getInstance("SHA-256");
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        assert digest != null;
+        return digest.digest(senha.getBytes(StandardCharsets.UTF_8));
+    }
     public static void printPage(PrintWriter out, String content){
         String header = "<html lang=\"pt-br\">\n" +
                 "<head>\n" +

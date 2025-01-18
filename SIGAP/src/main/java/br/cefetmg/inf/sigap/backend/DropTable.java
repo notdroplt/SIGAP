@@ -17,6 +17,8 @@ public class DropTable extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html");
+        HttpSession session = request.getSession();
+        int id = (int) session.getAttribute("Token");
         PrintWriter out = response.getWriter();
         out.println("<html><body>");
         out.println("<form method='get' action='dropTable'>");
@@ -32,7 +34,7 @@ public class DropTable extends HttpServlet {
         }
         String sql = "DROP TABLE " + table;
         try {
-            GeneralService.dropTable(sql);
+            GeneralService.dropTable(sql, id);
             out.println("Tabela " + table + " deletada com sucesso");
         } catch (Exception e) {
             out.println("Erro ao deletar tabela " + table);

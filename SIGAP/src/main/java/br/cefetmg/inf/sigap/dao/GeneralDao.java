@@ -37,13 +37,26 @@ public class GeneralDao {
         }
         return conn;
     }
-    public static void dropTable(String sql) throws Exception {
+    public static void dropTable(String sql, int id) throws Exception {
         Connection conn = conectarDB();
         try {
             PreparedStatement statement = conn.prepareStatement(sql);
             statement.executeUpdate();
             InitServlet initServlet = new InitServlet();
             initServlet.init();
+            logAction(id, "Tabela dropada");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    public static void logAction(int id, String action) {
+        Connection conn = conectarDB();
+        String sql = "INSERT INTO log (uid, acao, data) VALUES (?, ?, NOW())";
+        try {
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setInt(1, id);
+            statement.setString(2, action);
+            statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }

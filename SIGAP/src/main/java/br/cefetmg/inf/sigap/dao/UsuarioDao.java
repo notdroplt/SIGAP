@@ -37,13 +37,13 @@ public class UsuarioDao {
         return conn;
     }
 
-    public static int getId(long cpf, String senha){
+    public static int getId(long cpf, byte[] senha){
         Connection conn = conectarDB();
         String sql = "SELECT id FROM usuario WHERE cpf = ? AND senha =?";
         try {
             PreparedStatement statement = conn.prepareStatement(sql);
             statement.setLong(1, cpf);
-            statement.setString(2, senha);
+            statement.setBytes(2, senha);
             ResultSet result = statement.executeQuery();
             if (result.next()){
                 return result.getInt("id");
@@ -61,7 +61,7 @@ public class UsuarioDao {
         Connection conn = conectarDB();
         Random rand = new Random();
         long cpf = usuario.getCpf();
-        String senha = usuario.getSenha();
+        byte[] senha = usuario.getSenha();
         String nome = usuario.getNome();
         String email = usuario.getEmail();
 
@@ -72,11 +72,11 @@ public class UsuarioDao {
             PreparedStatement statement = conn.prepareStatement(sql2);
             statement.setLong(1,cpf);
             statement.setString(2,nome);
-            statement.setString(3,senha);
+            statement.setBytes(3,senha);
             statement.setString(4,email);
             statement.executeUpdate();
             statement.close();
-            logAction(getId(cpf, senha), "Criou o usuário " + getId(cpf, senha));
+            GeneralDao.logAction(getId(cpf, senha), "Criou o usuário " + getId(cpf, senha));
             System.out.println("Usuário criado com sucesso!");
             System.out.println("---END CREATE USER---");
             return true;
@@ -85,26 +85,47 @@ public class UsuarioDao {
             return false;
         }
     }
-    public static boolean VerificarUsuario(long cpf, String senha){
+    public static boolean VerificarUsuario(long cpf, byte[] senha){
         System.out.println("---START LOGIN---");
         Connection conn = conectarDB();
         String sql = "SELECT * FROM usuario WHERE cpf = ? AND senha = ?";
         try {
             PreparedStatement statement = conn.prepareStatement(sql);
             statement.setLong(1,cpf);
-            statement.setString(2,senha);
+            statement.setBytes(2,senha);
             ResultSet result = statement.executeQuery();
-            statement.close();
             if (result.next()){
                 System.out.println("Usuário logado com sucesso!");
                 System.out.println("Id: " + result.getInt("id"));
-                logAction(result.getInt("id"), "Logou no sistema");
+                GeneralDao.logAction(result.getInt("id"), "usuario: " + result.getInt("id") + " Logou no sistema");
                 System.out.println("---END LOGIN---");
+                statement.close();
                 return true;
             }
             else {
                 System.out.println("Usuário não encontrado!");
                 System.out.println("---END LOGIN---");
+                statement.close();
+                return false;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    public static boolean VerificarUsuario(int id, byte[] senha){
+        Connection conn = conectarDB();
+        String sql = "SELECT * FROM usuario WHERE id = ? AND senha = ?";
+        try {
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setLong(1,id);
+            statement.setBytes(2,senha);
+            ResultSet result = statement.executeQuery();
+            statement.close();
+            if (result.next()){
+                return true;
+            }
+            else {
                 return false;
             }
         } catch (SQLException e) {
@@ -122,7 +143,7 @@ public class UsuarioDao {
             if (result.next()){
                 String nome = result.getString("nome");
                 String email = result.getString("email");
-                String senha = result.getString("senha");
+                byte[] senha = result.getBytes("senha");
                 long cpf = result.getLong("cpf");
                 int autoridade = result.getInt("auth");
                 return new Usuario(nome, email, senha, cpf, id, autoridade);
@@ -146,7 +167,7 @@ public class UsuarioDao {
             statement.setInt(4, usuario.getId());
             statement.executeUpdate();
             statement.close();
-            logAction(usuario.getId(), "Atualizou os dados do usuário " + usuario.getId());
+            GeneralDao.logAction(usuario.getId(), "Atualizou os dados do usuário " + usuario.getId());
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -155,33 +176,34 @@ public class UsuarioDao {
     }
     public static boolean atualizarUsuario(int authId, Usuario usuario) {
         Connection conn = conectarDB();
-        String sql = "UPDATE usuario SET nome = ?, email = ?, cpf = ? WHERE id = ?";
+        String sql = "UPDATE usuario SET nome = ?, email = ?, cpf = ?, senha = ? WHERE id = ?";
         try {
             PreparedStatement statement = conn.prepareStatement(sql);
             statement.setString(1, usuario.getNome());
             statement.setString(2, usuario.getEmail());
             statement.setLong(3, usuario.getCpf());
-            statement.setInt(4, usuario.getId());
+            statement.setBytes(4, usuario.getSenha());
+            statement.setInt(5, usuario.getId());
             statement.executeUpdate();
             statement.close();
-            logAction(authId, "Atualizou os dados do usuário " + usuario.getId());
+            GeneralDao.logAction(authId, "Atualizou os dados do usuário " + usuario.getId());
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
     }
-    public static boolean atualizarSenha(int id, String senha, String senhaOld){
+    public static boolean atualizarSenha(int id, byte[] senha, byte[] senhaOld){
         Connection conn = conectarDB();
         String sql = "UPDATE usuario SET senha = ? WHERE id = ? AND senha = ?";
         try {
             PreparedStatement statement = conn.prepareStatement(sql);
-            statement.setString(1,senha);
+            statement.setBytes(1,senha);
             statement.setInt(2,id);
-            statement.setString(3,senhaOld);
+            statement.setBytes(3,senhaOld);
             statement.executeUpdate();
             statement.close();
-            logAction(id, "Alterou a senha");
+            GeneralDao.logAction(id, "Alterou a senha de usuário " + id);
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -200,7 +222,7 @@ public class UsuarioDao {
             if (result.next()){
                 count = result.getInt(1);
             }
-            statement.close();
+
             PreparedStatement statement2 = conn.prepareStatement(sql2);
             ResultSet result2 = statement2.executeQuery();
 
@@ -208,14 +230,15 @@ public class UsuarioDao {
             for(int i=0; result2.next(); i++){
                 String nome = result2.getString("nome");
                 String email = result2.getString("email");
-                String senha = result2.getString("senha");
+                byte[] senha = result2.getBytes("senha");
                 long cpf = result2.getLong("cpf");
                 int id = result2.getInt("id");
                 int autoridade = result2.getInt("auth");
-                statement2.close();
                 Usuario usuario = new Usuario(nome, email, senha, cpf, id, autoridade);
                 usuarios[i] = usuario;
             }
+            statement.close();
+            statement2.close();
             return usuarios;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -230,7 +253,7 @@ public class UsuarioDao {
             statement.setInt(1,id);
             statement.executeUpdate();
             statement.close();
-            logAction(authId, "Removeu o usuário " + id);
+            GeneralDao.logAction(authId, "Removeu o usuário " + id);
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -266,23 +289,12 @@ public class UsuarioDao {
             statement.setInt(2,id);
             statement.executeUpdate();
             statement.close();
-            logAction(authId, "Alterou a autoridade do usuário " + id + " para " + auth);
+            GeneralDao.logAction(authId, "Alterou a autoridade do usuário " + id + " para " + auth);
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
     }
-    public static void logAction(int id, String action) {
-        Connection conn = conectarDB();
-        String sql = "INSERT INTO log (id_usuario, acao) VALUES (?, ?)";
-        try {
-            PreparedStatement statement = conn.prepareStatement(sql);
-            statement.setInt(1, id);
-            statement.setString(2, action);
-            statement.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
+
 }

@@ -38,7 +38,7 @@
             <input type="email" name="email" id="email" value="<%= usuario.getEmail() %>"><br>
 
             <label for="senha">Senha:</label>
-            <input type="password" name="senha" id="senha" value="<%= usuario.getSenha() %>"><br>
+            <input type="password" name="senha" id="senha"><br>
             <button type="submit">Atualizar</button>
         </form>
     </div>

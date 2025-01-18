@@ -9,6 +9,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -24,9 +27,11 @@ public class UsuarioLoginServlet extends HttpServlet {
         String senha = request.getParameter("senha");
         long cpf = UsuarioService.extrairCpf(request.getParameter("cpf"));
         int id;
+        byte[] hash = UsuarioService.hashSenha(senha);
+
         response.setContentType("text/html");
-        if (UsuarioService.login(cpf, senha)) {
-            id = UsuarioService.getId(cpf, senha);
+        if (UsuarioService.login(cpf, hash)) {
+            id = UsuarioService.getId(cpf, hash);
             HttpSession session = request.getSession(true);
             session.setAttribute("Token", id);;
             response.sendRedirect("painelUsuario.jsp");

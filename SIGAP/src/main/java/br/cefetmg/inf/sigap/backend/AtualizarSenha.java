@@ -17,8 +17,10 @@ public class AtualizarSenha extends HttpServlet {
         String senha = request.getParameter("senhaOld");
         String novaSenha = request.getParameter("senha");
         int id = Integer.parseInt(request.getParameter("id"));
+        byte[] hash = UsuarioService.hashSenha(senha);
+        byte[] hashNovaSenha = UsuarioService.hashSenha(novaSenha);
 
-        if (UsuarioService.atualizarSenha(id, novaSenha, senha)) {
+        if (UsuarioService.atualizarSenha(id, hashNovaSenha, hash)) {
             response.sendRedirect("painelUsuario.jsp?senhaAtualizada=true");
         } else {
             response.sendRedirect("painelUsuario.jsp?senhaAtualizada=false");

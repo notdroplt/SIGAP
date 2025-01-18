@@ -7,7 +7,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class GeneralService {
-    public static void dropTable(String sql) throws Exception {
-        GeneralDao.dropTable(sql);
+    public static void dropTable(String sql, int id) throws Exception {
+        GeneralDao.dropTable(sql, id);
     }
 }

@@ -29,14 +29,14 @@ public class InitServlet extends HttpServlet {
                 "    nome VARCHAR(255) NOT NULL,\n" +
                 "    cpf BIGINT NOT NULL,\n" +
                 "    email VARCHAR(255) NOT NULL,\n" +
-                "    senha VARCHAR(255) NOT NULL,\n" +
+                "    senha bytea NOT NULL,\n" +
                 "    auth INT NOT NULL DEFAULT 0\n" +
                 ");\n";
-        String logs =
-                "CREATE TABLE IF NOT EXISTS logs (\n" +
+        String log =
+                "CREATE TABLE IF NOT EXISTS log (\n" +
                 "    id BIGINT NOT NULL PRIMARY KEY GENERATED ALWAYS AS IDENTITY,\n" +
                 "    uid BIGINT,\n" +
-                "    data DATE,\n" +
+                "    data TIMESTAMP,\n" +
                 "    acao VARCHAR(255) NOT NULL\n" +
                 ");\n";
 
@@ -66,7 +66,7 @@ public class InitServlet extends HttpServlet {
         // cria tabelas
         stmt.addBatch(item_tabela);
         stmt.addBatch(user_tabela);
-        stmt.addBatch(logs);
+        stmt.addBatch(log);
 
         stmt.executeBatch();
         System.out.println(" -- Tabelas criadas");

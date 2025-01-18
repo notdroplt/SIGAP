@@ -1,5 +1,7 @@
 package br.cefetmg.inf.sigap.backend;
 
+import br.cefetmg.inf.sigap.dao.GeneralDao;
+import br.cefetmg.inf.sigap.service.GeneralService;
 import jakarta.servlet.http.*;
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.*;
@@ -10,6 +12,8 @@ public class Logout extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession(false);
+        int id = (int) session.getAttribute("Token");
+        GeneralDao.logAction(id, "Logout from user "+id);
         if (session != null) {
             session.setAttribute("Token", 0);
             session.invalidate();

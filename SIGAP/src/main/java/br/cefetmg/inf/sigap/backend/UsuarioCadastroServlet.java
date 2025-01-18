@@ -4,6 +4,9 @@ import jakarta.servlet.http.*;
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.*;
 import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -25,12 +28,13 @@ public class UsuarioCadastroServlet extends HttpServlet {
         String nome = request.getParameter("nome");
         String email = request.getParameter("email");
         String senha = request.getParameter("senha");
+        byte[] hash = UsuarioService.hashSenha(senha);
         long cpf = UsuarioService.extrairCpf(request.getParameter("cpf"));
 
-        Usuario usuario = new Usuario(nome, email, senha, cpf);
+        Usuario usuario = new Usuario(nome, email, hash, cpf);
         int id;
         if (UsuarioService.criarUsuario(usuario)) {
-            id = UsuarioService.getId(cpf, senha);
+            id = UsuarioService.getId(cpf, hash);
             HttpSession session = request.getSession(true);
             session.setAttribute("Token", id);
             response.sendRedirect("painelUsuario.jsp");
