@@ -208,6 +208,43 @@ public class UsuarioDao {
             return null;
         }
     }
+    public static Usuario[] listarUsuarios(String query, String category){
+        Connection conn = GeneralDao.conectarDB();
+        String sql2 = "SELECT * FROM usuario WHERE " + category + " LIKE ?";
+        String sql = "SELECT COUNT(*) FROM usuario WHERE " + category + " LIKE ?";
+        try {
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setString(1, "%" + query + "%");
+            ResultSet result = statement.executeQuery();
+
+            int count = 0;
+            if (result.next()){
+                count = result.getInt(1);
+            }
+
+            PreparedStatement statement2 = conn.prepareStatement(sql2);
+            statement2.setString(1, "%" + query + "%");
+            ResultSet result2 = statement2.executeQuery();
+
+            Usuario[] usuarios = new Usuario[count];
+            for(int i=0; result2.next(); i++){
+                String nome = result2.getString("nome");
+                String email = result2.getString("email");
+                byte[] senha = result2.getBytes("senha");
+                long cpf = result2.getLong("cpf");
+                int id = result2.getInt("id");
+                int autoridade = result2.getInt("auth");
+                Usuario usuario = new Usuario(nome, email, senha, cpf, id, autoridade);
+                usuarios[i] = usuario;
+            }
+            statement.close();
+            statement2.close();
+            return usuarios;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
     public static boolean removerUsuario(int id, int authId){
         Connection conn = GeneralDao.conectarDB();
         String sql = "DELETE FROM usuario WHERE id = ?";

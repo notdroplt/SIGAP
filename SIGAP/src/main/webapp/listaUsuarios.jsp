@@ -18,26 +18,28 @@
     </header>
 
     <main>
-        <h1>Usuarios Cadastrados</h1>
-        <table>
-            <tr>
-                <th>Nome</th>
-                <th>Email</th>
-                <th>CPF</th>
-                <th>Autoridade</th>
-                <th>Editar</th>
-            </tr>
-            <% for(Usuario usuario : UsuarioService.listarUsuarios()) { %>
-                <tr class="sector">
-                    <td><%= usuario.getNome() %></td>
-                    <td><%= usuario.getEmail() %></td>
-                    <td><%= usuario.getCpf() %></td>
-                    <td><%= usuario.getAutoridade()%></td>
-                    <td><a href="editarUsuario.jsp?id=<%= usuario.getId() %>">Editar</a></td>
-                </tr>
-            <% } %>
-        </table>
+        <div class="sector">
+            <label>
+                <h1>Buscar Usuário:</h1>
+                <input id="searchInput"type="text">
+            </label>
+            <label>
+                <button id="searchButton">Buscar</button>
+            </label><br>
+            <label>
+                <input type="radio" name="category" value="nome" checked class="category">Nome
+            </label>
+            <label>
+                <input type="radio" name="category" value="email" class="category">Email
+            </label>
+            <label>
+                <input type="radio" name="category" value="cpf" class="category">CPF
+            </label>
+            <h1>Usuarios Cadastrados</h1>
+        <table style="margin: 0px auto; border-collapse: collapse;"></table>
+        </div>
     </main>
 </div>
+<script src="listaUsuarios.js"></script>
 </body>
 </html>
