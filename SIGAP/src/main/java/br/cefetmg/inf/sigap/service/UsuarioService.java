@@ -37,6 +37,7 @@ public class UsuarioService {
         return UsuarioDao.getUserData(id);
     }
     public static Usuario[] listarUsuarios(){return UsuarioDao.listarUsuarios();}
+    public static Usuario[] listarUsuarios(String query, String category){return UsuarioDao.listarUsuarios(query, category);}
     public static boolean removerUsuario(int id, int authId){return UsuarioDao.removerUsuario(id, authId);}
     public static boolean trocarAutoridade(int id, int auth, int authId){return UsuarioDao.trocarAutoridade(id, auth, authId);}
     public static boolean verificarAutoridade(int id, int auth){return UsuarioDao.verificarAutoridade(id, auth);}
@@ -77,5 +78,34 @@ public class UsuarioService {
         out.println(header);
         out.println(content);
         out.println(end);
+    }
+    public static boolean validarCpf(long cpf){
+
+        String cpfString = String.valueOf(cpf);
+        if(cpfString.length() != 11)
+            return false;
+
+        int[] cpfArray = new int[11];
+        for(int i = 0; i < 11; i++)
+            cpfArray[i] = Integer.parseInt(String.valueOf(cpfString.charAt(i)));
+
+        int sum = 0;
+        for(int i = 1; i <= 9; i++)
+            sum += cpfArray[i-1] * i;
+
+        int remainder = sum % 11;
+        remainder = remainder==10 ? 0 : remainder;
+        if (remainder != cpfArray[9])
+            return false;
+
+        sum = 0;
+        for(int i = 0; i <= 9; i++)
+            sum += cpfArray[i] * i;
+
+        remainder = sum % 11;
+        remainder = remainder==10 ? 0 : remainder;
+        if (remainder != cpfArray[10])
+            return false;
+        return true;
     }
 }

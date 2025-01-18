@@ -26,6 +26,12 @@ public class UsuarioCadastroServlet extends HttpServlet {
         byte[] hash = UsuarioService.hashSenha(senha);
         long cpf = UsuarioService.extrairCpf(request.getParameter("cpf"));
 
+        if(!UsuarioService.validarCpf(cpf)) {
+            UsuarioService.printPage(out, "<h1>CPF inválido!</h1>");
+            out.close();
+            return;
+        }
+
         Usuario usuario = new Usuario(nome, email, hash, cpf);
         int id;
         if (UsuarioService.criarUsuario(usuario)) {
