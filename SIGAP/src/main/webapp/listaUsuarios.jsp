@@ -1,5 +1,6 @@
 <%@ page import="br.cefetmg.inf.sigap.dto.Usuario" %>
 <%@ page import="br.cefetmg.inf.sigap.service.UsuarioService" %>
+<%@ page import="java.util.Objects" %>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
@@ -18,6 +19,8 @@
     </header>
 
     <main>
+        <% if(!Objects.equals(request.getParameter("autorizado"), "true"))
+            response.sendRedirect("home.jsp");%>
         <div class="sector">
             <label>
                 <h1>Buscar Usuário:</h1>

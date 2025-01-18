@@ -17,7 +17,7 @@ public class ListaUsuarios extends HttpServlet {
         if (id <= 1)
             UsuarioService.printPage(out, "Você não tem permissão para acessar essa página.");
         else
-            response.sendRedirect("listaUsuarios.jsp");
+            response.sendRedirect("listaUsuarios.jsp?autorizado=true");
     }
 
     @Override
