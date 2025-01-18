@@ -22,7 +22,7 @@ Casos de uso:
 Subfunções:
 - [x] Fornecimento de dados
 - [x] Cadastro de usuários
-- [ ] Controle de usuários comuns e funcionários dos achados e pedidos
+- [x] Controle de usuários comuns e funcionários dos achados e pedidos
 
 Casos de uso:
 - [x] Cadastro de usuários de funcionários e alunos
