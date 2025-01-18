@@ -27,6 +27,16 @@ public class Item{
     private String nome;
 
     /**
+     * Cor do item perdido
+     */
+    private int cor;
+
+    /**
+     * Marca do item perdido
+     */
+    private String marca;
+
+    /**
      * Data em que o item foi perdido
      */
     private LocalDate dataPerdido;
@@ -67,7 +77,7 @@ public class Item{
     private String foto;
 
     /**
-     * Status do item que foi perdido
+     * Condição do item que foi perdido
      */
     private StatusItem status;
 
@@ -84,10 +94,12 @@ public class Item{
      * @param lugarPerdido lugar em que foi perdido
      * @param foto caminho da foto do item
      */
-    public Item(Long uid, String nome, LocalDate dataPerdido, LocalDate dataAchado, LocalDate dataDevolvido, String local, String descricao,
+    public Item(Long uid, String nome, Integer cor, String marca, LocalDate dataPerdido, LocalDate dataAchado, LocalDate dataDevolvido, String local, String descricao,
                 String lugarAchado, String lugarPerdido, String foto, StatusItem status) {
         this.uid = uid;
         this.nome = nome;
+        this.cor = cor;
+        this.marca = marca;
         this.dataPerdido = dataPerdido;
         this.dataAchado = dataAchado;
         this.dataDevolvido = dataDevolvido;
@@ -197,5 +209,21 @@ public class Item{
 
     public void setUid(Long uid) {
         this.uid = uid;
+    }
+
+    public int getCor() {
+        return cor;
+    }
+
+    public void setCor(int cor) {
+        this.cor = cor;
+    }
+
+    public String getMarca() {
+        return marca;
+    }
+
+    public void setMarca(String marca) {
+        this.marca = marca;
     }
 }
