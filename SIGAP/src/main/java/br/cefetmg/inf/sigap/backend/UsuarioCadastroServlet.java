@@ -24,7 +24,14 @@ public class UsuarioCadastroServlet extends HttpServlet {
         String email = request.getParameter("email");
         String senha = request.getParameter("senha");
         byte[] hash = UsuarioService.hashSenha(senha);
-        long cpf = UsuarioService.extrairCpf(request.getParameter("cpf"));
+        long cpf;
+        try{
+            cpf = UsuarioService.extrairCpf(request.getParameter("cpf"));
+        } catch (NumberFormatException e) {
+            UsuarioService.printPage(out, "<h1>CPF inválido!</h1>");
+            out.close();
+            return;
+        }
 
         if(!UsuarioService.validarCpf(cpf)) {
             UsuarioService.printPage(out, "<h1>CPF inválido!</h1>");

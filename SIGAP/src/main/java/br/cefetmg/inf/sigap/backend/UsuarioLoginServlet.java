@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 
 @WebServlet(urlPatterns = "/LoginServlet")
 public class UsuarioLoginServlet extends HttpServlet {
@@ -20,7 +21,15 @@ public class UsuarioLoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String senha = request.getParameter("senha");
-        long cpf = UsuarioService.extrairCpf(request.getParameter("cpf"));
+        PrintWriter out = response.getWriter();
+        long cpf;
+        try{
+            cpf = UsuarioService.extrairCpf(request.getParameter("cpf"));
+        } catch (NumberFormatException e) {
+            UsuarioService.printPage(out, "<h1>CPF inválido!</h1>");
+            out.close();
+            return;
+        }
         int id;
         byte[] hash = UsuarioService.hashSenha(senha);
 

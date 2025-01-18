@@ -11,7 +11,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class UsuarioService {
-    public static long extrairCpf(String cpfRawString){
+    public static long extrairCpf(String cpfRawString) throws NumberFormatException{
+        if(!cpfRawString.matches(".*\\d.*"))
+            throw new NumberFormatException("CPF inválido");
         StringBuilder cpfString = new StringBuilder();
         Pattern pattern = Pattern.compile("\\d+");
         Matcher matcher = pattern.matcher(cpfRawString);
