@@ -32,6 +32,13 @@ public class InitServlet extends HttpServlet {
                 "    senha VARCHAR(255) NOT NULL,\n" +
                 "    auth INT NOT NULL DEFAULT 0\n" +
                 ");\n";
+        String logs =
+                "CREATE TABLE IF NOT EXISTS logs (\n" +
+                "    id BIGINT NOT NULL PRIMARY KEY GENERATED ALWAYS AS IDENTITY,\n" +
+                "    uid BIGINT,\n" +
+                "    data DATE,\n" +
+                "    acao VARCHAR(255) NOT NULL\n" +
+                ");\n";
 
         String[] extensions = new String[] {
                 "CREATE EXTENSION IF NOT EXISTS pg_trgm;",
@@ -59,6 +66,7 @@ public class InitServlet extends HttpServlet {
         // cria tabelas
         stmt.addBatch(item_tabela);
         stmt.addBatch(user_tabela);
+        stmt.addBatch(logs);
 
         stmt.executeBatch();
         System.out.println(" -- Tabelas criadas");

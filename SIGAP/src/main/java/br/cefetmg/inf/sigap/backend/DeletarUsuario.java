@@ -24,22 +24,18 @@ public class DeletarUsuario extends HttpServlet {
         Usuario user = UsuarioService.getUserData(id);
         Usuario userAuth = UsuarioService.getUserData(authId);
         if(userAuth.getAutoridade() == 0){
-            out.println("Você não tem permissão para remover usuários!");
-            out.println("<a href='listaUsuarios.jsp'>Voltar</a>");
+            UsuarioService.printPage(out,"<p>Você não tem permissão para remover usuários!</p><br><a href='listaUsuarios.jsp'>Voltar</a>");
             return;
         }
         if(userAuth.getAutoridade() <= user.getAutoridade()){
-            out.println("Você não tem permissão para remover usuários com autoridade igual ou maior que a sua!");
-            out.println("<a href='listaUsuarios.jsp'>Voltar</a>");
+            UsuarioService.printPage(out,"<p>Você não tem permissão para remover usuários com autoridade igual ou maior que a sua!</p><br><a href='listaUsuarios.jsp'>Voltar</a>");
             return;
         }
         if(UsuarioService.removerUsuario(id, authId)){
-            out.println("Usuário removido com sucesso!");
-            out.println("<a href='listaUsuarios.jsp'>Voltar</a>");
+            UsuarioService.printPage(out,"Usuário removido com sucesso!</p><br><a href='listaUsuarios.jsp'>Voltar</a>");
         }
         else{
-            out.println("Erro ao remover usuário!");
-            out.println("<a href='listaUsuarios.jsp'>Voltar</a>");
+            UsuarioService.printPage(out, "<p>Erro ao remover usuário!</p><br><a href='listaUsuarios.jsp'>Voltar</a>");
         }
     }
 }

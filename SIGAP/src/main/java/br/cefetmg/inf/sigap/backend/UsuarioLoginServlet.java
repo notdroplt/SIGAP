@@ -25,18 +25,14 @@ public class UsuarioLoginServlet extends HttpServlet {
         long cpf = UsuarioService.extrairCpf(request.getParameter("cpf"));
         int id;
         response.setContentType("text/html");
-        response.getWriter().println("<html><body>");
         if (UsuarioService.login(cpf, senha)) {
             id = UsuarioService.getId(cpf, senha);
             HttpSession session = request.getSession(true);
-            session.setAttribute("Token", id);
-            response.getWriter().println("<h1>Login successful!</h1>");
-            response.getWriter().println("<p>Token: " + id + "</p>");
+            session.setAttribute("Token", id);;
             response.sendRedirect("painelUsuario.jsp");
         } else {
-            response.getWriter().println("<h1>Login failed!</h1>");
+            UsuarioService.printPage(response.getWriter(), "<h1>Login failed!</h1>");
         }
-        response.getWriter().println("</body></html>");
 
     }
 }

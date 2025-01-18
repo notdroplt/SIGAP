@@ -34,16 +34,13 @@ public class EditarUsuario extends HttpServlet {
         if(UsuarioDao.verificarAutoridade(authId, oldUsuario.getAutoridade())) {
             usuario.setAutoridade(oldUsuario.getAutoridade());
         } else {
-            out.println("Você não tem permissão para alterar esse usuário");
-            out.println("<a href='listaUsuarios.jsp'>Voltar</a>");
+            UsuarioService.printPage(out, "<p>Você não tem permissão para alterar esse usuário</p><br><a href='listaUsuarios.jsp'>Voltar</a>");
             return;
         }
         if (UsuarioService.atualizarUsuario(id, usuario)) {
-            out.println("Usuario atualizado com sucesso");
-            out.println("<a href='listaUsuarios.jsp'>Voltar</a>");
+            UsuarioService.printPage(out, "<p>Usuario atualizado com sucesso</p><br><a href='listaUsuarios.jsp'>Voltar</a>");
         } else {
-            out.println("Erro ao atualizar usuario");
-            out.println("<a href='listaUsuarios.jsp'>Voltar</a>");
+            UsuarioService.printPage(out,"<p>Erro ao atualizar usuario</p><br><a href='listaUsuarios.jsp'>Voltar</a>");
         }
     }
 }

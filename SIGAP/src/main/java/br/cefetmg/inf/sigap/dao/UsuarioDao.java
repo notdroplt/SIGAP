@@ -76,6 +76,7 @@ public class UsuarioDao {
             statement.setString(4,email);
             statement.executeUpdate();
             statement.close();
+            logAction(getId(cpf, senha), "Criou o usuário " + getId(cpf, senha));
             System.out.println("Usuário criado com sucesso!");
             System.out.println("---END CREATE USER---");
             return true;
@@ -93,9 +94,11 @@ public class UsuarioDao {
             statement.setLong(1,cpf);
             statement.setString(2,senha);
             ResultSet result = statement.executeQuery();
+            statement.close();
             if (result.next()){
                 System.out.println("Usuário logado com sucesso!");
                 System.out.println("Id: " + result.getInt("id"));
+                logAction(result.getInt("id"), "Logou no sistema");
                 System.out.println("---END LOGIN---");
                 return true;
             }
@@ -142,6 +145,8 @@ public class UsuarioDao {
             statement.setLong(3, usuario.getCpf());
             statement.setInt(4, usuario.getId());
             statement.executeUpdate();
+            statement.close();
+            logAction(usuario.getId(), "Atualizou os dados do usuário " + usuario.getId());
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -158,6 +163,8 @@ public class UsuarioDao {
             statement.setLong(3, usuario.getCpf());
             statement.setInt(4, usuario.getId());
             statement.executeUpdate();
+            statement.close();
+            logAction(authId, "Atualizou os dados do usuário " + usuario.getId());
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -173,6 +180,8 @@ public class UsuarioDao {
             statement.setInt(2,id);
             statement.setString(3,senhaOld);
             statement.executeUpdate();
+            statement.close();
+            logAction(id, "Alterou a senha");
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -191,7 +200,7 @@ public class UsuarioDao {
             if (result.next()){
                 count = result.getInt(1);
             }
-
+            statement.close();
             PreparedStatement statement2 = conn.prepareStatement(sql2);
             ResultSet result2 = statement2.executeQuery();
 
@@ -203,6 +212,7 @@ public class UsuarioDao {
                 long cpf = result2.getLong("cpf");
                 int id = result2.getInt("id");
                 int autoridade = result2.getInt("auth");
+                statement2.close();
                 Usuario usuario = new Usuario(nome, email, senha, cpf, id, autoridade);
                 usuarios[i] = usuario;
             }
@@ -219,6 +229,8 @@ public class UsuarioDao {
             PreparedStatement statement = conn.prepareStatement(sql);
             statement.setInt(1,id);
             statement.executeUpdate();
+            statement.close();
+            logAction(authId, "Removeu o usuário " + id);
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -253,10 +265,24 @@ public class UsuarioDao {
             statement.setInt(1,auth);
             statement.setInt(2,id);
             statement.executeUpdate();
+            statement.close();
+            logAction(authId, "Alterou a autoridade do usuário " + id + " para " + auth);
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
+        }
+    }
+    public static void logAction(int id, String action) {
+        Connection conn = conectarDB();
+        String sql = "INSERT INTO log (id_usuario, acao) VALUES (?, ?)";
+        try {
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setInt(1, id);
+            statement.setString(2, action);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 }

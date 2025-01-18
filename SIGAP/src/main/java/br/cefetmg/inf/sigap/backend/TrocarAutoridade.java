@@ -22,12 +22,10 @@ public class TrocarAutoridade extends HttpServlet {
         int authId = Integer.parseInt(request.getParameter("authId"));
 
         if(UsuarioService.trocarAutoridade(id, auth, authId)){
-            response.getWriter().println("Autoridade trocada com sucesso!");
-            response.getWriter().println("<a href='index.jsp'>Voltar</a>");
+            UsuarioService.printPage(response.getWriter(), "<p>Autoridade trocada com sucesso!</p><br><a href='listaUsuarios.jsp'>Voltar</a>");
         }
         else {
-            response.getWriter().println("Erro ao trocar autoridade!");
-            response.getWriter().println("<a href='listaUsuarios.jsp'>Voltar</a>");
+            UsuarioService.printPage(response.getWriter(), "<p>Erro ao trocar autoridade!</p><br><a href='listaUsuarios.jsp'>Voltar</a>");
         }
     }
 }
