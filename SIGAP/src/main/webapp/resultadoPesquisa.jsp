@@ -57,10 +57,9 @@
         }
       else {
       %>
-      <div style="text-align: center;">Nenhum item com este nome encontrado.</div>
-      <div style="text-align: center;">
-        <button type="button" style="margin-top: 1em;"
-                onclick="window.location.reload();">Tentar Novamente</button>
+      <div class="resultadoNulo">
+        Nenhum item com este nome encontrado.
+        <button type="button" onclick="window.location.reload();">Tentar Novamente</button>
       </div>
       <%
         }
