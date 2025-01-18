@@ -8,12 +8,23 @@ public class Usuario {
     private long cpf;
     private final int id;
 
+    private int autoridade;
+
     public Usuario(String nome, String email, String senha, long cpf) {
         this.nome = nome;
         this.email = email;
         this.senha = senha;
         this.cpf = cpf;
         this.id = 0;
+    }
+
+    public Usuario(String nome, String email, String senha, long cpf, int id, int autoridade) {
+        this.nome = nome;
+        this.email = email;
+        this.senha = senha;
+        this.cpf = cpf;
+        this.autoridade = autoridade;
+        this.id = id;
     }
 
     public Usuario(String nome, String email, String senha, long cpf, int id) {
@@ -55,7 +66,16 @@ public class Usuario {
     public void setCpf(long cpf) {
         this.cpf = cpf;
     }
+
     public int getId() {
         return id;
+    }
+
+    public int getAutoridade() {
+        return autoridade;
+    }
+
+    public void setAutoridade(int autoridade) {
+        this.autoridade = autoridade;
     }
 }

@@ -53,6 +53,11 @@
             System.out.println("Erro ao enviar o e-mail: " + e.getMessage());
             response.sendRedirect("CadastroServlet");
         }
+        catch (Exception e) {
+            System.out.println("Erro ao enviar o e-mail: " + e.getMessage());
+            e.printStackTrace();
+            response.sendRedirect("CadastroServlet");
+        }
         
     %>
 

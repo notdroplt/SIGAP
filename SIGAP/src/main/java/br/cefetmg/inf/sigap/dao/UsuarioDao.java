@@ -121,8 +121,8 @@ public class UsuarioDao {
                 String email = result.getString("email");
                 String senha = result.getString("senha");
                 long cpf = result.getLong("cpf");
-                Usuario usuario = new Usuario(nome, email, senha, cpf);
-                return usuario;
+                int autoridade = result.getInt("auth");
+                return new Usuario(nome, email, senha, cpf, id, autoridade);
             }
             else {
                 return null;
@@ -202,7 +202,8 @@ public class UsuarioDao {
                 String senha = result2.getString("senha");
                 long cpf = result2.getLong("cpf");
                 int id = result2.getInt("id");
-                Usuario usuario = new Usuario(nome, email, senha, cpf, id);
+                int autoridade = result2.getInt("auth");
+                Usuario usuario = new Usuario(nome, email, senha, cpf, id, autoridade);
                 usuarios[i] = usuario;
             }
             return usuarios;
@@ -217,6 +218,40 @@ public class UsuarioDao {
         try {
             PreparedStatement statement = conn.prepareStatement(sql);
             statement.setInt(1,id);
+            statement.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    public static boolean verificarAutoridade(int id, int auth){
+        Connection conn = conectarDB();
+        String sql = "SELECT * FROM usuario WHERE id = ?";
+        try {
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setInt(1,id);
+            ResultSet result = statement.executeQuery();
+            if (!result.next())
+                return false;
+            if (result.getInt("auth") >= auth)
+                return true;
+            else
+                return false;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    public static boolean trocarAutoridade(int id, int auth, int authId){
+        if(!verificarAutoridade(authId, auth))
+            return false;
+        Connection conn = conectarDB();
+        String sql = "UPDATE usuario SET auth = ? WHERE id = ?";
+        try {
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setInt(1,auth);
+            statement.setInt(2,id);
             statement.executeUpdate();
             return true;
         } catch (SQLException e) {

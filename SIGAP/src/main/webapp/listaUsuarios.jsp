@@ -23,19 +23,17 @@
             <tr>
                 <th>Nome</th>
                 <th>Email</th>
-                <th>Telefone</th>
-                <th>Matricula</th>
-                <th>Curso</th>
+                <th>CPF</th>
+                <th>Autoridade</th>
                 <th>Editar</th>
-                <th>Excluir</th>
             </tr>
             <% for(Usuario usuario : UsuarioService.listarUsuarios()) { %>
                 <tr class="sector">
                     <td><%= usuario.getNome() %></td>
                     <td><%= usuario.getEmail() %></td>
                     <td><%= usuario.getCpf() %></td>
+                    <td><%= usuario.getAutoridade()%></td>
                     <td><a href="editarUsuario.jsp?id=<%= usuario.getId() %>">Editar</a></td>
-                    <td><a href="excluirUsuario.jsp?id=<%= usuario.getId() %>">Excluir</a></td>
                 </tr>
             <% } %>
         </table>

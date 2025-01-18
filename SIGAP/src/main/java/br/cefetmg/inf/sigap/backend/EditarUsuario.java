@@ -1,5 +1,6 @@
 package br.cefetmg.inf.sigap.backend;
 
+import br.cefetmg.inf.sigap.dao.UsuarioDao;
 import br.cefetmg.inf.sigap.dto.Usuario;
 import br.cefetmg.inf.sigap.service.UsuarioService;
 import jakarta.servlet.http.*;
@@ -29,6 +30,14 @@ public class EditarUsuario extends HttpServlet {
         long cpf = UsuarioService.extrairCpf(request.getParameter("cpf"));
 
         Usuario usuario = new Usuario(nome, email, senha, cpf, id);
+        Usuario oldUsuario = UsuarioService.getUserData(id);
+        if(UsuarioDao.verificarAutoridade(authId, oldUsuario.getAutoridade())) {
+            usuario.setAutoridade(oldUsuario.getAutoridade());
+        } else {
+            out.println("Você não tem permissão para alterar esse usuário");
+            out.println("<a href='listaUsuarios.jsp'>Voltar</a>");
+            return;
+        }
         if (UsuarioService.atualizarUsuario(id, usuario)) {
             out.println("Usuario atualizado com sucesso");
             out.println("<a href='listaUsuarios.jsp'>Voltar</a>");

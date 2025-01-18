@@ -31,8 +31,8 @@ public class UsuarioService {
     }
     public static Usuario[] listarUsuarios(){return UsuarioDao.listarUsuarios();}
     public static boolean removerUsuario(int id, int authId){return UsuarioDao.removerUsuario(id, authId);}
-    public static boolean trocarAutoridade(int id, int auth, int idAuth){return false;}
-    public static boolean verificarAutoridade(int id, int auth){return false;}
+    public static boolean trocarAutoridade(int id, int auth, int authId){return UsuarioDao.trocarAutoridade(id, auth, authId);}
+    public static boolean verificarAutoridade(int id, int auth){return UsuarioDao.verificarAutoridade(id, auth);}
     public static boolean atualizarUsuario(Usuario usuario){return UsuarioDao.atualizarUsuario(usuario);}
     public static boolean atualizarSenha(int id, String senha, String senhaOld){return UsuarioDao.atualizarSenha(id, senha, senhaOld);}
     public static boolean atualizarUsuario(int authId, Usuario usuario){return UsuarioDao.atualizarUsuario(authId, usuario );}

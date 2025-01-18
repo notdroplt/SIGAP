@@ -17,32 +17,54 @@
             <span>Sistema Integrado de Gestão de Achados e Perdidos</span>
         </div>
     </header>
-<h1>Editar Usuario</h1>
-<div class="sector">
-    <h2>Atualizar Dados</h2>
-    <%  int id = Integer.parseInt(request.getParameter("id"));
-        int authId = (int) session.getAttribute("Token");
-        Usuario usuario = UsuarioService.getUserData(id);%>
-    <form action="EditarUsuario" method="post">
+    <h1>Editar Usuario</h1>
+    <div class="sector">
+        <h2>Atualizar Dados</h2>
+        <% int id = Integer.parseInt(request.getParameter("id"));
+            int authId = (int) session.getAttribute("Token");
+            Usuario usuario = UsuarioService.getUserData(id);%>
+        <form action="EditarUsuario" method="post">
 
-        <input type="hidden" name="id" value="<%= id %>">
-        <input type="hidden" name="authId" value="<%= authId %>">
+            <input type="hidden" name="id" value="<%= id %>">
+            <input type="hidden" name="authId" value="<%= authId %>">
 
-        <label for="nome">Nome:</label>
-        <input type="text" name="nome" id="nome" value="<%= usuario.getNome() %>"><br>
+            <label for="nome">Nome:</label>
+            <input type="text" name="nome" id="nome" value="<%= usuario.getNome() %>"><br>
 
-        <label for="cpf">CPF:</label>
-        <input type="text" name="cpf" id="cpf" value="<%= usuario.getCpf() %>"><br>
+            <label for="cpf">CPF:</label>
+            <input type="text" name="cpf" id="cpf" value="<%= usuario.getCpf() %>"><br>
 
-        <label for="email">Email:</label>
-        <input type="email" name="email" id="email" value="<%= usuario.getEmail() %>"><br>
+            <label for="email">Email:</label>
+            <input type="email" name="email" id="email" value="<%= usuario.getEmail() %>"><br>
 
-        <label for="senha">Senha:</label>
-        <input type="password" name="senha" id="senha" value="<%= usuario.getSenha() %>"><br>
-        <button type="submit">Atualizar</button>
-    </form>
+            <label for="senha">Senha:</label>
+            <input type="password" name="senha" id="senha" value="<%= usuario.getSenha() %>"><br>
+            <button type="submit">Atualizar</button>
+        </form>
+    </div>
+    <div class="sector">
+        <h1>Trocar Autoridade</h1>
+        <h2>Você so pode elevar pessoas com autoridade menor que a sua, e demover pessoas com autoridade menor</h2>
+        <form action="TrocarAutoridade" method="post">
+            <input type="hidden" name="id" value="<%= id %>">
+            <input type="hidden" name="authId" value="<%= authId %>">
+            <label for="auth">Autoridade:</label>
+            <input type="number" name="auth" id="auth" value="<%= usuario.getAutoridade() %>"><br>
+            <button type="submit">Trocar</button>
+        </form>
+    </div>
+    <div class="sector">
+        <h2>Excluir Conta</h2>
+        <form action="DeletarUsuario" method="post">
+            <input type="hidden" name="id" value="<%= id %>">
+            <input type="hidden" name="authId" value="<%= authId %>">
+            <button type="submit">Excluir</button>
+        </form>
+    </div>
+    <div class="sector">
+        <h2>Retornar</h2>
+        <a href="listaUsuarios.jsp">Voltar</a>
+    </div>
 </div>
-</div>
-
 </body>
 </html>
