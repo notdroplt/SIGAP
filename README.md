@@ -26,7 +26,7 @@ Subfunções:
 
 Casos de uso:
 - [x] Cadastro de usuários de funcionários e alunos
-- [ ] Controle de usuários dentro do sistema
+- [x] Controle de usuários dentro do sistema
 
 ## Função 3: Pesquisa de itens
 
