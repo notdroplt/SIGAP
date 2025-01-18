@@ -1,7 +1,6 @@
 package br.cefetmg.inf.sigap.backend;
 
 import br.cefetmg.inf.sigap.service.GeneralService;
-import br.cefetmg.inf.sigap.service.UsuarioService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -32,9 +31,8 @@ public class DropTable extends HttpServlet {
             out.close();
             return;
         }
-        String sql = "DROP TABLE " + table;
         try {
-            GeneralService.dropTable(sql, id);
+            GeneralService.dropTable(table, id);
             out.println("Tabela " + table + " deletada com sucesso");
         } catch (Exception e) {
             out.println("Erro ao deletar tabela " + table);

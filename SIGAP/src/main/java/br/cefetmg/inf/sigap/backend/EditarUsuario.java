@@ -6,14 +6,7 @@ import br.cefetmg.inf.sigap.service.UsuarioService;
 import jakarta.servlet.http.*;
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.*;
-
-import javax.swing.*;
 import java.io.*;
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @WebServlet(urlPatterns = "/EditarUsuario")
 public class EditarUsuario extends HttpServlet {
@@ -34,7 +27,7 @@ public class EditarUsuario extends HttpServlet {
         long cpf = UsuarioService.extrairCpf(request.getParameter("cpf"));
         byte[] hash = UsuarioService.hashSenha(senha);
         Usuario oldUsuario = UsuarioService.getUserData(id);
-        Usuario usuario = null;
+        Usuario usuario;
         if(senha != null){
             usuario = new Usuario(nome, email, hash, cpf, id);
         }

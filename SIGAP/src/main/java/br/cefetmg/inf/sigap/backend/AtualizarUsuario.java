@@ -5,8 +5,6 @@ import jakarta.servlet.http.*;
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.*;
 import java.io.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @WebServlet(urlPatterns = "/AtualizarUsuario")
 public class AtualizarUsuario extends HttpServlet {
@@ -18,7 +16,6 @@ public class AtualizarUsuario extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html");
-        PrintWriter out = response.getWriter();
         String nome = request.getParameter("nome");
         String email = request.getParameter("email");
         int id = Integer.parseInt(request.getParameter("id"));

@@ -1,44 +1,13 @@
 package br.cefetmg.inf.sigap.dao;
 
-import br.cefetmg.inf.sigap.backend.InitServlet;
 import br.cefetmg.inf.sigap.dto.Usuario;
 
 import java.sql.*;
-import java.util.Random;;
 
 public class UsuarioDao {
-    private static Connection conectarDB(){
-        String driver = "org.postgresql.Driver";
-        String protocol = "jdbc:postgresql://db:5432/sigap";
-        String username = "sigap";
-        String password = "sigap";
-
-        Connection conn = null;
-
-        try {
-            Class.forName(driver).newInstance();
-        }
-        catch (ClassNotFoundException e){
-            e.printStackTrace();
-        }
-        catch (InstantiationException e){
-            e.printStackTrace();
-        }
-        catch (IllegalAccessException e){
-            e.printStackTrace();
-        }
-
-        try {
-            conn = DriverManager.getConnection(protocol, username, password);
-            conn.setAutoCommit(true);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return conn;
-    }
 
     public static int getId(long cpf, byte[] senha){
-        Connection conn = conectarDB();
+        Connection conn = GeneralDao.conectarDB();
         String sql = "SELECT id FROM usuario WHERE cpf = ? AND senha =?";
         try {
             PreparedStatement statement = conn.prepareStatement(sql);
@@ -58,8 +27,7 @@ public class UsuarioDao {
     }
     public static boolean adicionarUsuario(Usuario usuario){
         System.out.println("---START CREATE USER---");
-        Connection conn = conectarDB();
-        Random rand = new Random();
+        Connection conn = GeneralDao.conectarDB();
         long cpf = usuario.getCpf();
         byte[] senha = usuario.getSenha();
         String nome = usuario.getNome();
@@ -87,7 +55,7 @@ public class UsuarioDao {
     }
     public static boolean VerificarUsuario(long cpf, byte[] senha){
         System.out.println("---START LOGIN---");
-        Connection conn = conectarDB();
+        Connection conn = GeneralDao.conectarDB();
         String sql = "SELECT * FROM usuario WHERE cpf = ? AND senha = ?";
         try {
             PreparedStatement statement = conn.prepareStatement(sql);
@@ -114,7 +82,7 @@ public class UsuarioDao {
         }
     }
     public static boolean VerificarUsuario(int id, byte[] senha){
-        Connection conn = conectarDB();
+        Connection conn = GeneralDao.conectarDB();
         String sql = "SELECT * FROM usuario WHERE id = ? AND senha = ?";
         try {
             PreparedStatement statement = conn.prepareStatement(sql);
@@ -122,19 +90,14 @@ public class UsuarioDao {
             statement.setBytes(2,senha);
             ResultSet result = statement.executeQuery();
             statement.close();
-            if (result.next()){
-                return true;
-            }
-            else {
-                return false;
-            }
+            return result.next();
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
     }
     public static Usuario getUserData(int id){
-        Connection conn = conectarDB();
+        Connection conn = GeneralDao.conectarDB();
         String sql = "SELECT * FROM usuario WHERE id = ?";
         try {
             PreparedStatement statement = conn.prepareStatement(sql);
@@ -157,7 +120,7 @@ public class UsuarioDao {
         }
     }
     public static boolean atualizarUsuario(Usuario usuario) {
-        Connection conn = conectarDB();
+        Connection conn = GeneralDao.conectarDB();
         String sql = "UPDATE usuario SET nome = ?, email = ?, cpf = ? WHERE id = ?";
         try {
             PreparedStatement statement = conn.prepareStatement(sql);
@@ -175,7 +138,7 @@ public class UsuarioDao {
         }
     }
     public static boolean atualizarUsuario(int authId, Usuario usuario) {
-        Connection conn = conectarDB();
+        Connection conn = GeneralDao.conectarDB();
         String sql = "UPDATE usuario SET nome = ?, email = ?, cpf = ?, senha = ? WHERE id = ?";
         try {
             PreparedStatement statement = conn.prepareStatement(sql);
@@ -194,7 +157,7 @@ public class UsuarioDao {
         }
     }
     public static boolean atualizarSenha(int id, byte[] senha, byte[] senhaOld){
-        Connection conn = conectarDB();
+        Connection conn = GeneralDao.conectarDB();
         String sql = "UPDATE usuario SET senha = ? WHERE id = ? AND senha = ?";
         try {
             PreparedStatement statement = conn.prepareStatement(sql);
@@ -211,7 +174,7 @@ public class UsuarioDao {
         }
     }
     public static Usuario[] listarUsuarios(){
-        Connection conn = conectarDB();
+        Connection conn = GeneralDao.conectarDB();
         String sql2 = "SELECT * FROM usuario";
         String sql = "SELECT COUNT(*) FROM usuario";
         try {
@@ -246,7 +209,7 @@ public class UsuarioDao {
         }
     }
     public static boolean removerUsuario(int id, int authId){
-        Connection conn = conectarDB();
+        Connection conn = GeneralDao.conectarDB();
         String sql = "DELETE FROM usuario WHERE id = ?";
         try {
             PreparedStatement statement = conn.prepareStatement(sql);
@@ -261,7 +224,7 @@ public class UsuarioDao {
         }
     }
     public static boolean verificarAutoridade(int id, int auth){
-        Connection conn = conectarDB();
+        Connection conn = GeneralDao.conectarDB();
         String sql = "SELECT * FROM usuario WHERE id = ?";
         try {
             PreparedStatement statement = conn.prepareStatement(sql);
@@ -269,10 +232,7 @@ public class UsuarioDao {
             ResultSet result = statement.executeQuery();
             if (!result.next())
                 return false;
-            if (result.getInt("auth") >= auth)
-                return true;
-            else
-                return false;
+            return result.getInt("auth") >= auth;
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
@@ -281,7 +241,7 @@ public class UsuarioDao {
     public static boolean trocarAutoridade(int id, int auth, int authId){
         if(!verificarAutoridade(authId, auth))
             return false;
-        Connection conn = conectarDB();
+        Connection conn = GeneralDao.conectarDB();
         String sql = "UPDATE usuario SET auth = ? WHERE id = ?";
         try {
             PreparedStatement statement = conn.prepareStatement(sql);

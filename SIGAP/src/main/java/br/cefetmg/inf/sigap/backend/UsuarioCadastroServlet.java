@@ -4,11 +4,6 @@ import jakarta.servlet.http.*;
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.*;
 import java.io.*;
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import br.cefetmg.inf.sigap.service.UsuarioService;
 import br.cefetmg.inf.sigap.dto.Usuario;
