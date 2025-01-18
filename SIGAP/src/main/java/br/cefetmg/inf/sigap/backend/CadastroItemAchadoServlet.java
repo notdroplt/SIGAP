@@ -1,6 +1,6 @@
 package br.cefetmg.inf.sigap.backend;
 
-import br.cefetmg.inf.sigap.db.ItemService;
+import br.cefetmg.inf.sigap.services.ItemService;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 import org.json.JSONObject;
@@ -22,8 +22,8 @@ public class CadastroItemAchadoServlet extends HttpServlet {
 
     protected void ErrorResponse(HttpServletResponse res, String razao) throws IOException {
         JSONObject respjson = new JSONObject();
-        respjson.append("sucesso", false);
-        respjson.append("motivo", razao);
+        respjson.put("sucesso", false);
+        respjson.put("motivo", razao);
         res.getOutputStream().println(respjson.toString());
     }
 
@@ -66,10 +66,28 @@ public class CadastroItemAchadoServlet extends HttpServlet {
             return;
         }
 
+        String marca = jsonbj.getString("marca-item");
+
+        if (marca.length() > 60) {
+            System.out.println("Erro: Tamanho da marca " + marca.length() + " > 60");
+            ErrorResponse(res, "texto-marca");
+            return;
+        }
+
+        String cor = jsonbj.getString("cor-item");
+
+        if (cor.length() != 7) {
+            System.out.println("Erro: Cor " + cor.length() + " != 7");
+            ErrorResponse(res, "texto-cor");
+            return;
+        }
+
+        Integer valorCor = ItemService.reduzirEspectroCor(cor);
+
         ItemService service = ItemService.getInstance();
 
         service.adicionarItemAchado(
-            0L, nome, LocalDate.now(), desc, local, campus, "/dev/zero"
+            0L, nome, valorCor, marca, LocalDate.now(), desc, local, campus, "/dev/zero"
         );
 
         System.out.println("Item adicionado!");
@@ -77,7 +95,7 @@ public class CadastroItemAchadoServlet extends HttpServlet {
 
         JSONObject respjson = new JSONObject();
 
-        respjson.append("sucesso", true);
+        respjson.put("sucesso", true);
 
         res.getOutputStream().println(respjson.toString());
     }

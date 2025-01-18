@@ -5,6 +5,8 @@ const toObj = tuples => tuples.reduce((acc, [key, value]) => {
 
 let form_el = document.querySelector("button#formSubmit");
 
+
+
 const submit = (endpoint, ev) => {
     const inputs = ev.target.parentNode.querySelectorAll("input, select");
     const vals = Array.from(inputs).map(x => [x.id, x.value]);
@@ -16,3 +18,4 @@ const submit = (endpoint, ev) => {
     }).then(res => res.json())
       .then(console.log)
 }
+
