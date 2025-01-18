@@ -27,15 +27,12 @@
                         %>
                         <h1>Bem-vindo, <%= usuario.getNome() %>!</h1>
                         <div class="sector">
-                            <fieldset>
-                            <h2>Seus dados:</h2>
+                            <h2>Seus dados</h2>
                             <p><strong>Nome:</strong> <%= usuario.getNome() %></p>
                             <p><strong>CPF:</strong> <%= usuario.getCpf() %></p>
                             <p><strong>Email:</strong> <%= usuario.getEmail() %></p>
-                            </fieldset>
                         </div>
                         <div class="sector">
-                            <fieldset>
                             <h2>Atualizar Dados</h2>
                                 <% if (Objects.equals(request.getParameter("usuarioAtualizado"), "false")){  %>
                                     <p>Erro ao atualizar os dados.</p>
@@ -53,10 +50,8 @@
                                 <input type="email" name="email" id="email" value="<%= usuario.getEmail() %>"><br>
                                 <button type="submit">Atualizar</button>
                             </form>
-                            </fieldset>
                         </div>
                         <div class="sector">
-                            <fieldset>
                             <h2>Atualizar Senha</h2>
                             <% if (Objects.equals(request.getParameter("senhaAtualizada"), "false")){  %>
                             <p>Erro ao atualizar os dados.</p>
@@ -72,16 +67,12 @@
                                 <input type="password" name="senhaOld" id="senhaold"><br>
                                 <button type="submit">Atualizar</button>
                             </form>
-                            </fieldset>
                         </div>
                         <div class="sector">
-                            <fieldset>
                             <h2>Log Out</h2>
                                 <form action="Logout" method="post">
                                     <button type="submit">Log Out</button>
                                 </form>
-
-                            </fieldset>
                         <%
                     } else {
                         %>

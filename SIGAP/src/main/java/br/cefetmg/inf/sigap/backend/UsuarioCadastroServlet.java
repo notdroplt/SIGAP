@@ -25,15 +25,7 @@ public class UsuarioCadastroServlet extends HttpServlet {
         String nome = request.getParameter("nome");
         String email = request.getParameter("email");
         String senha = request.getParameter("senha");
-
-        StringBuilder cpfString = new StringBuilder();
-        Pattern pattern = Pattern.compile("\\d+");
-        Matcher matcher = pattern.matcher(request.getParameter("cpf"));
-        while (matcher.find()) {
-            cpfString.append(matcher.group());
-        }
-
-        long cpf = Long.parseLong(cpfString.toString());
+        long cpf = UsuarioService.extrairCpf(request.getParameter("cpf"));
 
         Usuario usuario = new Usuario(nome, email, senha, cpf);
         int id;

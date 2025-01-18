@@ -132,7 +132,7 @@ public class UsuarioDao {
             return null;
         }
     }
-    public static boolean atualizarUsuario(int id, Usuario usuario) {
+    public static boolean atualizarUsuario(Usuario usuario) {
         Connection conn = conectarDB();
         String sql = "UPDATE usuario SET nome = ?, email = ?, cpf = ? WHERE id = ?";
         try {
@@ -140,7 +140,23 @@ public class UsuarioDao {
             statement.setString(1, usuario.getNome());
             statement.setString(2, usuario.getEmail());
             statement.setLong(3, usuario.getCpf());
-            statement.setInt(4, id);
+            statement.setInt(4, usuario.getId());
+            statement.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    public static boolean atualizarUsuario(int authId, Usuario usuario) {
+        Connection conn = conectarDB();
+        String sql = "UPDATE usuario SET nome = ?, email = ?, cpf = ? WHERE id = ?";
+        try {
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setString(1, usuario.getNome());
+            statement.setString(2, usuario.getEmail());
+            statement.setLong(3, usuario.getCpf());
+            statement.setInt(4, usuario.getId());
             statement.executeUpdate();
             return true;
         } catch (SQLException e) {
@@ -156,6 +172,51 @@ public class UsuarioDao {
             statement.setString(1,senha);
             statement.setInt(2,id);
             statement.setString(3,senhaOld);
+            statement.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    public static Usuario[] listarUsuarios(){
+        Connection conn = conectarDB();
+        String sql2 = "SELECT * FROM usuario";
+        String sql = "SELECT COUNT(*) FROM usuario";
+        try {
+            PreparedStatement statement = conn.prepareStatement(sql);
+            ResultSet result = statement.executeQuery();
+
+            int count = 0;
+            if (result.next()){
+                count = result.getInt(1);
+            }
+
+            PreparedStatement statement2 = conn.prepareStatement(sql2);
+            ResultSet result2 = statement2.executeQuery();
+
+            Usuario[] usuarios = new Usuario[count];
+            for(int i=0; result2.next(); i++){
+                String nome = result2.getString("nome");
+                String email = result2.getString("email");
+                String senha = result2.getString("senha");
+                long cpf = result2.getLong("cpf");
+                int id = result2.getInt("id");
+                Usuario usuario = new Usuario(nome, email, senha, cpf, id);
+                usuarios[i] = usuario;
+            }
+            return usuarios;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    public static boolean removerUsuario(int id, int authId){
+        Connection conn = conectarDB();
+        String sql = "DELETE FROM usuario WHERE id = ?";
+        try {
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setInt(1,id);
             statement.executeUpdate();
             return true;
         } catch (SQLException e) {

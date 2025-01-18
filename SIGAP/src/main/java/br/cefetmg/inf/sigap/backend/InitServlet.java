@@ -29,7 +29,8 @@ public class InitServlet extends HttpServlet {
                 "    nome VARCHAR(255) NOT NULL,\n" +
                 "    cpf BIGINT NOT NULL,\n" +
                 "    email VARCHAR(255) NOT NULL,\n" +
-                "    senha VARCHAR(255) NOT NULL\n" +
+                "    senha VARCHAR(255) NOT NULL,\n" +
+                "    auth INT NOT NULL DEFAULT 0\n" +
                 ");\n";
 
         String[] extensions = new String[] {

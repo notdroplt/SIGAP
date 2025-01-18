@@ -22,15 +22,7 @@ public class UsuarioLoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String senha = request.getParameter("senha");
-
-        StringBuilder cpfString = new StringBuilder();
-        Pattern pattern = Pattern.compile("\\d+");
-        Matcher matcher = pattern.matcher(request.getParameter("cpf"));
-        while (matcher.find()) {
-            cpfString.append(matcher.group());
-        }
-
-        long cpf = Long.parseLong(cpfString.toString());
+        long cpf = UsuarioService.extrairCpf(request.getParameter("cpf"));
         int id;
         response.setContentType("text/html");
         response.getWriter().println("<html><body>");

@@ -1,15 +1,17 @@
 package br.cefetmg.inf.sigap.backend;
+
 import br.cefetmg.inf.sigap.dto.Usuario;
 import br.cefetmg.inf.sigap.service.UsuarioService;
 import jakarta.servlet.http.*;
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.*;
+
 import java.io.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-@WebServlet(urlPatterns = "/AtualizarUsuario")
-public class AtualizarUsuario extends HttpServlet {
+@WebServlet(urlPatterns = "/EditarUsuario")
+public class EditarUsuario extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -21,14 +23,18 @@ public class AtualizarUsuario extends HttpServlet {
         PrintWriter out = response.getWriter();
         String nome = request.getParameter("nome");
         String email = request.getParameter("email");
+        String senha = request.getParameter("senha");
         int id = Integer.parseInt(request.getParameter("id"));
+        int authId = Integer.parseInt(request.getParameter("authId"));
         long cpf = UsuarioService.extrairCpf(request.getParameter("cpf"));
 
-        Usuario usuario = new Usuario(nome, email, null, cpf, id);
-        if (UsuarioService.atualizarUsuario(usuario)) {
-            response.sendRedirect("painelUsuario.jsp?usuarioAtualizado=true");
+        Usuario usuario = new Usuario(nome, email, senha, cpf, id);
+        if (UsuarioService.atualizarUsuario(id, usuario)) {
+            out.println("Usuario atualizado com sucesso");
+            out.println("<a href='listaUsuarios.jsp'>Voltar</a>");
         } else {
-            response.sendRedirect("painelUsuario.jsp?usuarioAtualizado=false");
+            out.println("Erro ao atualizar usuario");
+            out.println("<a href='listaUsuarios.jsp'>Voltar</a>");
         }
     }
 }
