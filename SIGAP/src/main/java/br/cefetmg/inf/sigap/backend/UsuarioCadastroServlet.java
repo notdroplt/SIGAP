@@ -4,8 +4,6 @@ import jakarta.servlet.http.*;
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.*;
 import java.io.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import br.cefetmg.inf.sigap.service.UsuarioService;
 import br.cefetmg.inf.sigap.dto.Usuario;
@@ -25,33 +23,31 @@ public class UsuarioCadastroServlet extends HttpServlet {
         String nome = request.getParameter("nome");
         String email = request.getParameter("email");
         String senha = request.getParameter("senha");
-
-        StringBuilder cpfString = new StringBuilder();
-        Pattern pattern = Pattern.compile("\\d+");
-        Matcher matcher = pattern.matcher(request.getParameter("cpf"));
-        while (matcher.find()) {
-            cpfString.append(matcher.group());
+        byte[] hash = UsuarioService.hashSenha(senha);
+        long cpf;
+        try{
+            cpf = UsuarioService.extrairCpf(request.getParameter("cpf"));
+        } catch (NumberFormatException e) {
+            UsuarioService.printPage(out, "<h1>CPF inválido!</h1>");
+            out.close();
+            return;
         }
 
-        long cpf = Long.parseLong(cpfString.toString());
+        if(!UsuarioService.validarCpf(cpf)) {
+            UsuarioService.printPage(out, "<h1>CPF inválido!</h1>");
+            out.close();
+            return;
+        }
 
-        Usuario usuario = new Usuario(nome, email, senha, cpf);
+        Usuario usuario = new Usuario(nome, email, hash, cpf);
         int id;
         if (UsuarioService.criarUsuario(usuario)) {
-            id = UsuarioService.getToken(cpf, senha);
+            id = UsuarioService.getId(cpf, hash);
             HttpSession session = request.getSession(true);
             session.setAttribute("Token", id);
-
-            out.println("<html><body>");
-            out.println("<h1>Usuário criado com sucesso!</h1>");
-            out.println("<p>Nome: " + nome + "</p>");
-            out.println("<p>Email: " + email + "</p>");
-            out.println("<p>Token: " + id + "</p>");
-            out.println("</body></html>");
+            response.sendRedirect("painelUsuario.jsp");
         } else {
-            out.println("<html><body>");
-            out.println("<h1>Erro ao criar usuário!</h1>");
-            out.println("</body></html>");
+            UsuarioService.printPage(out, "<h1>Erro ao criar usuário!</h1>");
         }
         out.close();
     }
