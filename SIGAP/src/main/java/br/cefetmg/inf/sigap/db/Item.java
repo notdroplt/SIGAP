@@ -226,4 +226,24 @@ public class Item{
     public void setMarca(String marca) {
         this.marca = marca;
     }
+
+    @Override
+    public String toString() {
+        return "Item{" +
+                "id=" + id +
+                ", uid=" + uid +
+                ", nome='" + nome + '\'' +
+                ", cor=" + cor +
+                ", marca='" + marca + '\'' +
+                ", dataPerdido=" + dataPerdido +
+                ", dataAchado=" + dataAchado +
+                ", dataDevolvido=" + dataDevolvido +
+                ", local='" + local + '\'' +
+                ", descricao='" + descricao + '\'' +
+                ", lugarAchado='" + lugarAchado + '\'' +
+                ", lugarPerdido='" + lugarPerdido + '\'' +
+                ", foto='" + foto + '\'' +
+                ", status=" + status +
+                '}';
+    }
 }

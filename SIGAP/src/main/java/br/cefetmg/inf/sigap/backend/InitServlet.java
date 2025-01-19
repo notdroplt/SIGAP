@@ -26,7 +26,7 @@ public class InitServlet extends HttpServlet {
                 "    lugar_achado TEXT,\n" +
                 "    lugar_perdido TEXT,\n" +
                 "    foto TEXT NOT NULL,\n" +
-                "    status VARCHAR(255) NOT NULL\n" +
+                "    status INT NOT NULL\n" +
                 ");";
         String user_tabela =
                 "CREATE TABLE IF NOT EXISTS usuario (\n" +

@@ -10,6 +10,7 @@ package br.cefetmg.inf.sigap.services;
 
 import br.cefetmg.inf.sigap.db.Item;
 import br.cefetmg.inf.sigap.db.StatusItem;
+import br.cefetmg.inf.sigap.factories.ItemFactory;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -66,13 +67,19 @@ public final class ItemService {
      */
     public synchronized void adicionarItemPerdido(Long uid, String nome, Integer cor, String marca, LocalDate data_perdido, String descricao, String lugar, String campus, String foto) {
         try {
+            Item perdido = ItemFactory.criarItemPerdido(uid, nome, cor, marca, data_perdido, descricao, lugar, campus, foto);
+            Item achado = existeItemAchado(perdido);
+            if (achado != null) {
+                mesclarPerdidoComAchado(achado, perdido);
+
+                return;
+            }
             Connection conn = getConnection();
 
             System.out.println("===== ID DE USUÁRIO TESTE SENDO UTILIZADO =====");
 
-
             String sql = "INSERT INTO Item (" +
-                    "uid, nome, cor, marca, data_perdido, descricao, lugar_perdido, local," +
+                    "uid , nome, cor, marca, data_perdido, descricao, lugar_perdido, local," +
                     "foto, data_achado, data_devolvido, lugar_achado, status) " +
                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NULL, NULL, NULL, 0)";
 
@@ -100,6 +107,66 @@ public final class ItemService {
         }
     }
 
+    public synchronized Item existeItemPerdido (Item achado) {
+        String sql = "SELECT * FROM Item WHERE " +
+                "nome = ? AND marca = ? AND lugar_perdido = ? AND local = ? AND status = 0 " +
+                "LIMIT 1;";
+
+        try {
+            Connection conn = getConnection();
+
+            PreparedStatement stmt = conn.prepareStatement(sql);
+
+            stmt.setString(1, achado.getNome());
+            stmt.setString(2, achado.getMarca());
+            stmt.setString(3, achado.getLugarAchado());
+            stmt.setString(4, achado.getLocal());
+
+            System.out.println("Executando: `" + stmt + "`");
+
+            ResultSet rs = stmt.executeQuery();
+
+            List<Item> itens = getItemPorRs(rs);
+            System.out.println("Encontrados " + itens.size() + " item(ns) perdido(s) correspondentes");
+            return itens.isEmpty() ? null : itens.getFirst();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    public synchronized Item existeItemAchado (Item perdido) {
+        String sql = "SELECT * FROM Item WHERE " +
+                "nome = ? AND marca = ? AND lugar_achado = ? AND local = ? AND status = 1 " +
+                "LIMIT 1;";
+
+        try {
+            Connection conn = getConnection();
+
+            PreparedStatement stmt = conn.prepareStatement(sql);
+
+            stmt.setString(1, perdido.getNome());
+            stmt.setString(2, perdido.getMarca());
+            stmt.setString(3, perdido.getLugarPerdido());
+            stmt.setString(4, perdido.getLocal());
+
+            System.out.println("Executando: `" + stmt + "`");
+
+            ResultSet rs = stmt.executeQuery();
+
+            List<Item> itens = getItemPorRs(rs);
+            System.out.println("Encontrado(s) " + itens.size() + " item(ns) achado(s) correspondentes");
+
+            if (!itens.isEmpty()) {
+                System.out.println(itens.getFirst());
+            }
+
+            return itens.isEmpty() ? null : itens.getFirst();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     /**
      * Adiciona um item achado ao banco de dados
      * <p>
@@ -114,6 +181,13 @@ public final class ItemService {
      */
     public synchronized void adicionarItemAchado(Long uid, String nome, Integer cor, String marca, LocalDate data_achado, String descricao, String lugar, String campus, String foto) {
         try {
+            Item achado = ItemFactory.criarItemAchado(nome, cor, marca, data_achado, campus, descricao, lugar, foto);
+            Item perdido = existeItemPerdido(achado);
+            if (perdido != null) {
+                mesclarAchadoComPerdido(achado, perdido);
+                return;
+            }
+
             Connection conn = getConnection();
 
             System.out.println("===== ID DE USUÁRIO TESTE SENDO UTILIZADO =====");
@@ -149,10 +223,78 @@ public final class ItemService {
 
     public synchronized void mesclarAchadoComPerdido(Item achado, Item perdido) {
 
-        /// Mesclar itens
+        Item mesclado = new Item(
+                perdido.getUid(),
+                perdido.getNome(),
+                perdido.getCor(),
+                perdido.getMarca(),
+                perdido.getDataPerdido(),
+                achado.getDataAchado(),
+                null,
+                perdido.getLocal(),
+                perdido.getDescricao(),
+                achado.getLugarAchado(),
+                perdido.getLugarPerdido(),
+                perdido.getFoto(),
+                StatusItem.DEVOLVIDO
+                );
 
-        /// Invocar função de e-mail
+        mesclado.setId(perdido.getId());
+        String sql = "UPDATE Item " +
+                "SET (data_achado, lugar_achado, status) = (?, ?, 2) " +
+                "WHERE id = ?;";
+        try {
+            Connection conn = getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setDate(1, Date.valueOf(achado.getDataAchado()));
+            stmt.setString(2, achado.getLugarAchado());
+            stmt.setLong(3, perdido.getId());
+            stmt.executeQuery();
+            conn.close();
+            System.out.println("Atualizar dados do item com id " + mesclado.getId());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 
+        // enviar_email(mesclado);
+    }
+
+    public synchronized void mesclarPerdidoComAchado(Item achado, Item perdido) {
+
+        Item mesclado = new Item(
+                perdido.getUid(),
+                perdido.getNome(),
+                perdido.getCor(),
+                perdido.getMarca(),
+                perdido.getDataPerdido(),
+                achado.getDataAchado(),
+                null,
+                perdido.getLocal(),
+                perdido.getDescricao(),
+                achado.getLugarAchado(),
+                perdido.getLugarPerdido(),
+                perdido.getFoto(),
+                StatusItem.DEVOLVIDO
+        );
+
+        mesclado.setId(perdido.getId());
+        String sql = "UPDATE Item " +
+                "SET (data_perdido, lugar_perdido, status) = (?, ?, 2) " +
+                "WHERE id = ?;";
+        try {
+            Connection conn = getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setDate(1, Date.valueOf(perdido.getDataPerdido()));
+            stmt.setString(2, perdido.getLugarPerdido());
+            stmt.setLong(3, achado.getId());
+            stmt.executeQuery();
+            conn.close();
+            System.out.println("Atualizar dados do item com id " + mesclado.getId());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        // enviar_email(mesclado);
     }
 
     /**
@@ -161,7 +303,7 @@ public final class ItemService {
      */
     public void adicionarItemPerdido(Long uid, Item item) {
         adicionarItemPerdido(uid, item.getNome(), item.getCor(), item.getMarca(), item.getDataPerdido(), item.getDescricao(), item.getLugarPerdido(), item.getLocal(), item.getFoto());
-    }
+     }
 
     /**
      * Função para transformar um resultado de query numa lista de itens
@@ -177,9 +319,16 @@ public final class ItemService {
             it.setNome(rs.getString("nome"));
             it.setMarca(rs.getString("marca"));
             it.setCor(rs.getInt("cor"));
-            it.setDataPerdido(rs.getDate("data_perdido").toLocalDate());
-            it.setDataAchado(rs.getDate("data_achado").toLocalDate());
-            it.setDataDevolvido(rs.getDate("data_devolvido").toLocalDate());
+
+            if (rs.getDate("data_perdido") != null)
+                it.setDataPerdido(rs.getDate("data_perdido").toLocalDate());
+
+            if (rs.getDate("data_achado") != null)
+                it.setDataAchado(rs.getDate("data_achado").toLocalDate());
+
+            if (rs.getDate("data_devolvido") != null)
+                it.setDataDevolvido(rs.getDate("data_devolvido").toLocalDate());
+
             it.setLocal(rs.getString("local"));
             it.setDescricao(rs.getString("descricao"));
             it.setLugarAchado(rs.getString("lugar_achado"));
@@ -199,10 +348,8 @@ public final class ItemService {
     public List<Item> getItens() {
         try {
             Connection conn = getConnection();
-
             String sql = "SELECT * FROM Item;";
             PreparedStatement stmt = conn.prepareStatement(sql);
-
             ResultSet rs = stmt.executeQuery();
 
             List<Item> itens = getItemPorRs(rs);
@@ -250,7 +397,7 @@ public final class ItemService {
             return itens;
         } catch (Exception e) {
             throw new RuntimeException(e);
-        }
+       }
     }
 
     /**
@@ -272,7 +419,6 @@ public final class ItemService {
             stmt.setString(1, achado.getDescricao());
             stmt.setString(2, achado.getNome());
             stmt.setString(3, achado.getLugarAchado());
-
             List<Item> itens = getItemPorRs(stmt.executeQuery());
             conn.close();
 
