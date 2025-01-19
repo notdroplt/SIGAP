@@ -38,7 +38,7 @@ public class UsuarioLoginServlet extends HttpServlet {
             id = UsuarioService.getId(cpf, hash);
             HttpSession session = request.getSession(true);
             session.setAttribute("Token", id);
-            response.sendRedirect("painelUsuario.jsp");
+            response.sendRedirect("home.jsp");
         } else {
             UsuarioService.printPage(response.getWriter(), "<h1>Login failed!</h1>");
         }

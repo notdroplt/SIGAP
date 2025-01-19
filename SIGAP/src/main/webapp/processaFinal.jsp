@@ -89,7 +89,9 @@
 <body>
 <div class="container">
     <header>
-        <h1>CEFET-MG - SIGAP</h1>
+        <a style="color: white; text-decoration: inherit;" href="home.jsp">
+            <h1>CEFET-MG - SIGAP -</h1>
+        </a>
         <span>Verificação de e-mail</span>
     </header>
 

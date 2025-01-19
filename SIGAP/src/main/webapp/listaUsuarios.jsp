@@ -12,7 +12,9 @@
 <div class="container">
     <header>
         <div class="title">
-            <h1>CEFET-MG - SIGAP -</h1>
+            <a style="color: white; text-decoration: inherit;" href="home.jsp">
+                <h1>CEFET-MG - SIGAP -</h1>
+            </a>
             <span>Sistema Integrado de Gestão de Achados e Perdidos</span>
         </div>
 
