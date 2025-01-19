@@ -1,4 +1,6 @@
-package br.cefetmg.inf.sigap.dto;
+package br.cefetmg.inf.sigap.factories;
+
+import br.cefetmg.inf.sigap.dto.*;
 
 import java.time.LocalDate;
 
@@ -18,8 +20,8 @@ public final class ItemFactory {
      * @param foto foto desse item ou similar
      * @return Item criado com status perdido
      */
-    public static Item criarItemPerdido(Long uid, String nome, LocalDate data, String descricao, String lugarPerdido, String campus, String foto) {
-        return new Item(uid, nome, data, null, null, campus,
+    public static Item criarItemPerdido(Long uid, String nome, Integer cor, String marca, LocalDate data, String descricao, String lugarPerdido, String campus, String foto) {
+        return new Item(uid, nome, cor, marca, data, null, null, campus,
                 descricao, null, lugarPerdido, foto, StatusItem.PERDIDO);
     }
 
@@ -33,8 +35,8 @@ public final class ItemFactory {
      * @param foto foto do item encontrado
      * @return Item criado com status encontrado
      */
-    public static Item criarItemAchado(String nome, LocalDate data, String local, String descricao, String lugarAchado, String foto) {
-        return new Item(null, nome, null, data, null, local,
+    public static Item criarItemAchado(String nome, Integer cor, String marca, LocalDate data, String local, String descricao, String lugarAchado, String foto) {
+        return new Item(null, nome, cor, marca, null, data, null, local,
                 descricao, lugarAchado, null, foto, StatusItem.ENCONTRADO);
     }
 }

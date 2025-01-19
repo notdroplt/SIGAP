@@ -7,10 +7,8 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="br.cefetmg.inf.sigap" />
+        <module name="SIGAP" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="SIGAP" target="9" />
-    </bytecodeTargetLevel>
   </component>
 </project>

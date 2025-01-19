@@ -13,6 +13,8 @@ public class InitServlet extends HttpServlet {
                 "    id BIGINT NOT NULL PRIMARY KEY GENERATED ALWAYS AS IDENTITY,\n" +
                 "    uid BIGINT,\n" +
                 "    nome VARCHAR(255) NOT NULL,\n" +
+                "    cor INT NOT NULL,\n" +
+                "    marca TEXT NOT NULL,\n" +
                 "    data_perdido DATE,\n" +
                 "    data_achado DATE,\n" +
                 "    data_devolvido DATE,\n" +
@@ -21,7 +23,7 @@ public class InitServlet extends HttpServlet {
                 "    lugar_achado TEXT,\n" +
                 "    lugar_perdido TEXT,\n" +
                 "    foto TEXT NOT NULL,\n" +
-                "    status VARCHAR(255) NOT NULL\n" +
+                "    status INT NOT NULL\n" +
                 ");";
         String user_tabela =
                 "CREATE TABLE IF NOT EXISTS usuario (\n" +

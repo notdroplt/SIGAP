@@ -31,6 +31,10 @@
                     <label for="cor">Cor:</label>
                     <input type="color" id="cor-item" name="cor" placeholder="#696969">
                 </div>
+                <div>
+                    <label for="marca">Marca:</label>
+                    <input type="text" id="marca-item" name="marca" placeholder="Marca...">
+                </div>
                 <!-- TODO: Colocar descrição como dropdown -->
                 <div>
                     <label for="lugar">Lugar que foi encontrado:</label>
