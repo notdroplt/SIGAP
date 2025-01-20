@@ -11,6 +11,7 @@ package br.cefetmg.inf.sigap.service;
 import br.cefetmg.inf.sigap.dto.Item;
 import br.cefetmg.inf.sigap.dto.StatusItem;
 import br.cefetmg.inf.sigap.factories.ItemFactory;
+import br.cefetmg.inf.sigap.backend.Notificar;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -256,7 +257,7 @@ public final class ItemService {
             throw new RuntimeException(e);
         }
 
-        // enviar_email(mesclado);
+        Notificar.notificar(mesclado);
     }
 
     public synchronized void mesclarPerdidoComAchado(Item achado, Item perdido) {
@@ -294,7 +295,7 @@ public final class ItemService {
             throw new RuntimeException(e);
         }
 
-        // enviar_email(mesclado);
+        Notificar.notificar(mesclado);
     }
 
     /**
