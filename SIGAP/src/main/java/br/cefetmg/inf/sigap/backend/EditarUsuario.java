@@ -24,7 +24,7 @@ public class EditarUsuario extends HttpServlet {
         String senha = request.getParameter("senha");
         int id = Integer.parseInt(request.getParameter("id"));
         int authId = Integer.parseInt(request.getParameter("authId"));
-        long cpf = UsuarioService.extrairCpf(request.getParameter("cpf"));
+        String cpf = UsuarioService.extrairCpf(request.getParameter("cpf"));
         byte[] hash = UsuarioService.hashSenha(senha);
         Usuario oldUsuario = UsuarioService.getUserData(id);
         Usuario usuario;
@@ -38,13 +38,13 @@ public class EditarUsuario extends HttpServlet {
         if(UsuarioDao.verificarAutoridade(authId, oldUsuario.getAutoridade())) {
             usuario.setAutoridade(oldUsuario.getAutoridade());
         } else {
-            UsuarioService.printPage(out, "<p>Você não tem permissão para alterar esse usuário</p><br><a href='listaUsuarios.jsp'>Voltar</a>");
+            UsuarioService.printPage(out, "<p>Você não tem permissão para alterar esse usuário</p><br><a href='listaUsuarios'>Voltar</a>");
             return;
         }
         if (UsuarioService.atualizarUsuario(authId, usuario)) {
-            UsuarioService.printPage(out, "<p>Usuario atualizado com sucesso</p><br><a href='listaUsuarios.jsp'>Voltar</a>");
+            UsuarioService.printPage(out, "<p>Usuario atualizado com sucesso</p><br><a href='listaUsuarios'>Voltar</a>");
         } else {
-            UsuarioService.printPage(out,"<p>Erro ao atualizar usuario</p><br><a href='listaUsuarios.jsp'>Voltar</a>");
+            UsuarioService.printPage(out,"<p>Erro ao atualizar usuario</p><br><a href='listaUsuarios'>Voltar</a>");
         }
     }
 }

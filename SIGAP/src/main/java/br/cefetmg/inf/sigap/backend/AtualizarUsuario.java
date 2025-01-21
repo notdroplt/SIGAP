@@ -19,7 +19,7 @@ public class AtualizarUsuario extends HttpServlet {
         String nome = request.getParameter("nome");
         String email = request.getParameter("email");
         int id = Integer.parseInt(request.getParameter("id"));
-        long cpf = UsuarioService.extrairCpf(request.getParameter("cpf"));
+        String cpf = UsuarioService.extrairCpf(request.getParameter("cpf"));
 
         Usuario usuario = new Usuario(nome, email, null, cpf, id);
         if (UsuarioService.atualizarUsuario(usuario)) {

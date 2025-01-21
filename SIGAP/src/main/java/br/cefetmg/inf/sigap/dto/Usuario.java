@@ -5,12 +5,12 @@ public class Usuario {
     private String nome;
     private String email;
     private byte[] senha;
-    private long cpf;
+    private String cpf;
     private final int id;
 
     private int autoridade;
 
-    public Usuario(String nome, String email, byte[] senha, long cpf) {
+    public Usuario(String nome, String email, byte[] senha, String cpf) {
         this.nome = nome;
         this.email = email;
         this.senha = senha;
@@ -18,7 +18,7 @@ public class Usuario {
         this.id = 0;
     }
 
-    public Usuario(String nome, String email, byte[] senha, long cpf, int id, int autoridade) {
+    public Usuario(String nome, String email, byte[] senha, String cpf, int id, int autoridade) {
         this.nome = nome;
         this.email = email;
         this.senha = senha;
@@ -27,7 +27,7 @@ public class Usuario {
         this.id = id;
     }
 
-    public Usuario(String nome, String email, byte[] senha, long cpf, int id) {
+    public Usuario(String nome, String email, byte[] senha, String cpf, int id) {
         this.nome = nome;
         this.email = email;
         this.senha = senha;
@@ -59,11 +59,11 @@ public class Usuario {
         this.senha = senha;
     }
 
-    public long getCpf() {
+    public String getCpf() {
         return cpf;
     }
 
-    public void setCpf(long cpf) {
+    public void setCpf(String cpf) {
         this.cpf = cpf;
     }
 

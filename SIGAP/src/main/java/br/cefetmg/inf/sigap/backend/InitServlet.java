@@ -27,9 +27,9 @@ public class InitServlet extends HttpServlet {
                 ");";
         String user_tabela =
                 "CREATE TABLE IF NOT EXISTS usuario (\n" +
-                "    id BIGINT NOT NULL PRIMARY KEY GENERATED ALWAYS AS IDENTITY,\n" +
+                "    id INT NOT NULL PRIMARY KEY GENERATED ALWAYS AS IDENTITY,\n" +
                 "    nome VARCHAR(255) NOT NULL,\n" +
-                "    cpf BIGINT NOT NULL,\n" +
+                "    cpf VARCHAR(11) NOT NULL,\n" +
                 "    email VARCHAR(255) NOT NULL,\n" +
                 "    senha bytea NOT NULL,\n" +
                 "    auth INT NOT NULL DEFAULT 0\n" +

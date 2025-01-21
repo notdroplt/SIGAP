@@ -7,32 +7,26 @@ import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class UsuarioService {
-    public static long extrairCpf(String cpfRawString) throws NumberFormatException{
-        if(!cpfRawString.matches(".*\\d.*"))
-            throw new NumberFormatException("CPF inválido");
+    public static String extrairCpf(String cpfRawString) throws NumberFormatException{
+        System.out.println("CPF RAW STRING: " + cpfRawString);
         StringBuilder cpfString = new StringBuilder();
-        Pattern pattern = Pattern.compile("\\d+");
-        Matcher matcher = pattern.matcher(cpfRawString);
-        while (matcher.find()) {
-            cpfString.append(matcher.group());
-        }
-
-        return Long.parseLong(cpfString.toString());
+        String digits = cpfRawString.replaceAll("\\D", "");
+        cpfString.append(digits);
+        System.out.println("CPF STRING: " + cpfString);
+        return cpfString.toString();
     }
     public static boolean criarUsuario(Usuario usuario){
         return UsuarioDao.adicionarUsuario(usuario);
     }
-    public static boolean login(long cpf, byte[] senha){
+    public static boolean login(String cpf, byte[] senha){
         return UsuarioDao.VerificarUsuario(cpf, senha);
     }
     public static boolean verificarUsuario(int id, byte[] senha){
         return UsuarioDao.VerificarUsuario(id, senha);
     }
-    public static int getId(long cpf, byte[] senha){
+    public static int getId(String cpf, byte[] senha){
         return UsuarioDao.getId(cpf, senha);
     }
     public static Usuario getUserData(int id){
@@ -81,7 +75,7 @@ public class UsuarioService {
         out.println(content);
         out.println(end);
     }
-    public static boolean validarCpf(long cpf){
+    public static boolean validarCpf(String cpf){
 
         String cpfString = String.valueOf(cpf);
         if(cpfString.length() != 11)

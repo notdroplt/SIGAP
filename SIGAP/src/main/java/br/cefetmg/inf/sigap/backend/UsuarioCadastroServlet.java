@@ -24,7 +24,7 @@ public class UsuarioCadastroServlet extends HttpServlet {
         String email = request.getParameter("email");
         String senha = request.getParameter("senha");
         byte[] hash = UsuarioService.hashSenha(senha);
-        long cpf;
+        String cpf;
         try{
             cpf = UsuarioService.extrairCpf(request.getParameter("cpf"));
         } catch (NumberFormatException e) {
