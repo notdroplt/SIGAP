@@ -22,7 +22,7 @@ public class UsuarioLoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String senha = request.getParameter("senha");
         PrintWriter out = response.getWriter();
-        long cpf;
+        String cpf;
         try{
             cpf = UsuarioService.extrairCpf(request.getParameter("cpf"));
         } catch (NumberFormatException e) {
