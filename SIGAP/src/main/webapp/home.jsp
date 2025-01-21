@@ -1,5 +1,23 @@
 <%@ page import="br.cefetmg.inf.sigap.dto.Usuario" %>
 <%@ page import="br.cefetmg.inf.sigap.service.UsuarioService" %>
+<%
+    Cookie[] cookies = request.getCookies();
+    boolean redirecionar = false;
+
+    if (cookies != null) {
+        for (Cookie atual : cookies) {
+            if (atual.getName().length() >= 10 && atual.getName().substring(0, 10).equals("1nomeAluno")) {
+                redirecionar = true;
+                break;
+            }
+        }
+    }
+
+    if (redirecionar) {
+        response.sendRedirect("notificacao.jsp");
+        return;
+    }
+%>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
