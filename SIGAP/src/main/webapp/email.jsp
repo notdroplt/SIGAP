@@ -13,6 +13,10 @@
         String nome = request.getParameter("nome");
         String cpf = request.getParameter("cpf");
         String senha = request.getParameter("senha");
+        Integer id = null;
+        if(request.getParameter("id")!=null)
+            id = Integer.parseInt(request.getParameter("id"));
+        String teste = request.getParameter("teste");
         Random gerador = new Random();
         int codigo = gerador.nextInt(1000000);
 
@@ -67,6 +71,8 @@
         <input type="hidden" name="cpf" value="<%= cpf %>">
         <input type="hidden" name="senha" value="<%= senha %>">
         <input type="hidden" name="codigo" value="<%= codigo %>">
+        <input type="hidden" name="id" value="<%= id %>">
+        <input type="hidden" name="teste" value="<%= teste %>">
     </form>
     <script>
         document.getElementById('autoSubmit').submit();
