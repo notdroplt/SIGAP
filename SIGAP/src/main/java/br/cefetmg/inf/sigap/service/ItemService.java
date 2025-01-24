@@ -129,7 +129,7 @@ public final class ItemService {
 
             List<Item> itens = getItemPorRs(rs);
             System.out.println("Encontrados " + itens.size() + " item(ns) perdido(s) correspondentes");
-            return itens.isEmpty() ? null : itens.getFirst();
+            return itens.isEmpty() ? null : itens.get(0);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -159,10 +159,10 @@ public final class ItemService {
             System.out.println("Encontrado(s) " + itens.size() + " item(ns) achado(s) correspondentes");
 
             if (!itens.isEmpty()) {
-                System.out.println(itens.getFirst());
+                System.out.println(itens.get(0));
             }
 
-            return itens.isEmpty() ? null : itens.getFirst();
+            return itens.isEmpty() ? null : itens.get(0);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

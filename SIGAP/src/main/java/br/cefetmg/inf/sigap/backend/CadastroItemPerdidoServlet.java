@@ -84,12 +84,26 @@ public class CadastroItemPerdidoServlet extends HttpServlet {
             return;
         }
 
+        String imagem = jsonbj.optString("imagem");
+
+        if (imagem.isEmpty()) {
+            System.out.println("Erro ao adicionar imagem");
+            ErrorResponse(res, "imagem");
+            return;
+        }
+
         Integer valorCor = ItemService.reduzirEspectroCor(cor);
+
+        ImagemService img_service = ImagemService.getInstance();
+
+        String caminho = img_service.adicionarImagem(imagem);
+
+        System.out.println("imagem salva em " + caminho);
 
         ItemService service = ItemService.getInstance();
 
         service.adicionarItemPerdido(
-                0L, nome, valorCor, marca, LocalDate.now(), desc, local, campus, "/dev/zero"
+                0L, nome, valorCor, marca, LocalDate.now(), desc, local, campus, caminho
         );
 
         System.out.println("Item adicionado!");

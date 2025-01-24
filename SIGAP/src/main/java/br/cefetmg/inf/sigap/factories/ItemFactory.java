@@ -28,6 +28,7 @@ public final class ItemFactory {
     /**
      * Cria um item que foi encontrado
      * @param nome nome do item encontrado
+     * @param cor cor do item encontrado
      * @param data data em que foi encontrado
      * @param local local em que está guardado
      * @param descricao descrição do item

@@ -54,6 +54,10 @@
                         <option value="c2">Campus 2</option>
                     </select>
                 </div>
+                <div>
+                    <label for="imagem">Imagem:</label>
+                    <input type="file" name="imagem" id="imagem-item">
+                </div>
                 <button id="formSubmit" type="submit" onClick="submit('/SIGAP/api/cadastro/item/achado', event)">Carregar
                     Item</button>
             </div>
