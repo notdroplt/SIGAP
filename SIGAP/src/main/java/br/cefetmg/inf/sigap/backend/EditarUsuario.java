@@ -34,6 +34,10 @@ public class EditarUsuario extends HttpServlet {
         else{
             usuario = new Usuario(nome, email, oldUsuario.getSenha(), cpf, id);
         }
+        if(UsuarioService.validarCpf(cpf)){
+            UsuarioService.printPage(out, "<p>CPF inválido</p><br><a href='listaUsuarios'>Voltar</a>");
+            return;
+        }
 
         if(UsuarioDao.verificarAutoridade(authId, oldUsuario.getAutoridade())) {
             usuario.setAutoridade(oldUsuario.getAutoridade());
