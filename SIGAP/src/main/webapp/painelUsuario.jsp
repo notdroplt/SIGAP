@@ -41,17 +41,47 @@
                                 <% } else if (Objects.equals(request.getParameter("usuarioAtualizado"), "true")){ %>
                                     <p>Dados atualizados com sucesso!</p>
                                 <% } %>
-                            <form action="AtualizarUsuario" method="post">
-
-                                <input type="hidden" name="id" value="<%= id %>">
+                            <form method="POST">
                                 <label for="nome">Nome:</label>
                                 <input type="text" name="nome" id="nome" value="<%= usuario.getNome() %>"><br>
                                 <label for="cpf">CPF:</label>
                                 <input type="text" name="cpf" id="cpf" value="<%= usuario.getCpf() %>"><br>
                                 <label for="email">Email:</label>
                                 <input type="email" name="email" id="email" value="<%= usuario.getEmail() %>"><br>
-                                <button type="submit">Atualizar</button>
+                                <button type="submit" name="acao" value="apagar">Atualizar</button>
                             </form>
+
+                            <%
+                                String teste = "painelUsuario";
+                                if ("POST".equalsIgnoreCase(request.getMethod()) && "apagar".equals(request.getParameter("acao"))) {
+                                    String nome = request.getParameter("nome");
+                                    String email = request.getParameter("email");
+                                    String cpf = UsuarioService.extrairCpf(request.getParameter("cpf"));
+
+                                    if(email.equals(usuario.getEmail()))
+                                    {
+                                        response.setContentType("text/html;charset=UTF-8");
+                                        out.println("<form id='autoSubmit' action='AtualizarUsuario' method='POST'>");
+                                        out.println("<input type='hidden' name='email' value='" + email + "'>");
+                                        out.println("<input type='hidden' name='nome' value='" + nome + "'>");
+                                        out.println("<input type='hidden' name='cpf' value='" + cpf + "'>");
+                                        out.println("<input type='hidden' name='id' value='" + id + "'>");
+                                        out.println("</form>");
+                                        out.println("<script>document.getElementById('autoSubmit').submit();</script>");
+                                    }
+                                    else{
+                                        response.setContentType("text/html;charset=UTF-8");
+                                        out.println("<form id='autoSubmit' action='email.jsp' method='POST'>");
+                                        out.println("<input type='hidden' name='email' value='" + email + "'>");
+                                        out.println("<input type='hidden' name='nome' value='" + nome + "'>");
+                                        out.println("<input type='hidden' name='cpf' value='" + cpf + "'>");
+                                        out.println("<input type='hidden' name='id' value='" + id + "'>");
+                                        out.println("<input type='hidden' name='teste' value='" + teste + "'>");
+                                        out.println("</form>");
+                                        out.println("<script>document.getElementById('autoSubmit').submit();</script>");
+                                    }
+                                }
+                            %>
                         </div>
                         <div class="sector">
                             <h2>Atualizar Senha</h2>
