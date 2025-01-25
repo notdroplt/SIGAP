@@ -13,7 +13,9 @@
     <div class="container">
         <header>
             <div class="title">
-                <h1>CEFET-MG - SIGAP - Cadastrar Item Achado</h1>
+                <a style="color: white; text-decoration: inherit;" href="home.jsp">
+                    <h1>CEFET-MG - SIGAP - Cadastrar Item Achado</h1>
+                </a>
                 <span>Sistema Integrado de Gestão de Achados e Perdidos</span>
             </div>
 
@@ -31,6 +33,10 @@
                     <label for="cor">Cor:</label>
                     <input type="color" id="cor-item" name="cor" placeholder="#696969">
                 </div>
+                <div>
+                    <label for="marca">Marca:</label>
+                    <input type="text" id="marca-item" name="marca" placeholder="Marca...">
+                </div>
                 <!-- TODO: Colocar descrição como dropdown -->
                 <div>
                     <label for="lugar">Lugar que foi encontrado:</label>
@@ -47,6 +53,10 @@
                         <option value="c1">Campus 1</option>
                         <option value="c2">Campus 2</option>
                     </select>
+                </div>
+                <div>
+                    <label for="imagem">Imagem:</label>
+                    <input type="file" name="imagem" id="imagem-item">
                 </div>
                 <button id="formSubmit" type="submit" onClick="submit('/SIGAP/api/cadastro/item/achado', event)">Carregar
                     Item</button>

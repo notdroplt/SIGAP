@@ -27,6 +27,16 @@ public class Item{
     private String nome;
 
     /**
+     * Cor do item perdido
+     */
+    private int cor;
+
+    /**
+     * Marca do item perdido
+     */
+    private String marca;
+
+    /**
      * Data em que o item foi perdido
      */
     private LocalDate dataPerdido;
@@ -67,7 +77,7 @@ public class Item{
     private String foto;
 
     /**
-     * Status do item que foi perdido
+     * Condição do item que foi perdido
      */
     private StatusItem status;
 
@@ -84,10 +94,12 @@ public class Item{
      * @param lugarPerdido lugar em que foi perdido
      * @param foto caminho da foto do item
      */
-    public Item(Long uid, String nome, LocalDate dataPerdido, LocalDate dataAchado, LocalDate dataDevolvido, String local, String descricao,
+    public Item(Long uid, String nome, Integer cor, String marca, LocalDate dataPerdido, LocalDate dataAchado, LocalDate dataDevolvido, String local, String descricao,
                 String lugarAchado, String lugarPerdido, String foto, StatusItem status) {
         this.uid = uid;
         this.nome = nome;
+        this.cor = cor;
+        this.marca = marca;
         this.dataPerdido = dataPerdido;
         this.dataAchado = dataAchado;
         this.dataDevolvido = dataDevolvido;
@@ -199,19 +211,39 @@ public class Item{
         this.uid = uid;
     }
 
-    public Boolean copare(Item comparando)
-    {
-        if(comparando.nome.equals(nome))
-            if(dataAchado.isAfter(comparando.dataPerdido) || dataAchado.isEqual(comparando.dataPerdido))
-                if(lugarAchado!=null && comparando.lugarPerdido!=null)
-                {
-                    if(comparando.lugarPerdido.equals(lugarAchado))
-                    {
-                        return true;
-                    } 
-                }   else{
-                    return true;
-                }
-        return false;
+    public int getCor() {
+        return cor;
+    }
+
+    public void setCor(int cor) {
+        this.cor = cor;
+    }
+
+    public String getMarca() {
+        return marca;
+    }
+
+    public void setMarca(String marca) {
+        this.marca = marca;
+    }
+
+    @Override
+    public String toString() {
+        return "Item{" +
+                "id=" + id +
+                ", uid=" + uid +
+                ", nome='" + nome + '\'' +
+                ", cor=" + cor +
+                ", marca='" + marca + '\'' +
+                ", dataPerdido=" + dataPerdido +
+                ", dataAchado=" + dataAchado +
+                ", dataDevolvido=" + dataDevolvido +
+                ", local='" + local + '\'' +
+                ", descricao='" + descricao + '\'' +
+                ", lugarAchado='" + lugarAchado + '\'' +
+                ", lugarPerdido='" + lugarPerdido + '\'' +
+                ", foto='" + foto + '\'' +
+                ", status=" + status +
+                '}';
     }
 }

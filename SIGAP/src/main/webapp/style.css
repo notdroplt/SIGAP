@@ -128,55 +128,10 @@ header .title span {
 .help-links a:hover {
     text-decoration: underline;
 }
-
-.search-bar {
-    width: 150px;
-    max-width: 200px;
-    margin: 20px auto;
+.sector{
     padding: 15px;
+    text-align: center;
     background-color: #f4f4f4;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-top: 2px solid #808080;
+    margin-top: auto;
 }
-
-.search-bar form {
-    display: flex;
-    justify-content: space-between;
-    gap: 10px;
-    align-items: center;
-}
-
-.search-bar select {
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: #fff;
-    width: 150px;
-    cursor: pointer;
-}
-
-.search-bar input[type="text"] {
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: #fff;
-    width: 250px;
-}
-
-.search-bar button {
-    padding: 10px 15px;
-    font-size: 16px;
-    border: none;
-    background-color: #007bff;
-    color: white;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.search-bar button:hover {
-    background-color: #0056b3;
-}
-

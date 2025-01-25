@@ -89,7 +89,9 @@
 <body>
 <div class="container">
     <header>
-        <h1>CEFET-MG - SIGAP</h1>
+        <a style="color: white; text-decoration: inherit;" href="home.jsp">
+            <h1>CEFET-MG - SIGAP -</h1>
+        </a>
         <span>Verificação de e-mail</span>
     </header>
 
@@ -102,18 +104,33 @@
                     String cpf = request.getParameter("cpf");
                     String senha = request.getParameter("senha");
                     String codigo = request.getParameter("codigo");
+                    Integer id = null;
+                    String idS = request.getParameter("id");
+                    if(request.getParameter("id")!=null)
+                        try {
+                            id = Integer.parseInt(idS);
+                        } catch (NumberFormatException e) {
+                            e.printStackTrace();
+                        }
+
+                    String teste = request.getParameter("teste");
 
                     if (email != null) sessionObj.setAttribute("email", email);
                     if (nome != null) sessionObj.setAttribute("nome", nome);
                     if (cpf != null) sessionObj.setAttribute("cpf", cpf);
                     if (senha != null) sessionObj.setAttribute("senha", senha);
                     if (codigo != null) sessionObj.setAttribute("codigo", codigo);
+                    if (id != null) sessionObj.setAttribute("id", id);
+                    if (teste != null) sessionObj.setAttribute("teste", teste);
 
                     email = (String) sessionObj.getAttribute("email");
                     nome = (String) sessionObj.getAttribute("nome");
                     cpf = (String) sessionObj.getAttribute("cpf");
                     senha = (String) sessionObj.getAttribute("senha");
                     codigo = (String) sessionObj.getAttribute("codigo");
+                    if(sessionObj.getAttribute("id")!=null )
+                        id = (Integer) sessionObj.getAttribute("id");
+                    teste = (String) sessionObj.getAttribute("teste");
     %>
         <h2>Confirmação de Código</h2>
         <form method="POST">
@@ -125,6 +142,8 @@
                 <input type="hidden" name="nome" value="<%= nome %>">
                 <input type="hidden" name="cpf" value="<%= cpf %>">
                 <input type="hidden" name="senha" value="<%= senha %>">
+                <input type="hidden" name="id" value="<%= id %>">
+                <input type="hidden" name="teste" value="<%= teste %>">
                 <button type="submit">enviar E-mail novamente</button>
         </form>
 
@@ -137,14 +156,28 @@
                     String codigoR = request.getParameter("codigoR");
 
                     if (codigo.equals(codigoR)) {
-                        response.setContentType("text/html;charset=UTF-8");
-                        out.println("<form id='autoSubmit' action='CadastroServlet' method='POST'>");
-                        out.println("<input type='hidden' name='email' value='" + email + "'>");
-                        out.println("<input type='hidden' name='nome' value='" + nome + "'>");
-                        out.println("<input type='hidden' name='cpf' value='" + cpf + "'>");
-                        out.println("<input type='hidden' name='senha' value='" + senha + "'>");
-                        out.println("</form>");
-                        out.println("<script>document.getElementById('autoSubmit').submit();</script>");
+                        if(teste.equals("painelUsuario"))
+                        {
+                            response.setContentType("text/html;charset=UTF-8");
+                            out.println("<form id='autoSubmit' action='AtualizarUsuario' method='POST'>");
+                            out.println("<input type='hidden' name='email' value='" + email + "'>");
+                            out.println("<input type='hidden' name='nome' value='" + nome + "'>");
+                            out.println("<input type='hidden' name='cpf' value='" + cpf + "'>");
+                            out.println("<input type='hidden' name='id' value='" + id + "'>");
+                            out.println("</form>");
+                            out.println("<script>document.getElementById('autoSubmit').submit();</script>");
+
+                        } else{
+                            response.setContentType("text/html;charset=UTF-8");
+                            out.println("<form id='autoSubmit' action='CadastroServlet' method='POST'>");
+                            out.println("<input type='hidden' name='email' value='" + email + "'>");
+                            out.println("<input type='hidden' name='nome' value='" + nome + "'>");
+                            out.println("<input type='hidden' name='cpf' value='" + cpf + "'>");
+                            out.println("<input type='hidden' name='senha' value='" + senha + "'>");
+                            out.println("</form>");
+                            out.println("<script>document.getElementById('autoSubmit').submit();</script>");
+                        }
+                        
                     } else {
                         out.println("<p style='color:red;'>Código inválido!</p>");
                     }

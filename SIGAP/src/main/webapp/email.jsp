@@ -13,6 +13,10 @@
         String nome = request.getParameter("nome");
         String cpf = request.getParameter("cpf");
         String senha = request.getParameter("senha");
+        Integer id = null;
+        if(request.getParameter("id")!=null)
+            id = Integer.parseInt(request.getParameter("id"));
+        String teste = request.getParameter("teste");
         Random gerador = new Random();
         int codigo = gerador.nextInt(1000000);
 
@@ -27,12 +31,19 @@
         props.put("mail.smtp.starttls.enable", "true");
 
         // Criando a sessão de e-mail
-        Session mailSession = Session.getInstance(props, new Authenticator() {
-            protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(username, password);
-            }
-        });
+        Session mailSession = null;
+        try {
+            mailSession = Session.getInstance(props, new Authenticator() {
+                protected PasswordAuthentication getPasswordAuthentication() {
+                    return new PasswordAuthentication(username, password);
+                 }
+            });
+        }
+        catch (Exception e) {
+            System.out.println("Erro ao criar a sessão de e-mail: " + e.getMessage());
+            response.sendRedirect("CadastroServlet");
 
+        }
         try {
             Message message = new MimeMessage(mailSession);
             message.setFrom(new InternetAddress(username));
@@ -43,7 +54,13 @@
             Transport.send(message);
             out.println("<p>E-mail enviado com sucesso!</p>");
         } catch (MessagingException e) {
-            out.println("<p>Erro ao enviar e-mail: " + e.getMessage() + "</p>");
+            System.out.println("Erro ao enviar o e-mail: " + e.getMessage());
+            response.sendRedirect("CadastroServlet");
+        }
+        catch (Exception e) {
+            System.out.println("Erro ao enviar o e-mail: " + e.getMessage());
+            e.printStackTrace();
+            response.sendRedirect("CadastroServlet");
         }
         
     %>
@@ -54,6 +71,8 @@
         <input type="hidden" name="cpf" value="<%= cpf %>">
         <input type="hidden" name="senha" value="<%= senha %>">
         <input type="hidden" name="codigo" value="<%= codigo %>">
+        <input type="hidden" name="id" value="<%= id %>">
+        <input type="hidden" name="teste" value="<%= teste %>">
     </form>
     <script>
         document.getElementById('autoSubmit').submit();

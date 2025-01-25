@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CEFET-MG - SIGAA</title>
+    <title>CEFET-MG - SIGAP</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="perdido.css">
 </head>
@@ -13,7 +13,9 @@
     <div class="container">
         <header>
             <div class="title">
-                <h1>CEFET-MG - SIGAP - Cadastro de Item perdido</h1>
+                <a style="color: white; text-decoration: inherit;" href="home.jsp">
+                    <h1>CEFET-MG - SIGAP -</h1>
+                </a>
                 <span>Sistema Integrado de Gestão de Achados e Perdidos</span>
             </div>
 
@@ -32,10 +34,9 @@
                     <input type="color" id="cor-item" name="cor" placeholder="#696969">
                 </div>
                 <div>
-                    <label for="marca">Cor:</label>
+                    <label for="marca">Marca:</label>
                     <input type="text" id="marca-item" name="marca" placeholder="Marca...">
                 </div>
-                <!-- TODO: Colocar descrição como dropdown -->
                 <div>
                     <label for="lugar">Lugar que foi perdido:</label>
                     <input type="text" id="lugar-item" name="lugar" placeholder="lugar em que foi perdido">

@@ -1,11 +1,6 @@
-<<<<<<<< HEAD:SIGAP/src/main/java/br/cefetmg/inf/sigap/factories/ItemFactory.java
 package br.cefetmg.inf.sigap.factories;
 
-import br.cefetmg.inf.sigap.db.Item;
-import br.cefetmg.inf.sigap.db.StatusItem;
-========
-package br.cefetmg.inf.sigap.dto;
->>>>>>>> main:SIGAP/src/main/java/br/cefetmg/inf/sigap/dto/ItemFactory.java
+import br.cefetmg.inf.sigap.dto.*;
 
 import java.time.LocalDate;
 
@@ -33,6 +28,7 @@ public final class ItemFactory {
     /**
      * Cria um item que foi encontrado
      * @param nome nome do item encontrado
+     * @param cor cor do item encontrado
      * @param data data em que foi encontrado
      * @param local local em que está guardado
      * @param descricao descrição do item

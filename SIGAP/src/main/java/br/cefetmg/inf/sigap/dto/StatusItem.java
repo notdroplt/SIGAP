@@ -11,7 +11,7 @@ public enum StatusItem {
 
     /**
      * Item foi encontrado e colocado no sistema, porém
-     * não houveram baixas
+     * não havia baixas
      */
     ENCONTRADO,
 

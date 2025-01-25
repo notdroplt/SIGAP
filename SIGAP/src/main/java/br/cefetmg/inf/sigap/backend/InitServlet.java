@@ -23,15 +23,23 @@ public class InitServlet extends HttpServlet {
                 "    lugar_achado TEXT,\n" +
                 "    lugar_perdido TEXT,\n" +
                 "    foto TEXT NOT NULL,\n" +
-                "    status VARCHAR(255) NOT NULL\n" +
+                "    status INT NOT NULL\n" +
                 ");";
         String user_tabela =
                 "CREATE TABLE IF NOT EXISTS usuario (\n" +
-                "    id BIGINT NOT NULL PRIMARY KEY GENERATED ALWAYS AS IDENTITY,\n" +
+                "    id INT NOT NULL PRIMARY KEY GENERATED ALWAYS AS IDENTITY,\n" +
                 "    nome VARCHAR(255) NOT NULL,\n" +
-                "    cpf BIGINT NOT NULL,\n" +
+                "    cpf VARCHAR(11) NOT NULL,\n" +
                 "    email VARCHAR(255) NOT NULL,\n" +
-                "    senha VARCHAR(255) NOT NULL\n" +
+                "    senha bytea NOT NULL,\n" +
+                "    auth INT NOT NULL DEFAULT 0\n" +
+                ");\n";
+        String log =
+                "CREATE TABLE IF NOT EXISTS log (\n" +
+                "    id BIGINT NOT NULL PRIMARY KEY GENERATED ALWAYS AS IDENTITY,\n" +
+                "    uid BIGINT,\n" +
+                "    data TIMESTAMP,\n" +
+                "    acao VARCHAR(255) NOT NULL\n" +
                 ");\n";
 
         String[] extensions = new String[] {
@@ -60,6 +68,7 @@ public class InitServlet extends HttpServlet {
         // cria tabelas
         stmt.addBatch(item_tabela);
         stmt.addBatch(user_tabela);
+        stmt.addBatch(log);
 
         stmt.executeBatch();
         System.out.println(" -- Tabelas criadas");

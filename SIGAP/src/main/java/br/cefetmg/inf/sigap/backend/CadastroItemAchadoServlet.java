@@ -1,6 +1,7 @@
 package br.cefetmg.inf.sigap.backend;
 
-import br.cefetmg.inf.sigap.db.ItemService;
+import br.cefetmg.inf.sigap.service.ImagemService;
+import br.cefetmg.inf.sigap.service.ItemService;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 import org.json.JSONObject;
@@ -22,8 +23,8 @@ public class CadastroItemAchadoServlet extends HttpServlet {
 
     protected void ErrorResponse(HttpServletResponse res, String razao) throws IOException {
         JSONObject respjson = new JSONObject();
-        respjson.append("sucesso", false);
-        respjson.append("motivo", razao);
+        respjson.put("sucesso", false);
+        respjson.put("motivo", razao);
         res.getOutputStream().println(respjson.toString());
     }
 
@@ -33,32 +34,31 @@ public class CadastroItemAchadoServlet extends HttpServlet {
         String json = req.getReader().lines().collect(Collectors.joining());
         JSONObject jsonbj = new JSONObject(json);
 
-        String nome = jsonbj.getString("nome-item");
+        String nome = jsonbj.optString("nome");
 
-        if (nome.length() > 40) {
-            System.out.println("Erro: Tamanho do nome " + nome.length() + " > 40");
+        if (nome.isEmpty() || nome.length() > 40) {
+            System.out.println("Erro: Tamanho do nome " + nome.length());
             ErrorResponse(res, "texto-nome");
             return;
         }
 
-        String desc = jsonbj.getString("desc-item");
+        String desc = jsonbj.optString("desc");
 
-        if (desc.length() > 144) {
-            System.out.println("Erro: Tamanho da descrição " + nome.length() + " > 144");
+        if (desc.isEmpty() || desc.length() > 144) {
+            System.out.println("Erro: Tamanho da descrição " + nome.length());
             ErrorResponse(res, "texto-desc");
             return;
         }
 
-        String local = jsonbj.getString("lugar-item");
+        String local = jsonbj.optString("lugar");
 
-        if (local.length() > 144) {
-            System.out.println("Erro: Tamanho do local " + local.length() + " > 144");
+        if (local.isEmpty() || local.length() > 144) {
+            System.out.println("Erro: Tamanho do local " + local.length() );
             ErrorResponse(res, "texto-local");
             return;
         }
 
-        String campus = jsonbj.getString("campus-item");
-
+        String campus = jsonbj.optString("campus");
 
         if (campus.length() > 3) {
             System.out.println("Erro: Tamanho do campus " + campus.length() + " > 3");
@@ -66,18 +66,49 @@ public class CadastroItemAchadoServlet extends HttpServlet {
             return;
         }
 
+        String marca = jsonbj.getString("marca");
+
+        if (marca.length() > 60) {
+            System.out.println("Erro: Tamanho da marca " + marca.length() + " > 60");
+            ErrorResponse(res, "texto-marca");
+            return;
+        }
+
+        String cor = jsonbj.getString("cor");
+
+        if (cor.length() != 7) {
+            System.out.println("Erro: Cor " + cor.length() + " != 7");
+            ErrorResponse(res, "texto-cor");
+            return;
+        }
+
+        String imagem = jsonbj.optString("imagem");
+
+        if (imagem.isEmpty()) {
+            System.out.println("Erro ao adicionar imagem");
+            ErrorResponse(res, "imagem");
+            return;
+        }
+
+        Integer valorCor = ItemService.reduzirEspectroCor(cor);
+
+        ImagemService img_service = ImagemService.getInstance();
+
+        String caminho = img_service.adicionarImagem(imagem);
+
+        System.out.println("imagem salva em " + caminho);
+
         ItemService service = ItemService.getInstance();
 
         service.adicionarItemAchado(
-            0L, nome, LocalDate.now(), desc, local, campus, "/dev/zero"
+            0L, nome, valorCor, marca, LocalDate.now(), desc, local, campus, caminho
         );
 
         System.out.println("Item adicionado!");
 
-
         JSONObject respjson = new JSONObject();
 
-        respjson.append("sucesso", true);
+        respjson.put("sucesso", true);
 
         res.getOutputStream().println(respjson.toString());
     }

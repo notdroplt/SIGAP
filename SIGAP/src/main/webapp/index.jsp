@@ -1,28 +1,13 @@
-<%@ page import="jakarta.servlet.http.Cookie" %>
-<%@ page import="jakarta.servlet.http.HttpServletResponse" %>
 <%
-    Cookie[] cookies = request.getCookies();
-    boolean redirecionar = false;
-
-    if (cookies != null) {
-        for (Cookie atual : cookies) {
-            if (atual.getName().length() >= 10 && atual.getName().substring(0, 10).equals("1nomeAluno")) {
-                redirecionar = true;
-                break;
-            }
-        }
-    }
-
-    if (redirecionar) {
-        response.sendRedirect("notificacao.jsp");
-        return;
+    if (session.getAttribute("Token") != null) {
+        response.sendRedirect("home.jsp");
     }
 %>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CEFET-MG - SIGAA</title>
+    <title>CEFET-MG - SIGAP</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>

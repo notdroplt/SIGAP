@@ -16,5 +16,14 @@
         <servlet-class>br.cefetmg.inf.sigap.backend.InitServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
+
+    <servlet-mapping>
+        <servlet-name>InitServlet</servlet-name>
+        <url-pattern>/init</url-pattern>
+    </servlet-mapping>
+
+    <session-config>
+        <session-timeout>60</session-timeout> <!-- Session timeout in minutes -->
+    </session-config>
 </web-app>
 
