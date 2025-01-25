@@ -14,6 +14,26 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Resultado da Pesquisa</title>
+  <style>
+      .resultadoNulo {
+          text-align: center;
+      }
+
+      .resultadoNulo button {
+          padding: 10px 15px;
+          font-size: 16px;
+          border: none;
+          background-color: #007bff;
+          color: white;
+          border-radius: 5px;
+          cursor: pointer;
+          transition: background-color 0.3s ease;
+      }
+
+      .resultadoNulo button:hover {
+          background-color: #0056b3;
+      }
+  </style>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -41,8 +61,6 @@
     <div class="resultados">
 
       <%
-        // Obtém a lista de itens da requisição
-        @SuppressWarnings("unchecked")
         List<Item> itens = (List<Item>) request.getAttribute("itensEncontrados");
 
         if (itens != null && !itens.isEmpty()) {
@@ -50,7 +68,7 @@
             %>
               <div class="acoes">
               <span><%= item.getNome() %></span>
-              <input type="button" value="Adicionar">
+              <a href="achado.jsp" class="button">Registrar achado</a>
               </div>
             <%
           }

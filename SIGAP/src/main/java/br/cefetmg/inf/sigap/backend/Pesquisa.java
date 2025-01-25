@@ -49,7 +49,7 @@ public class Pesquisa extends HttpServlet {
                         }
                         break;
                     default:
-                        itensFiltrados = List.of();  // Caso o filtro não seja válido
+                        itensFiltrados = List.of();
                         break;
                 }
 
