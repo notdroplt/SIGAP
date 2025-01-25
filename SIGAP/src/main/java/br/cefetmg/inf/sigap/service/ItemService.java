@@ -6,10 +6,17 @@
  * @author Arthur C
  */
 
+<<<<<<<< HEAD:SIGAP/src/main/java/br/cefetmg/inf/sigap/services/ItemService.java
 package br.cefetmg.inf.sigap.services;
 
 import br.cefetmg.inf.sigap.db.Item;
 import br.cefetmg.inf.sigap.db.StatusItem;
+========
+package br.cefetmg.inf.sigap.service;
+
+import br.cefetmg.inf.sigap.dto.Item;
+import br.cefetmg.inf.sigap.dto.StatusItem;
+>>>>>>>> main:SIGAP/src/main/java/br/cefetmg/inf/sigap/service/ItemService.java
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;

@@ -71,6 +71,16 @@
             border-radius: 5px;
         }
 
+        img {
+            width: 80px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            border-radius: 5px;
+        }
+
         .details p {
             margin: 5px 0;
             font-size: 14px;
@@ -119,9 +129,6 @@
     <main>
         <h2>Notificação de item encontrado</h2>
         <div class="item-info">
-            <div class="image-placeholder">
-                <img src="placeholder.png" alt="Imagem do item">
-            </div>
             <%
                 String perdido[] = new String[100];
                 int i = 0;
@@ -139,25 +146,31 @@
 
                 if(request.getParameter("item") != null) {
                     perdido[i+1] = java.net.URLEncoder.encode(request.getParameter("item"), "UTF-8");
-                    perdido[i] = "2item" + perdido[1] +"Perdido";
+                    perdido[i] = "3item" + perdido[1] +"Perdido";
                     i+=2;
                 }
 
-                if(request.getParameter("cor") != null) {
-                    perdido[i+1] = java.net.URLEncoder.encode(request.getParameter("cor"), "UTF-8");
-                    perdido[i] = "3cor" + perdido[1] +"Perdido";
+                if(request.getParameter("descricao") != null) {
+                    perdido[i+1] = java.net.URLEncoder.encode(request.getParameter("descricao"), "UTF-8");
+                    perdido[i] = "6descricao" + perdido[1] +"Perdido";
                     i+=2;
                 }
 
-                if(request.getParameter("marca") != null) {
-                    perdido[i+1] = java.net.URLEncoder.encode(request.getParameter("marca"), "UTF-8");
-                    perdido[i] = "4marca" + perdido[1] +"Perdido";
+                if(request.getParameter("data") != null) {
+                    perdido[i+1] = java.net.URLEncoder.encode(request.getParameter("data"), "UTF-8");
+                    perdido[i] = "4data" + perdido[1] +"Perdido";
                     i+=2;
                 }
 
                 if(request.getParameter("local") != null) {
                     perdido[i+1] = java.net.URLEncoder.encode(request.getParameter("local"), "UTF-8");
                     perdido[i] = "5local" + perdido[1] +"Perdido";
+                    i+=2;
+                }
+
+                if(request.getParameter("image") != null) {
+                    perdido[i+1] = java.net.URLEncoder.encode(request.getParameter("image"), "UTF-8");
+                    perdido[i] = "2imagem" + perdido[1] +"Perdido";
                     i+=2;
                 }
 
@@ -199,10 +212,13 @@
                                 break;
                             }
                         }
-                    for(int j = 0; j<num; j+=2)
+                    for(int j = 0; j < num; j+=2)
                     {
                         if(buscaCookies[j].contains(idAtual))
-                            out.print("<p><strong>" + buscaCookies[j].substring(1, buscaCookies[j].length() - 7 - 9) + ": </strong>" + buscaCookies[j+1] + "</p>");
+                            if(buscaCookies[j].contains("image"))
+                                out.print("<div><img src=" + buscaCookies[j+1] +" alt='Imagem do item'></div>");
+                            else
+                                out.print("<p><strong>" + buscaCookies[j].substring(1, buscaCookies[j].length() - 7 - 9) + ": </strong>" + buscaCookies[j+1] + "</p>");
                     }
 
                 %>
@@ -213,7 +229,7 @@
 
         <div class="actions">
             <form action="index.jsp">
-                <button id="verde">Este item é meu</button>
+                <button id="verde" type="submit" name="acao" value="apagar">Este item é meu</button>
             </form>
             <form method="POST">
                 <button id="vermelho" type="submit" name="acao" value="apagar">Este item não é meu</button>

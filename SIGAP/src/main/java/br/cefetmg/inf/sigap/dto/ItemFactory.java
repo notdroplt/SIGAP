@@ -1,7 +1,11 @@
+<<<<<<<< HEAD:SIGAP/src/main/java/br/cefetmg/inf/sigap/factories/ItemFactory.java
 package br.cefetmg.inf.sigap.factories;
 
 import br.cefetmg.inf.sigap.db.Item;
 import br.cefetmg.inf.sigap.db.StatusItem;
+========
+package br.cefetmg.inf.sigap.dto;
+>>>>>>>> main:SIGAP/src/main/java/br/cefetmg/inf/sigap/dto/ItemFactory.java
 
 import java.time.LocalDate;
 
