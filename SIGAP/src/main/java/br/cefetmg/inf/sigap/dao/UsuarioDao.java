@@ -33,6 +33,25 @@ public class UsuarioDao {
         String nome = usuario.getNome();
         String email = usuario.getEmail();
 
+        System.out.println("Tentando criar usuario:");
+        System.out.println("Id: " + getId(cpf, senha));
+        System.out.println("Nome: " + nome);
+        System.out.println("cpf: " + cpf);
+
+        String sql = "SELECT * FROM usuario WHERE cpf = ?";
+        try {
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setString(1,cpf);
+            ResultSet result = statement.executeQuery();
+            if (result.next()){
+                System.out.println("Usuário já existe!");
+                System.out.println("---END CREATE USER---");
+                return false;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
 
         String sql2 = "INSERT INTO usuario (cpf, nome, senha, email) " +
         "VALUES (?, ?, ?, ?)";
@@ -46,12 +65,11 @@ public class UsuarioDao {
             statement.close();
             GeneralDao.logAction(getId(cpf, senha), "Criou o usuário " + getId(cpf, senha));
             System.out.println("Usuário criado com sucesso!");
-            System.out.println("Id: " + getId(cpf, senha));
-            System.out.println("Nome: " + nome);
-            System.out.println("cpf: " + cpf);
             System.out.println("---END CREATE USER---");
             return true;
         } catch (SQLException e) {
+            System.out.println("Erro ao criar usuário!");
+            System.out.println("---END CREATE USER---");
             e.printStackTrace();
             return false;
         }
