@@ -6,8 +6,8 @@ import jakarta.servlet.annotation.*;
 import java.io.*;
 import java.util.List;
 import java.util.ArrayList;
-import br.cefetmg.inf.sigap.services.ItemService;
-import br.cefetmg.inf.sigap.db.Item;
+import br.cefetmg.inf.sigap.service.ItemService;
+import br.cefetmg.inf.sigap.dto.Item;
 
 @WebServlet(name = "Pesquisa", urlPatterns = {"/Pesquisa"})
 
@@ -17,41 +17,44 @@ public class Pesquisa extends HttpServlet {
             throws ServletException, IOException {
             response.setContentType("text/html;charset=UTF-8");
             try (PrintWriter out = response.getWriter()) {
-                String filtro = request.getParameter("filtro");
                 String valor = request.getParameter("valor");
+                String[] filtrosSelecionados = request.getParameterValues("filtros");
 
                 ItemService servicoItem = ItemService.getInstance();
                 List<Item> alvos = servicoItem.getItens();
                 List<Item> itensFiltrados = new ArrayList<>();
 
-                switch(filtro){
-                    case "nome":
-                        for (Item item : alvos) {
-                            if (item.getNome().equalsIgnoreCase(valor))
-                                itensFiltrados.add(item);
-                        }
-                        break;
-                    case "cor":
-                        try{
-                            int cor = Integer.parseInt(valor);
-                            for (Item item : alvos) {
-                                if (item.getCor() == cor)
-                                    itensFiltrados.add(item);
+                for (Item item : alvos) {
+                    boolean matches = true;
+
+                    if (filtrosSelecionados != null) {
+                        for (String filtro : filtrosSelecionados) {
+                            switch (filtro) {
+                                case "nome":
+                                    matches = matches && item.getNome().toLowerCase().contains(valor.toLowerCase());
+                                    break;
+                                case "cor":
+                                    try {
+                                        int cor = Integer.parseInt(valor);
+                                        matches = matches && item.getCor() == cor;
+                                    } catch (NumberFormatException e) {
+                                        matches = false;
+                                    }
+                                    break;
+                                case "marca":
+                                    matches = matches && item.getMarca().toLowerCase().contains(valor.toLowerCase());
+                                    break;
+                                default:
+                                    matches = false;
+                                    break;
                             }
-                        }catch (NumberFormatException e){
-                            itensFiltrados = List.of();
                         }
-                        break;
-                    case "marca":
-                        for (Item item : alvos) {
-                            if (item.getMarca().equalsIgnoreCase(valor))
-                                itensFiltrados.add(item);
-                        }
-                        break;
-                    default:
-                        itensFiltrados = List.of();
-                        break;
+                    }
+                    if (matches) {
+                        itensFiltrados.add(item);
+                    }
                 }
+
 
                 request.setAttribute("itensEncontrados", itensFiltrados);
                 RequestDispatcher dispatcher = request.getRequestDispatcher("resultadoPesquisa.jsp");

@@ -6,7 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page import="java.util.List" %>
-<%@ page import="br.cefetmg.inf.sigap.db.Item" %>
+<%@ page import="br.cefetmg.inf.sigap.dto.Item" %>
 
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -14,27 +14,42 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Resultado da Pesquisa</title>
-  <style>
-      .resultadoNulo {
-          text-align: center;
-      }
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const campusCheckboxes = document.querySelectorAll('.campus-checkbox');
 
-      .resultadoNulo button {
-          padding: 10px 15px;
-          font-size: 16px;
-          border: none;
-          background-color: #007bff;
-          color: white;
-          border-radius: 5px;
-          cursor: pointer;
-          transition: background-color 0.3s ease;
-      }
+            campusCheckboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    if (this.checked) {
+                        // Desmarca o outro campus
+                        campusCheckboxes.forEach(otherCheckbox => {
+                            if (otherCheckbox !== this && otherCheckbox.checked) {
+                                otherCheckbox.checked = false;
+                                showAlert('Você só pode selecionar um campus por vez.');
+                            }
+                        });
+                    }
+                });
+            });
 
-      .resultadoNulo button:hover {
-          background-color: #0056b3;
-      }
-  </style>
+            function showAlert(message) {
+                // Cria um elemento de aviso
+                const alertDiv = document.createElement('div');
+                alertDiv.className = 'alert-message';
+                alertDiv.textContent = message;
+
+                // Adiciona o aviso à página
+                document.body.appendChild(alertDiv);
+
+                // Remove o aviso após 3 segundos
+                setTimeout(() => {
+                    alertDiv.remove();
+                }, 3000);
+            }
+        });
+    </script>
   <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="resultadoPesquisa.css">
 </head>
 <body>
 <div class="container">
@@ -46,16 +61,32 @@
   </header>
   <div class="search-bar">
       <form action="Pesquisa" method="get">
-          <select name="filtro">
-              <option value="nome">Nome</option>
-              <option value="cor">Cor</option>
-              <option value="marca">Marca</option>
-          </select>
           <input type="text" name="valor" placeholder="Digite sua pesquisa..." required>
+          <div class="filtros-container">
+              <label class="filtro-option">
+                  <input type="checkbox" name="filtros" value="nome">
+                  <span>Nome</span>
+              </label>
+              <label class="filtro-option">
+                  <input type="checkbox" name="filtros" value="cor">
+                  <span>Cor</span>
+              </label>
+              <label class="filtro-option">
+                  <input type="checkbox" name="filtros" value="marca">
+                  <span>Marca</span>
+              </label>
+              <label class="filtro-option">
+                  <input type="checkbox" name="filtros" value="campus1" class="campus-checkbox">
+                  <span>Campus 1</span>
+              </label>
+              <label class="filtro-option">
+                  <input type="checkbox" name="filtros" value="campus2" class="campus-checkbox">
+                  <span>Campus 2</span>
+              </label>
+          </div>
           <button type="submit">Pesquisar</button>
       </form>
   </div>
-
   <main>
     <div class="login-box"><h2>Resultados da Pesquisa</h2></div>
     <div class="resultados">
