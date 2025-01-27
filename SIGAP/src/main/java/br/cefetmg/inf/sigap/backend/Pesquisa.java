@@ -33,7 +33,7 @@ public class Pesquisa extends HttpServlet {
                 for (Item item : alvos) {
                     boolean matches = true;
 
-                    if (filtrosSelecionados != null) {
+                    if (filtrosSelecionados != null && valor != null) {
                         for (String filtro : filtrosSelecionados) {
                             switch (filtro) {
                                 case "nome":

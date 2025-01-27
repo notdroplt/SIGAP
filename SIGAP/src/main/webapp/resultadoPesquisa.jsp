@@ -16,6 +16,7 @@
   <title>Resultado da Pesquisa</title>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // Lógica para os checkboxes de campus
             const campusCheckboxes = document.querySelectorAll('.campus-checkbox');
 
             campusCheckboxes.forEach(checkbox => {
@@ -32,6 +33,7 @@
                 });
             });
 
+            // Função para exibir alertas
             function showAlert(message) {
                 // Cria um elemento de aviso
                 const alertDiv = document.createElement('div');
@@ -46,29 +48,52 @@
                     alertDiv.remove();
                 }, 3000);
             }
-        });
 
-        const searchInput = document.querySelector('input[name="valor"]');
-        const cookies = document.cookie.split(';');
-        const searchSuggestions = [];
+            // Lógica para sugestões de pesquisa
+            const searchInput = document.querySelector('input[name="valor"]');
 
-        cookies.forEach(cookie => {
-            const [name, value] = cookie.trim().split('=');
-            if (name.startsWith('pesquisa_')) {
-                searchSuggestions.push(value);
+            // Função para recuperar cookies
+            function getCookies() {
+                const cookies = document.cookie.split(';');
+                const searchSuggestions = [];
+
+                cookies.forEach(cookie => {
+                    const [name, value] = cookie.trim().split('=');
+                    if (name.startsWith('pesquisa_')) {
+                        searchSuggestions.push(value);
+                    }
+                });
+
+                return searchSuggestions;
             }
-        });
-        if (searchSuggestions.length > 0) {
-            const datalist = document.createElement('datalist');
-            datalist.id = 'searchSuggestions';
-            searchSuggestions.forEach(suggestion => {
-                const option = document.createElement('option');
-                option.value = suggestion;
-                datalist.appendChild(option);
+
+            // Recuperar sugestões de pesquisa dos cookies
+            const searchSuggestions = getCookies();
+
+            if (searchSuggestions.length > 0) {
+                // Criar o elemento <datalist>
+                const datalist = document.createElement('datalist');
+                datalist.id = 'searchSuggestions';
+
+                // Adicionar cada sugestão como uma <option>
+                searchSuggestions.forEach(suggestion => {
+                    const option = document.createElement('option');
+                    option.value = suggestion;
+                    datalist.appendChild(option);
+                });
+
+                // Associar o <datalist> ao campo de pesquisa
+                searchInput.setAttribute('list', 'searchSuggestions');
+                document.body.appendChild(datalist);
+            }
+
+            // Exibir sugestões ao clicar na barra de pesquisa
+            searchInput.addEventListener('focus', function() {
+                if (this.getAttribute('list') === 'searchSuggestions') {
+                    this.click(); // Força a exibição das sugestões
+                }
             });
-            searchInput.setAttribute('list', 'searchSuggestions');
-            document.body.appendChild(datalist);
-        }
+        });
     </script>
   <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="resultadoPesquisa.css">
