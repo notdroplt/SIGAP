@@ -1,79 +1,50 @@
 package br.cefetmg.inf.sigap.service;
 
-/**
+/*
  *
  * @author luisg
  */
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
-public final class GraficoService {
+public class GraficoService {
 
-    private static GraficoService single = null;
+    private final String dbUrl = "jdbc:postgresql://db:5432/sigap";
+    private final String dbUser = "sigap";
+    private final String dbPassword = "sigap";
 
-    private static final String jdbcURL = "jdbc:postgresql://db:5432/sigap";
-    private static final String username = "sigap";
-    private static final String password = "sigap";
+    public Map<String, Integer> getDadosGrafico(LocalDate dataInicio, LocalDate dataFim) throws SQLException {
+        Map<String, Integer> dados = new HashMap<>();
 
-    private Connection getConnection() throws ClassNotFoundException, SQLException {
-        Class.forName("org.postgresql.Driver");
+        String sqlAchados = "SELECT COUNT(*) AS total FROM Item WHERE dataAchado BETWEEN ? AND ?";
+        String sqlPerdidos = "SELECT COUNT(*) AS total FROM Item WHERE dataPerdido BETWEEN ? AND ?";
 
-        return DriverManager.getConnection(jdbcURL, username, password);
-    }
+        try (Connection conn = DriverManager.getConnection(dbUrl, dbUser, dbPassword)) {
+            try (PreparedStatement stmtAchados = conn.prepareStatement(sqlAchados)) {
+                stmtAchados.setDate(1, Date.valueOf(dataInicio));
+                stmtAchados.setDate(2, Date.valueOf(dataFim));
 
-    private GraficoService() {}
-
-    public static GraficoService getInstance() {
-        if (single == null) single = new GraficoService();
-
-        return single;
-    }
-
-    public Map<String, Integer> getItensPerdidosPorLocal() {
-        Map<String, Integer> resultados = new HashMap<>();
-
-        try (Connection conn = getConnection()) {
-            String sql = "SELECT lugar_perdido AS local, COUNT(*) AS quantidade " +
-                         "FROM Item WHERE status = 0 " +
-                         "GROUP BY lugar_perdido " +
-                         "ORDER BY quantidade DESC";
-
-            PreparedStatement stmt = conn.prepareStatement(sql);
-            ResultSet rs = stmt.executeQuery();
-
-            while (rs.next()) {
-                resultados.put(rs.getString("local"), rs.getInt("quantidade"));
+                try (ResultSet rs = stmtAchados.executeQuery()) {
+                    if (rs.next()) {
+                        dados.put("Achados", rs.getInt("total"));
+                    }
+                }
             }
 
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+            try (PreparedStatement stmtPerdidos = conn.prepareStatement(sqlPerdidos)) {
+                stmtPerdidos.setDate(1, Date.valueOf(dataInicio));
+                stmtPerdidos.setDate(2, Date.valueOf(dataFim));
 
-        return resultados;
-    }
-
-    public Map<String, Integer> getItensAchadosPorLocal() {
-        Map<String, Integer> resultados = new HashMap<>();
-
-        try (Connection conn = getConnection()) {
-            String sql = "SELECT lugar_achado AS local, COUNT(*) AS quantidade " +
-                         "FROM Item WHERE status = 1 " +
-                         "GROUP BY lugar_achado " +
-                         "ORDER BY quantidade DESC";
-
-            PreparedStatement stmt = conn.prepareStatement(sql);
-            ResultSet rs = stmt.executeQuery();
-
-            while (rs.next()) {
-                resultados.put(rs.getString("local"), rs.getInt("quantidade"));
+                try (ResultSet rs = stmtPerdidos.executeQuery()) {
+                    if (rs.next()) {
+                        dados.put("Perdidos", rs.getInt("total"));
+                    }
+                }
             }
-
-        } catch (Exception e) {
-            throw new RuntimeException(e);
         }
-
-        return resultados;
+        return dados;
     }
 }

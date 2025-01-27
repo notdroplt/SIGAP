@@ -1,71 +1,58 @@
 package br.cefetmg.inf.sigap.service;
 
-/**
+/*
  *
  * @author luisg
  */
 
 import br.cefetmg.inf.sigap.dto.Item;
+import br.cefetmg.inf.sigap.dto.StatusItem;
 
+import java.sql.*;
 import java.time.LocalDate;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class RelatorioService {
 
-    private static RelatorioService instance;
-    private final ItemService itemService;
+    private final String dbUrl = "jdbc:postgresql://db:5432/sigap";
+    private final String dbUser = "sigap";
+    private final String dbPassword = "sigap";
 
-    private RelatorioService() {
-        this.itemService = ItemService.getInstance();
-    }
+    public List<Item> getItensPorPeriodo(LocalDate dataInicio, LocalDate dataFim) throws SQLException {
+        List<Item> itens = new ArrayList<>();
 
-    public static synchronized RelatorioService getInstance() {
-        if (instance == null) {
-            instance = new RelatorioService();
+        String sql = "SELECT * FROM Item WHERE (dataPerdido BETWEEN ? AND ?) OR (dataAchado BETWEEN ? AND ?)";
+
+        try (Connection conn = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setDate(1, Date.valueOf(dataInicio));
+            stmt.setDate(2, Date.valueOf(dataFim));
+            stmt.setDate(3, Date.valueOf(dataInicio));
+            stmt.setDate(4, Date.valueOf(dataFim));
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Item item = new Item(
+                            rs.getLong("uid"),
+                            rs.getString("nome"),
+                            rs.getInt("cor"),
+                            rs.getString("marca"),
+                            rs.getDate("dataPerdido") != null ? rs.getDate("dataPerdido").toLocalDate() : null,
+                            rs.getDate("dataAchado") != null ? rs.getDate("dataAchado").toLocalDate() : null,
+                            null,
+                            rs.getString("local"),
+                            rs.getString("descricao"),
+                            rs.getString("lugarAchado"),
+                            rs.getString("lugarPerdido"),
+                            rs.getString("foto"),
+                            StatusItem.valueOf(rs.getString("status"))
+                    );
+                    itens.add(item);
+                }
+            }
         }
-        return instance;
-    }
-
-    public Map<String, Integer> getQuantidadeItensPorLocal() {
-        List<Item> itens = itemService.getItens();
-        Map<String, Integer> quantidadePorLocal = new HashMap<>();
-
-        for (Item item : itens) {
-            String local = item.getLocal() != null ? item.getLocal() : "Desconhecido";
-            quantidadePorLocal.put(local, quantidadePorLocal.getOrDefault(local, 0) + 1);
-        }
-
-        return quantidadePorLocal;
-    }
-
-    public Map<String, Integer> getQuantidadeItensPorStatus() {
-        List<Item> itens = itemService.getItens();
-        Map<String, Integer> quantidadePorStatus = new HashMap<>();
-
-        for (Item item : itens) {
-            String status = item.getStatus() != null ? item.getStatus().name() : "Desconhecido";
-            quantidadePorStatus.put(status, quantidadePorStatus.getOrDefault(status, 0) + 1);
-        }
-
-        return quantidadePorStatus;
-    }
-
-    public Map<String, Integer> getQuantidadeItensPorPeriodo(String inicio, String fim) {
-        List<Item> itensPorPeriodo = itemService.getItemPorPeriodo(LocalDate.parse(inicio), LocalDate.parse(fim));
-        Map<String, Integer> quantidadePorPeriodo = new HashMap<>();
-
-        for (Item item : itensPorPeriodo) {
-            String local = item.getLocal() != null ? item.getLocal() : "Desconhecido";
-            quantidadePorPeriodo.put(local, quantidadePorPeriodo.getOrDefault(local, 0) + 1);
-        }
-
-        return quantidadePorPeriodo;
-    }
-
-    public List<Item> getItensPorNome(String nome) {
-        return itemService.getItemPorNome(nome);
+        return itens;
     }
 }
-
