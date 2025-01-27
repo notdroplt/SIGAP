@@ -47,6 +47,28 @@
                 }, 3000);
             }
         });
+
+        const searchInput = document.querySelector('input[name="valor"]');
+        const cookies = document.cookie.split(';');
+        const searchSuggestions = [];
+
+        cookies.forEach(cookie => {
+            const [name, value] = cookie.trim().split('=');
+            if (name.startsWith('pesquisa_')) {
+                searchSuggestions.push(value);
+            }
+        });
+        if (searchSuggestions.length > 0) {
+            const datalist = document.createElement('datalist');
+            datalist.id = 'searchSuggestions';
+            searchSuggestions.forEach(suggestion => {
+                const option = document.createElement('option');
+                option.value = suggestion;
+                datalist.appendChild(option);
+            });
+            searchInput.setAttribute('list', 'searchSuggestions');
+            document.body.appendChild(datalist);
+        }
     </script>
   <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="resultadoPesquisa.css">

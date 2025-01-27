@@ -20,6 +20,12 @@ public class Pesquisa extends HttpServlet {
                 String valor = request.getParameter("valor");
                 String[] filtrosSelecionados = request.getParameterValues("filtros");
 
+                if (valor != null && !valor.isEmpty()){
+                    Cookie pesquisaCookie = new Cookie("pesquisa_" + valor, valor);
+                    pesquisaCookie.setMaxAge(30 * 24 * 60 * 60);
+                    response.addCookie(pesquisaCookie);
+                }
+
                 ItemService servicoItem = ItemService.getInstance();
                 List<Item> alvos = servicoItem.getItens();
                 List<Item> itensFiltrados = new ArrayList<>();
