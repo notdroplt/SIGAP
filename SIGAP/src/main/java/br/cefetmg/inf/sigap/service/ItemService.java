@@ -65,15 +65,15 @@ public final class ItemService {
      * @param lugar Lugar em que o item foi perdido
      * @param campus Campus de perda
      * @param foto Caminho para a foto do item
+     *
+     * @return id do item perdido
      */
-    public synchronized void adicionarItemPerdido(Long uid, String nome, Integer cor, String marca, LocalDate data_perdido, String descricao, String lugar, String campus, String foto) {
+    public synchronized Long adicionarItemPerdido(Long uid, String nome, Integer cor, String marca, LocalDate data_perdido, String descricao, String lugar, String campus, String foto) {
         try {
             Item perdido = ItemFactory.criarItemPerdido(uid, nome, cor, marca, data_perdido, descricao, lugar, campus, foto);
             Item achado = existeItemAchado(perdido);
             if (achado != null) {
-                mesclarPerdidoComAchado(achado, perdido);
-
-                return;
+                return mesclarPerdidoComAchado(achado, perdido);
             }
             Connection conn = getConnection();
 
@@ -82,7 +82,7 @@ public final class ItemService {
             String sql = "INSERT INTO Item (" +
                     "uid , nome, cor, marca, data_perdido, descricao, lugar_perdido, local," +
                     "foto, data_achado, data_devolvido, lugar_achado, status) " +
-                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NULL, NULL, NULL, 0)";
+                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NULL, NULL, NULL, 0) RETURNING id";
 
             System.out.println("Criando item: \"" + nome
                     + "\", perdido em: " + data_perdido.format(DateTimeFormatter.ISO_LOCAL_DATE)
@@ -100,9 +100,13 @@ public final class ItemService {
             stmt.setString(8, campus);
             stmt.setString(9, foto);
 
-            stmt.executeUpdate();
-
+            try (ResultSet resultSet = stmt.executeQuery()) {
+                if (resultSet.next()) {
+                    return resultSet.getLong("id");
+                }
+            }
             conn.close();
+            return null;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -180,13 +184,12 @@ public final class ItemService {
      * @param campus Campus em que o item foi perdido
      * @param foto Foto do item
      */
-    public synchronized void adicionarItemAchado(Long uid, String nome, Integer cor, String marca, LocalDate data_achado, String descricao, String lugar, String campus, String foto) {
+    public synchronized Long adicionarItemAchado(Long uid, String nome, Integer cor, String marca, LocalDate data_achado, String descricao, String lugar, String campus, String foto) {
         try {
             Item achado = ItemFactory.criarItemAchado(nome, cor, marca, data_achado, campus, descricao, lugar, foto);
             Item perdido = existeItemPerdido(achado);
             if (perdido != null) {
-                mesclarAchadoComPerdido(achado, perdido);
-                return;
+                return mesclarAchadoComPerdido(achado, perdido);
             }
 
             Connection conn = getConnection();
@@ -196,7 +199,7 @@ public final class ItemService {
             String sql = "INSERT INTO Item (" +
                     "uid, nome, cor, marca, data_achado, descricao, lugar_achado, local," +
                     "foto, data_perdido, data_devolvido, lugar_perdido, status) " +
-                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NULL, NULL, NULL, 1)";
+                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NULL, NULL, NULL, 1) RETURNING id;";
 
             System.out.println("Criando item: \"" + nome
                     + "\", achado em: " + data_achado.format(DateTimeFormatter.ISO_LOCAL_DATE)
@@ -214,33 +217,21 @@ public final class ItemService {
             stmt.setString(8, campus);
             stmt.setString(9, foto);
 
-            stmt.executeUpdate();
-
+            try (ResultSet resultSet = stmt.executeQuery()) {
+                if (resultSet.next()) {
+                    return resultSet.getLong("id");
+                }
+            }
             conn.close();
+            return null;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
-    public synchronized void mesclarAchadoComPerdido(Item achado, Item perdido) {
+    public synchronized Long mesclarAchadoComPerdido(Item achado, Item perdido) {
 
-        Item mesclado = new Item(
-                perdido.getUid(),
-                perdido.getNome(),
-                perdido.getCor(),
-                perdido.getMarca(),
-                perdido.getDataPerdido(),
-                achado.getDataAchado(),
-                null,
-                perdido.getLocal(),
-                perdido.getDescricao(),
-                achado.getLugarAchado(),
-                perdido.getLugarPerdido(),
-                perdido.getFoto(),
-                StatusItem.DEVOLVIDO
-        );
-
-        mesclado.setId(perdido.getId());
+        Item mesclado = getMesclado(achado, perdido);
         String sql = "UPDATE Item " +
                 "SET (data_achado, lugar_achado, status) = (?, ?, 2) " +
                 "WHERE id = ?;";
@@ -258,27 +249,13 @@ public final class ItemService {
         }
 
         Notificar.notificar(mesclado);
+        
+        return perdido.getId();
     }
 
-    public synchronized void mesclarPerdidoComAchado(Item achado, Item perdido) {
+    public synchronized Long mesclarPerdidoComAchado(Item achado, Item perdido) {
 
-        Item mesclado = new Item(
-                perdido.getUid(),
-                perdido.getNome(),
-                perdido.getCor(),
-                perdido.getMarca(),
-                perdido.getDataPerdido(),
-                achado.getDataAchado(),
-                null,
-                perdido.getLocal(),
-                perdido.getDescricao(),
-                achado.getLugarAchado(),
-                perdido.getLugarPerdido(),
-                perdido.getFoto(),
-                StatusItem.DEVOLVIDO
-        );
-
-        mesclado.setId(perdido.getId());
+        Item mesclado = getMesclado(achado, perdido);
         String sql = "UPDATE Item " +
                 "SET (data_perdido, lugar_perdido, status) = (?, ?, 2) " +
                 "WHERE id = ?;";
@@ -296,6 +273,29 @@ public final class ItemService {
         }
 
         Notificar.notificar(mesclado);
+        
+        return perdido.getId();
+    }
+
+    private static Item getMesclado(Item achado, Item perdido) {
+        Item mesclado = new Item(
+                perdido.getUid(),
+                perdido.getNome(),
+                perdido.getCor(),
+                perdido.getMarca(),
+                perdido.getDataPerdido(),
+                achado.getDataAchado(),
+                null,
+                perdido.getLocal(),
+                perdido.getDescricao(),
+                achado.getLugarAchado(),
+                perdido.getLugarPerdido(),
+                perdido.getFoto(),
+                StatusItem.DEVOLVIDO
+        );
+
+        mesclado.setId(perdido.getId());
+        return mesclado;
     }
 
     /**
@@ -347,6 +347,44 @@ public final class ItemService {
 
             String sql = "SELECT * FROM Item;";
             PreparedStatement stmt = conn.prepareStatement(sql);
+
+            ResultSet rs = stmt.executeQuery();
+
+            List<Item> itens = getItemPorRs(rs);
+
+            conn.close();
+            return itens;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public List<Item> getItemPorId(Long id) {
+        try {
+            Connection conn = getConnection();
+
+            String sql = "SELECT * FROM Item WHERE id = ? ORDER BY status;";
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setLong(1, id);
+
+            ResultSet rs = stmt.executeQuery();
+
+            List<Item> itens = getItemPorRs(rs);
+
+            conn.close();
+            return itens;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public List<Item> getItemPorUid(Long uid) {
+        try {
+            Connection conn = getConnection();
+
+            String sql = "SELECT * FROM Item WHERE uid = ? ORDER BY status;";
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setLong(1, uid);
 
             ResultSet rs = stmt.executeQuery();
 
