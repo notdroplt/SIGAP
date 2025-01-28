@@ -96,3 +96,85 @@
     90% { opacity: 1; }
     100% { opacity: 0; }
 }
+
+/* Estilo para o container de resultados */
+.resultados {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilo para cada item da lista */
+.item-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    margin-bottom: 10px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+.item-container:hover {
+    border-color: #173a7a;
+    background-color: #f0f8ff;
+}
+
+/* Estilo para o nome do item */
+.item-nome {
+    font-size: 16px;
+    color: #333;
+    font-weight: bold;
+}
+
+/* Estilo para o botão "Registrar achado" */
+.registrar-achado {
+    padding: 8px 16px;
+    background-color: #173a7a;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+.registrar-achado:hover {
+    background-color: #0c2c5d;
+}
+
+/* Estilo para o resultado nulo */
+.resultado-nulo {
+    text-align: center;
+    padding: 20px;
+    background-color: #ffefef;
+    border: 1px solid #d9534f;
+    border-radius: 5px;
+    color: #d9534f;
+}
+
+.resultado-nulo p {
+    margin-bottom: 15px;
+    font-size: 16px;
+}
+
+/* Estilo para o botão "Tentar Novamente" */
+.tentar-novamente {
+    padding: 10px 20px;
+    background-color: #173a7a;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+.tentar-novamente:hover {
+    background-color: #0c2c5d;
+}

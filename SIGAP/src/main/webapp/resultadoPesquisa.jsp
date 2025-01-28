@@ -137,15 +137,14 @@
   <main>
     <div class="login-box"><h2>Resultados da Pesquisa</h2></div>
     <div class="resultados">
-
       <%
         List<Item> itens = (List<Item>) request.getAttribute("itensEncontrados");
 
         if (itens != null && !itens.isEmpty()) {
           for (Item item : itens){
             %>
-              <div class="acoes">
-              <span><%= item.getNome() %></span>
+              <div class="item-container">
+              <span class="item-nome"><%= item.getNome() %></span>
               <a href="achado.jsp" class="button">Registrar achado</a>
               </div>
             <%
@@ -156,10 +155,20 @@
       <div class="resultadoNulo">
         Nenhum item com este nome encontrado.
         <button type="button" onclick="window.location.reload();">Tentar Novamente</button>
-      </div>
       <%
-        }
+          if (itens != null && !itens.isEmpty()) {
+            for (int i = 0; i<5; i++){
+                for (Item item : itens){
       %>
+            <div class="item-container">
+              <span class="item-nome"><%= item.getNome() %></span>
+            </div>
+          <%
+                }
+            }
+          }
+      }
+          %>
     </div>
   </main>
 </div>

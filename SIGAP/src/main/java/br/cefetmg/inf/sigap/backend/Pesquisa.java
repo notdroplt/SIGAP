@@ -50,6 +50,12 @@ public class Pesquisa extends HttpServlet {
                                 case "marca":
                                     matches = matches && item.getMarca().toLowerCase().contains(valor.toLowerCase());
                                     break;
+                                case "campus1":
+                                    matches = matches && item.getLocal().toLowerCase().contains(valor.toLowerCase());
+                                    break;
+                                case "campus2":
+                                    matches = matches && item.getLocal().toLowerCase().contains(valor.toLowerCase());
+                                    break;
                                 default:
                                     matches = false;
                                     break;
