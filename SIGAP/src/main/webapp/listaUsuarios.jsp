@@ -21,8 +21,9 @@
     </header>
 
     <main>
-        <% if(!Objects.equals(request.getParameter("autorizado"), "true"))
-            response.sendRedirect("home.jsp");%>
+        <%  int id = (int) session.getAttribute("Token");
+            if(!UsuarioService.verificarAutoridade(id, 2)
+                response.sendRedirect("home.jsp");%>
         <div class="sector">
             <label>
                 <h1>Buscar Usuário:</h1>
