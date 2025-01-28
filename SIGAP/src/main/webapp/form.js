@@ -43,6 +43,10 @@ const submit = (endpoint, ev) => {
   const campus_v = campus_el.value;
   if (campus_v == null) console.error("campus_v == null");
 
+const possuiNome = document.getElementById('possui-nome').checked;
+  const nome_pessoa = document.getElementById('nome').value;
+  const sobrenome_pessoa = document.getElementById('sobrenome').value;
+
   const obj = {
     "nome": nome_v,
     "cor": cor_v,
@@ -51,6 +55,11 @@ const submit = (endpoint, ev) => {
     "desc": desc_v,
     "campus": campus_v,
     "imagem": img_b64
+  };
+
+  if (possuiNome) {
+    if (nome_pessoa) obj.nomePessoa = nome_pessoa;
+    if (sobrenome_pessoa) obj.sobrenomePessoa = sobrenome_pessoa;
   }
 
   console.log(obj)
@@ -60,4 +69,10 @@ const submit = (endpoint, ev) => {
     body: JSON.stringify(obj)
   }).then(res => res.json())
     .then(console.log)
+}
+
+function toggleNomeSobrenome() {
+    const checkbox = document.getElementById('possui-nome');
+    const container = document.getElementById('nome-sobrenome-container');
+    container.style.display = checkbox.checked ? 'block' : 'none';
 }

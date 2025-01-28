@@ -1,4 +1,8 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ page import="br.cefetmg.inf.sigap.dto.Item" %>
+<%@ page import="br.cefetmg.inf.sigap.service.ItemService" %>
+<%@ page import="java.util.Objects" %>
+<%@ page import="java.util.List" %>
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -98,7 +102,7 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            font-size: 14px;
+            font-size: px;
             font-weight: bold;
         }
 
@@ -132,6 +136,7 @@
         <h2>Notificação de item encontrado</h2>
         <div class="item-info">
             <%
+            String id = request.getParameter("id");
                 String perdido[] = new String[100];
                 int i = 0;
 
@@ -140,41 +145,7 @@
                     perdido[i] = "0idPerdi"+ perdido[1] + "dido";
                     i+=2;
                 }
-                if(request.getParameter("nomeAluno") != null) {
-                    perdido[i+1] = java.net.URLEncoder.encode(request.getParameter("nomeAluno"), "UTF-8");
-                    perdido[i] = "1nomeAluno"+ perdido[1] + "dido";
-                    i+=2;
-                }
 
-                if(request.getParameter("item") != null) {
-                    perdido[i+1] = java.net.URLEncoder.encode(request.getParameter("item"), "UTF-8");
-                    perdido[i] = "3item" + perdido[1] +"Perdido";
-                    i+=2;
-                }
-
-                if(request.getParameter("descricao") != null) {
-                    perdido[i+1] = java.net.URLEncoder.encode(request.getParameter("descricao"), "UTF-8");
-                    perdido[i] = "6descricao" + perdido[1] +"Perdido";
-                    i+=2;
-                }
-
-                if(request.getParameter("data") != null) {
-                    perdido[i+1] = java.net.URLEncoder.encode(request.getParameter("data"), "UTF-8");
-                    perdido[i] = "4data" + perdido[1] +"Perdido";
-                    i+=2;
-                }
-
-                if(request.getParameter("local") != null) {
-                    perdido[i+1] = java.net.URLEncoder.encode(request.getParameter("local"), "UTF-8");
-                    perdido[i] = "5local" + perdido[1] +"Perdido";
-                    i+=2;
-                }
-
-                if(request.getParameter("image") != null) {
-                    perdido[i+1] = java.net.URLEncoder.encode(request.getParameter("image"), "UTF-8");
-                    perdido[i] = "2imagem" + perdido[1] +"Perdido";
-                    i+=2;
-                }
 
                 for(int j = 0; j < i; j+=2) {
                     Cookie cookie = new Cookie(perdido[j], perdido[j+1]);
@@ -188,39 +159,69 @@
             <div class="details">
                 <%
                     Cookie[] cookies = request.getCookies();
-                    String nome = "";
                     for(Cookie atual: cookies){
-                        if(atual.getName().equals("1nomeAluno")){
-                            nome = java.net.URLDecoder.decode(atual.getValue(), "UTF-8");
+                        if(atual.getName().endsWith("dido")){
+                            id = java.net.URLDecoder.decode(atual.getValue(), "UTF-8");
+                            break;
                         }
                     }
+                    ItemService service = ItemService.getInstance();
+                    Long itemId = Long.parseLong(id);
+                    List<Item> itens = service.getItemPorId(itemId);
+                    Item mandar = null;
+                    if (itens != null && !itens.isEmpty())
+                        mandar = itens.get(0);
+                    else
+                        out.print(itemId);
+
                     String buscaCookies[] = new String[100];
-                    int num = 0;
-                    if (cookies != null) {
-                        for(int k = 0; k < cookies.length; k++) {
-                            if(cookies[k].getName().endsWith("Perdido")) {
-                                buscaCookies[num] = cookies[k].getName();
-                                buscaCookies[num+1] = java.net.URLDecoder.decode(cookies[k].getValue(), "UTF-8");
-                                num += 2;
-                            }
-                        }
-                        if(num==0)
-                            response.sendRedirect("index.jsp");
+                    i=0;
+                    if (mandar.getNome() != null) {
+                        buscaCookies[i]="Item";
+                        buscaCookies[i+1]=mandar.getNome();
+                        i+=2;
                     }
-                    String idAtual = "";
-                    for(int k = 0; k < cookies.length; k++) {
-                            if(cookies[k].getName().endsWith("dido")) {
-                                idAtual=java.net.URLDecoder.decode(cookies[k].getValue(), "UTF-8");
-                                break;
-                            }
-                        }
-                    for(int j = 0; j < num; j+=2)
+
+                    if (((Integer) mandar.getCor()) != null) {
+                        buscaCookies[i]="Cor";
+                        buscaCookies[i+1]=ItemService.reverterCor(mandar.getCor());
+                        i+=2;
+                    }
+
+                    if ((mandar.getMarca()) != null) {
+                        buscaCookies[i]="Marca";
+                        buscaCookies[i+1]=mandar.getMarca();
+                        i+=2;}
+
+                    if (mandar.getDescricao() != null) {
+                        buscaCookies[i]="Descrição";
+                        buscaCookies[i+1]=mandar.getDescricao();
+                        i+=2;}
+
+                    if (mandar.getDataAchado() != null) {
+                        buscaCookies[i]="Data";
+                        buscaCookies[i+1]=mandar.getDataAchado().toString();;
+                        i+=2;}
+
+                    if (mandar.getLugarAchado() != null) {
+                        buscaCookies[i]="Lugar";
+                        buscaCookies[i+1]=mandar.getLugarAchado();
+                        i+=2;}
+
+                    if (mandar.getFoto() != null) {
+                        buscaCookies[i]="Foto";
+                        buscaCookies[i+1]=mandar.getFoto();
+                        i+=2;}
+                    for(int j = 0; j < i-2; j+=2)
                     {
-                        if(buscaCookies[j].contains(idAtual))
-                            if(buscaCookies[j].contains("image"))
-                                out.print("<div><img src=" + buscaCookies[j+1] +" alt='Imagem do item'></div>");
-                            else
-                                out.print("<p><strong>" + buscaCookies[j].substring(1, buscaCookies[j].length() - 7 - 9) + ": </strong>" + buscaCookies[j+1] + "</p>");
+                        if(buscaCookies[j].contains("Foto")){
+                            out.print("<div><img src=" + buscaCookies[j+1] +" alt='Imagem do item'></div>");
+                            out.print("AAAAAAAAAAAAA");
+                        }
+                        else if(buscaCookies[j].contains("Cor"))
+                            out.print("<p><strong>" + buscaCookies[j] + ": </strong>" + "<div style='width: 60px; height: 20px; background-color: " + buscaCookies[j+1] + ";'></div>");
+                        else
+                            out.print("<p><strong>" + buscaCookies[j] + ": </strong>" + buscaCookies[j+1] + "</p>");
                     }
 
                 %>
@@ -244,7 +245,7 @@
         if ("POST".equalsIgnoreCase(request.getMethod()) && "apagar".equals(request.getParameter("acao"))) {
             if (cookies != null) {
                 for (Cookie cookie : cookies) {
-                    if (cookie.getName().endsWith("dido")&&cookie.getName().contains(idAtual)) {
+                    if (cookie.getName().endsWith("dido")&&cookie.getName().contains(id)) {
                         cookie.setMaxAge(0);
                         response.addCookie(cookie);
                     }
