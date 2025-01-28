@@ -25,10 +25,7 @@
 
             <div id="item-box">
                 <p>Cadastro de Item Perdido</p>
-                <div>
-                    <label for="item">Nome do Item:</label>
-                    <input type="text" id="nome-item" name="item" placeholder="Nome...">
-                </div>
+                <%@ include file="item.jsp" %>
                 <div>
                     <label for="cor">Cor:</label>
                     <input type="color" id="cor-item" name="cor" placeholder="#696969">
@@ -41,17 +38,17 @@
                     <label for="lugar">Lugar que foi perdido:</label>
                     <input type="text" id="lugar-item" name="lugar" placeholder="lugar em que foi perdido">
                 </div>
-
-                <div>
-                    <label for="desc">Descrição:</label>
-                    <input type="text" id="desc-item" name="desc" placeholder="Como esse item se parecia">
-                </div>
+                <%@ include file="descricao.jsp" %>
                 <div>    
                     <label for="campus">Campus de perda:</label>
                     <select name="campus" id="campus-item">
                         <option value="c1">Campus 1</option>
                         <option value="c2">Campus 2</option>
                     </select>
+                </div>
+                <div>
+                    <label for="imagem">Imagem:</label>
+                    <input type="file" name="imagem" id="imagem-item">
                 </div>
                 <button id="formSubmit" type="submit" onClick="submit('/SIGAP/api/cadastro/item/perdido', event)">Carregar
                     Item</button>

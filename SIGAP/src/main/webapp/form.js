@@ -24,7 +24,7 @@ const lugar_el = document.getElementById("lugar-item");
 const desc_el = document.getElementById("desc-item");
 const campus_el = document.getElementById("campus-item");
 
-const submit = (endpoint, ev) => {
+function submit (endpoint, ev) {
   const nome_v = nome_el.value;
   if (nome_v == null) console.error("nome_v == null");
 
