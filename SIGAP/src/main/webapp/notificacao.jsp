@@ -1,6 +1,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ page import="br.cefetmg.inf.sigap.dto.Item" %>
 <%@ page import="br.cefetmg.inf.sigap.service.ItemService" %>
+<%@ page import="br.cefetmg.inf.sigap.service.ImagemService" %>
 <%@ page import="java.util.Objects" %>
 <%@ page import="java.util.List" %>
 <!DOCTYPE html>
@@ -158,6 +159,59 @@
 
             <div class="details">
                 <%
+                    String[] itensArray = new String[30];
+                    itensArray[1] = "Lápis";
+                    itensArray[2] = "Borracha";
+                    itensArray[3] = "Apontador";
+                    itensArray[4] = "Lapiseira";
+                    itensArray[5] = "Caneta";
+                    itensArray[6] = "Marca Texto";
+                    itensArray[7] = "Caderno";
+                    itensArray[8] = "Livro";
+                    itensArray[9] = "Apostila";
+                    itensArray[10] = "Mochila";
+                    itensArray[11] = "Estojos";
+                    itensArray[12] = "Garrafa";
+                    itensArray[13] = "Roupa";
+                    itensArray[14] = "Chaves";
+                    itensArray[15] = "Óculos";
+                    itensArray[16] = "Celular";
+                    itensArray[17] = "Tablet";
+                    itensArray[18] = "Laptop";
+                    itensArray[19] = "Fones de ouvido";
+                    itensArray[20] = "Carregador";
+                    itensArray[21] = "Mouse";
+                    itensArray[22] = "Bola";
+                    itensArray[23] = "Peteca";
+                    itensArray[24] = "";
+                    itensArray[25] = "Cartas de jogo";
+                    itensArray[26] = "Identidade";
+                    itensArray[27] = "Cartão de estudante";
+                    itensArray[28] = "Atestado médico";
+                    itensArray[29] = "Documentos pessoais";
+
+                    String[] descricao = new String[21];
+                    descricao[1] = "Novo";
+                    descricao[2] = "Usado";
+                    descricao[3] = "Danificado";
+                    descricao[4] = "Limpo";
+                    descricao[5] = "Sujo";
+                    descricao[6] = "Pequeno";
+                    descricao[7] = "Grande";
+                    descricao[8] = "Colorido";
+                    descricao[9] = "Desgastado";
+                    descricao[10] = "Valioso";
+                    descricao[11] = "Comum";
+                    descricao[12] = "Incomum";
+                    descricao[13] = "Raro";
+                    descricao[14] = "Épico";
+                    descricao[15] = "Lendário";
+                    descricao[16] = "Mítico";
+                    descricao[17] = "Funcional";
+                    descricao[18] = "Quebrado";
+                    descricao[19] = "Antigo";
+                    descricao[20] = "Moderno";
+
                     Cookie[] cookies = request.getCookies();
                     for(Cookie atual: cookies){
                         if(atual.getName().endsWith("dido")){
@@ -178,7 +232,7 @@
                     i=0;
                     if (mandar.getNome() != null) {
                         buscaCookies[i]="Item";
-                        buscaCookies[i+1]=mandar.getNome();
+                        buscaCookies[i+1]=itensArray[Integer.parseInt(mandar.getNome())];
                         i+=2;
                     }
 
@@ -195,7 +249,7 @@
 
                     if (mandar.getDescricao() != null) {
                         buscaCookies[i]="Descrição";
-                        buscaCookies[i+1]=mandar.getDescricao();
+                        buscaCookies[i+1]=descricao[Integer.parseInt(mandar.getDescricao())];
                         i+=2;}
 
                     if (mandar.getDataAchado() != null) {
@@ -210,13 +264,19 @@
 
                     if (mandar.getFoto() != null) {
                         buscaCookies[i]="Foto";
-                        buscaCookies[i+1]=mandar.getFoto();
+                        ImagemService iservice = ImagemService.getInstance();
+
+
+                        out.print("<div><img src=" + iservice.recuperarImagem(mandar.getFoto()) +" alt='Imagem do item'></div>");
+                        buscaCookies[i+1]=iservice.recuperarImagem(mandar.getFoto());
                         i+=2;}
+                    else
+                        out.print(mandar.getFoto());
                     for(int j = 0; j < i-2; j+=2)
                     {
                         if(buscaCookies[j].contains("Foto")){
-                            out.print("<div><img src=" + buscaCookies[j+1] +" alt='Imagem do item'></div>");
-                            out.print("AAAAAAAAAAAAA");
+                            out.print("aa");
+
                         }
                         else if(buscaCookies[j].contains("Cor"))
                             out.print("<p><strong>" + buscaCookies[j] + ": </strong>" + "<div style='width: 60px; height: 20px; background-color: " + buscaCookies[j+1] + ";'></div>");

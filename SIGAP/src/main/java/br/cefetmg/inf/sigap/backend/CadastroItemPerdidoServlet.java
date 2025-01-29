@@ -103,7 +103,7 @@ public class CadastroItemPerdidoServlet extends HttpServlet {
         ItemService service = ItemService.getInstance();
 
         service.adicionarItemPerdido(
-                0L, nome, valorCor, marca, LocalDate.now(), desc, local, campus, caminho
+                1L, nome, valorCor, marca, LocalDate.now(), desc, local, campus, caminho
         );
 
         System.out.println("Item adicionado!");

@@ -115,7 +115,7 @@ public class CadastroItemAchadoServlet extends HttpServlet {
         ItemService service = ItemService.getInstance();
 
         long idX = service.adicionarItemAchado(
-            0L, nome, valorCor, marca, LocalDate.now(), desc, local, campus, caminho
+            1L, nome, valorCor, marca, LocalDate.now(), desc, local, campus, caminho
         );
 
         String nomePessoa = jsonbj.optString("nomePessoa");
