@@ -22,7 +22,7 @@
 
     <main>
         <%  int id = (int) session.getAttribute("Token");
-            if(!UsuarioService.verificarAutoridade(id, 2)
+            if(!UsuarioService.verificarAutoridade(id, 2))
                 response.sendRedirect("home.jsp");%>
         <div class="sector">
             <label>
