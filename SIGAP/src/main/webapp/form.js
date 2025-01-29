@@ -2,7 +2,7 @@ const fileInput = document.getElementById('imagem-item');
 let img_b64 = null;
 
 fileInput.addEventListener('change', (event) => {
-  const file = event.target.files[0]; 
+  const file = event.target.files[0];
 
   if (!file) {
     console.error("nenhum arquivo selecionado!");
@@ -12,7 +12,7 @@ fileInput.addEventListener('change', (event) => {
   const reader = new FileReader();
 
   reader.onload = (e) => {img_b64 = e.target.result};
-  reader.readAsDataURL(file);   
+  reader.readAsDataURL(file);
 });
 
 const itens = ["nome", "cor", "marca", "lugar", "desc", "campus"]

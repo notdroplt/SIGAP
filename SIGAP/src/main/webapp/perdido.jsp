@@ -39,7 +39,7 @@
                     <input type="text" id="lugar-item" name="lugar" placeholder="lugar em que foi perdido">
                 </div>
                 <%@ include file="descricao.jsp" %>
-                <div>    
+                <div>
                     <label for="campus">Campus de perda:</label>
                     <select name="campus" id="campus-item">
                         <option value="c1">Campus 1</option>
@@ -50,9 +50,24 @@
                     <label for="imagem">Imagem:</label>
                     <input type="file" name="imagem" id="imagem-item">
                 </div>
+                    <div style="display: none;">
+                        <label for="possui-nome">Possui nome e sobrenome?</label>
+                        <input type="checkbox" id="possui-nome" name="possui-nome" onclick="toggleNomeSobrenome()">
+                    </div>
+                    <div id="nome-sobrenome-container" style="display: none;">
+                        <div>
+                            <label for="nome">Nome:</label>
+                            <input type="text" id="nome" name="nome" placeholder="Nome">
+                        </div>
+                        <div>
+                            <label for="sobrenome">Sobrenome:</label>
+                            <input type="text" id="sobrenome" name="sobrenome" placeholder="Sobrenome">
+                        </div>
+                    </div>
                 <button id="formSubmit" type="submit" onClick="submit('/SIGAP/api/cadastro/item/perdido', event)">Carregar
                     Item</button>
             </div>
+
         </main>
     </div>
     <script src="form.js"></script>

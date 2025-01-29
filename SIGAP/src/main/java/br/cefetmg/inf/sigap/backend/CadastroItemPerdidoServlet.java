@@ -34,7 +34,7 @@ public class CadastroItemPerdidoServlet extends HttpServlet {
         String json = req.getReader().lines().collect(Collectors.joining());
         JSONObject jsonbj = new JSONObject(json);
 
-        String nome = jsonbj.getString("nome-item");
+        String nome = jsonbj.getString("nome");
 
         if (nome.length() > 40) {
             System.out.println("Erro: Tamanho do nome " + nome.length() + " > 40");
@@ -42,7 +42,7 @@ public class CadastroItemPerdidoServlet extends HttpServlet {
             return;
         }
 
-        String desc = jsonbj.getString("desc-item");
+        String desc = jsonbj.getString("desc");
 
         if (desc.length() > 144) {
             System.out.println("Erro: Tamanho da descrição " + nome.length() + " > 144");
@@ -50,7 +50,7 @@ public class CadastroItemPerdidoServlet extends HttpServlet {
             return;
         }
 
-        String local = jsonbj.getString("lugar-item");
+        String local = jsonbj.getString("lugar");
 
         if (local.length() > 144) {
             System.out.println("Erro: Tamanho do local " + local.length() + " > 144");
@@ -58,7 +58,7 @@ public class CadastroItemPerdidoServlet extends HttpServlet {
             return;
         }
 
-        String campus = jsonbj.getString("campus-item");
+        String campus = jsonbj.getString("campus");
 
 
         if (campus.length() > 3) {
@@ -68,7 +68,7 @@ public class CadastroItemPerdidoServlet extends HttpServlet {
             return;
         }
 
-        String marca = jsonbj.getString("marca-item");
+        String marca = jsonbj.getString("marca");
 
         if (marca.length() > 60) {
             System.out.println("Erro: Tamanho da marca " + marca.length() + " > 60");
@@ -76,7 +76,7 @@ public class CadastroItemPerdidoServlet extends HttpServlet {
             return;
         }
 
-        String cor = jsonbj.getString("cor-item");
+        String cor = jsonbj.getString("cor");
 
         if (cor.length() != 7) {
             System.out.println("Erro: Cor " + cor.length() + " != 7");
