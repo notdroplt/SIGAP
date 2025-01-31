@@ -63,7 +63,7 @@
         <div class="sector">
             <h2>Pesquisa e Edição de Usuários</h2>
             <p>Se você deseja listar e alterar usuários, clique no botão abaixo</p>
-            <a href="ListaUsuarios" class="button">Configurações</a>
+            <a href="listaUsuarios.jsp" class="button">Configurações</a>
         </div>
         <%
             }} catch (Exception e) {

@@ -2,7 +2,7 @@ const fileInput = document.getElementById('imagem-item');
 let img_b64 = null;
 
 fileInput.addEventListener('change', (event) => {
-  const file = event.target.files[0]; 
+  const file = event.target.files[0];
 
   if (!file) {
     console.error("nenhum arquivo selecionado!");
@@ -12,7 +12,7 @@ fileInput.addEventListener('change', (event) => {
   const reader = new FileReader();
 
   reader.onload = (e) => {img_b64 = e.target.result};
-  reader.readAsDataURL(file);   
+  reader.readAsDataURL(file);
 });
 
 const itens = ["nome", "cor", "marca", "lugar", "desc", "campus"]
@@ -24,7 +24,7 @@ const lugar_el = document.getElementById("lugar-item");
 const desc_el = document.getElementById("desc-item");
 const campus_el = document.getElementById("campus-item");
 
-const submit = (endpoint, ev) => {
+function submit (endpoint, ev) {
   const nome_v = nome_el.value;
   if (nome_v == null) console.error("nome_v == null");
 
@@ -43,6 +43,10 @@ const submit = (endpoint, ev) => {
   const campus_v = campus_el.value;
   if (campus_v == null) console.error("campus_v == null");
 
+const possuiNome = document.getElementById('possui-nome').checked;
+  const nome_pessoa = document.getElementById('nome').value;
+  const sobrenome_pessoa = document.getElementById('sobrenome').value;
+
   const obj = {
     "nome": nome_v,
     "cor": cor_v,
@@ -51,6 +55,11 @@ const submit = (endpoint, ev) => {
     "desc": desc_v,
     "campus": campus_v,
     "imagem": img_b64
+  };
+
+  if (possuiNome) {
+    if (nome_pessoa) obj.nomePessoa = nome_pessoa;
+    if (sobrenome_pessoa) obj.sobrenomePessoa = sobrenome_pessoa;
   }
 
   console.log(obj)
@@ -60,4 +69,10 @@ const submit = (endpoint, ev) => {
     body: JSON.stringify(obj)
   }).then(res => res.json())
     .then(console.log)
+}
+
+function toggleNomeSobrenome() {
+    const checkbox = document.getElementById('possui-nome');
+    const container = document.getElementById('nome-sobrenome-container');
+    container.style.display = checkbox.checked ? 'block' : 'none';
 }

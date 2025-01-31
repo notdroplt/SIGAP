@@ -12,6 +12,8 @@ services:
     depends_on:
       db:
         condition: service_healthy
+    volumes:
+      - imagens:/var/sigap/imagens
     develop:
       watch:
         - action: rebuild
@@ -37,3 +39,4 @@ services:
 
 volumes:
   postgres_data:
+  imagens:

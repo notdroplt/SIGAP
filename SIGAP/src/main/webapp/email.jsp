@@ -41,7 +41,7 @@
         }
         catch (Exception e) {
             System.out.println("Erro ao criar a sessão de e-mail: " + e.getMessage());
-            response.sendRedirect("CadastroServlet");
+            response.sendRedirect("Cadastro.jsp");
 
         }
         try {
@@ -55,7 +55,7 @@
             out.println("<p>E-mail enviado com sucesso!</p>");
         } catch (MessagingException e) {
             System.out.println("Erro ao enviar o e-mail: " + e.getMessage());
-            response.sendRedirect("CadastroServlet");
+            response.sendRedirect("Cadastro.jsp");
         }
         catch (Exception e) {
             System.out.println("Erro ao enviar o e-mail: " + e.getMessage());
