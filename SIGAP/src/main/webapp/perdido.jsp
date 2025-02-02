@@ -34,10 +34,7 @@
                     <label for="marca">Marca:</label>
                     <input type="text" id="marca-item" name="marca" placeholder="Marca...">
                 </div>
-                <div>
-                    <label for="lugar">Lugar que foi perdido:</label>
-                    <input type="text" id="lugar-item" name="lugar" placeholder="lugar em que foi perdido">
-                </div>
+                <%@ include file="lugar.jsp" %>
                 <%@ include file="descricao.jsp" %>
                 <div>
                     <label for="campus">Campus de perda:</label>
@@ -66,8 +63,9 @@
                     </div>
                 <button id="formSubmit" type="submit" onClick="submit('/SIGAP/api/cadastro/item/perdido', event)">Carregar
                     Item</button>
-            </div>
+                <div id="notification-container" style="position: fixed; top: 20px; right: 20px; z-index: 1000;"></div>
 
+            </div>
         </main>
     </div>
     <script src="form.js"></script>

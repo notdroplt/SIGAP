@@ -15,6 +15,33 @@ fileInput.addEventListener('change', (event) => {
   reader.readAsDataURL(file);
 });
 
+function notificacao(message) {
+  const container = document.getElementById("notification-container");
+
+  const notification = document.createElement("div");
+  notification.className = "notification";
+  if (message.sucesso) {
+    notification.textContent = "Item cadastrado com sucesso! Retornando..."
+    notification.classList.add("suc-notif")
+  } else {
+    notification.textContent = message.motivo;
+    notification.classList.add("fail-notif")
+  }
+
+  container.appendChild(notification);
+
+  setTimeout(() => {
+    notification.classList.add("show");
+  }, 10);
+
+  setTimeout(() => {
+    notification.classList.remove("show");
+    if (message.sucesso)
+        window.location.href = "/SIGAP/home.jsp"
+    setTimeout(() => container.removeChild(notification), 300);
+  }, 1200);
+}
+
 const itens = ["nome", "cor", "marca", "lugar", "desc", "campus"]
 
 const nome_el = document.getElementById("nome-item");
@@ -68,7 +95,7 @@ const possuiNome = document.getElementById('possui-nome').checked;
     method: "POST",
     body: JSON.stringify(obj)
   }).then(res => res.json())
-    .then(console.log)
+    .then(notificacao)
 }
 
 function toggleNomeSobrenome() {

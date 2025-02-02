@@ -1,7 +1,6 @@
 package br.cefetmg.inf.sigap.backend;
 
 import br.cefetmg.inf.sigap.dto.Item;
-import br.cefetmg.inf.sigap.dto.Usuario;
 import br.cefetmg.inf.sigap.service.ImagemService;
 import br.cefetmg.inf.sigap.service.ItemService;
 import jakarta.servlet.annotation.WebServlet;
@@ -10,7 +9,6 @@ import org.json.JSONObject;
 
 import java.io.*;
 import java.time.LocalDate;
-import java.util.List;
 import java.util.stream.Collectors;
 
 @WebServlet(urlPatterns = {"/api/cadastro/item/achado"})
@@ -116,16 +114,15 @@ public class CadastroItemAchadoServlet extends HttpServlet {
 
         HttpSession session = req.getSession(false);
 
-        Object uid = session.getAttribute("Token");
-
+        Integer uid = (Integer) session.getAttribute("Token");
         if (uid == null) {
             System.out.println("Erro: id de usuário == null");
             ErrorResponse(res, "uid");
             return;
         }
 
-        long idX = service.adicionarItemAchado(
-                (Long)uid, nome, valorCor, marca, LocalDate.now(), desc, local, campus, caminho
+        Long idX = service.adicionarItemAchado(
+                uid.longValue(), nome, valorCor, marca, LocalDate.now(), desc, local, campus, caminho
         );
 
         String nomePessoa = jsonbj.optString("nomePessoa");
@@ -135,8 +132,7 @@ public class CadastroItemAchadoServlet extends HttpServlet {
         {
             long []ids = BuscaAluno.buscaAluno(nomePessoa, sobrenomePessoa);
             Item item = service.getItemPorId(idX).get(0);
-            for(int i=0; i< ids.length; i++)
-                Notificar.notificar(item, ids[i]);
+            for (long id : ids) Notificar.notificar(item, id);
         }
 
         System.out.println("Item adicionado!");
