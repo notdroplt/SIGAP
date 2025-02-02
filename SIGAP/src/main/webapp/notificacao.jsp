@@ -120,6 +120,20 @@
         .actions button:hover {
             opacity: 0.8;
         }
+        #homeButton {
+            top: 20px;   
+            right: 20px; 
+            width: 50px;
+            height: 50px;
+            border: none;
+            background-color: #fff; 
+            color: #000;           
+            border-radius: 50%;     
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3); 
+            font-weight: bold;
+        }
+
     </style>
 </head>
 <body>
@@ -130,6 +144,7 @@
                 <h1>CEFET-MG - SIGAP -</h1>
             </a>
             <span>Sistema de Gestão de Achados e Perdidos</span>
+            <button id="homeButton" onclick="window.location.href='home.jsp'">Home</button>
         </div>
     </header>
 
@@ -291,7 +306,7 @@
         <p>Este item foi encontrado e bate com a descrição de um item perdido reportado por você.</p>
 
         <div class="actions">
-            <form action="index.jsp">
+            <form action="home.jsp">
                 <button id="verde" type="submit" name="acao" value="apagar">Este item é meu</button>
             </form>
             <form method="POST">

@@ -6,7 +6,7 @@
 
     if (cookies != null) {
         for (Cookie atual : cookies) {
-            if (atual.getName().length() >= 10 && atual.getName().substring(0, 10).equals("1nomeAluno")) {
+            if (atual.getName().length() >= 10 && atual.getName().contains("dido")) {
                 redirecionar = true;
                 break;
             }
