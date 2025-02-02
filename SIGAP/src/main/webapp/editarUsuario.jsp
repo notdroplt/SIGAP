@@ -17,6 +17,7 @@
                 <h1>CEFET-MG - SIGAP -</h1>
             </a>
             <span>Sistema Integrado de Gestão de Achados e Perdidos</span>
+            <button id="homeButton" onclick="window.location.href='home.jsp'">Home</button>
         </div>
     </header>
     <h1>Editar Usuario</h1>
