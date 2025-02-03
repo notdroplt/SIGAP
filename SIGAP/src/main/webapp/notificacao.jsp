@@ -4,6 +4,28 @@
 <%@ page import="br.cefetmg.inf.sigap.service.ImagemService" %>
 <%@ page import="java.util.Objects" %>
 <%@ page import="java.util.List" %>
+<%@ page import="jakarta.servlet.http.Cookie"%>
+<%@ page import="jakarta.servlet.*" %>
+
+<%
+if ("POST".equalsIgnoreCase(request.getMethod()) && "apagar".equals(request.getParameter("acao"))) {
+    Cookie[] cookies = request.getCookies();
+    if (cookies != null) {
+        int uni= 0;
+        for (Cookie cookie : cookies) {
+            if (cookie.getName().endsWith("dido")) {
+                cookie.setMaxAge(0);
+                response.addCookie(cookie);
+                uni = 1;
+                response.sendRedirect("home.jsp");
+                return;
+            }
+        }
+
+    }
+}
+%>
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -144,7 +166,6 @@
                 <h1>CEFET-MG - SIGAP -</h1>
             </a>
             <span>Sistema de Gestão de Achados e Perdidos</span>
-            <button id="homeButton" onclick="window.location.href='home.jsp'">Home</button>
         </div>
     </header>
 
@@ -227,10 +248,46 @@
                     descricao[19] = "Antigo";
                     descricao[20] = "Moderno";
 
+                    final String[] lugares = new String[32];
+                    lugares[1] = "Portaria Rua Alpes";
+                    lugares[2] = "Campão";
+                    lugares[3] = "Quadra Poliesportiva";
+                    lugares[4] = "Quadra Fechada";
+                    lugares[5] = "Quadra de vôlei";
+                    lugares[6] = "1º andar";
+                    lugares[7] = "2º andar";
+                    lugares[8] = "3º andar";
+                    lugares[9] = "4º andar";
+                    lugares[10] = "Piscina do 5º andar";
+                    lugares[11] = "Lanchonete C1";
+                    lugares[12] = "Biblioteca C1";
+                    lugares[13] = "Restaurante C1";
+                    lugares[14] = "Estacionamento C1";
+                    lugares[15] = "Portaria Av. Amazonas C1";
+
+                    lugares[16] = "Portaria Av. Amazonas C2";
+                    lugares[17] = "Estacionamento C2 (ao lado da portaria)";
+                    lugares[18] = "Oca (de baixo)";
+                    lugares[19] = "Oca (de cima)";
+                    lugares[20] = "P1 (Prédio principal)";
+                    lugares[21] = "P2 (Restaurante)";
+                    lugares[22] = "P4 (mecânica 1)";
+                    lugares[23] = "P5 (mecânica 2)";
+                    lugares[24] = "P6/P7 (biblioteca)";
+                    lugares[25] = "P8/P9 (NEAC)";
+                    lugares[26] = "Praça C2";
+                    lugares[27] = "P12 (EDI/Engenharia Civil)";
+                    lugares[28] = "P17 (DECOM/Engenharia da Computação)";
+                    lugares[29] = "P18";
+                    lugares[30] = "P19 (ELE/ELT)";
+                    lugares[31] = "P20";
+
+
                     Cookie[] cookies = request.getCookies();
                     for(Cookie atual: cookies){
                         if(atual.getName().endsWith("dido")){
                             id = java.net.URLDecoder.decode(atual.getValue(), "UTF-8");
+                            System.out.println("aaaaaaaa" + id);
                             break;
                         }
                     }
@@ -269,12 +326,12 @@
 
                     if (mandar.getDataAchado() != null) {
                         buscaCookies[i]="Data";
-                        buscaCookies[i+1]=mandar.getDataAchado().toString();;
+                        buscaCookies[i+1]=mandar.getDataAchado().toString();
                         i+=2;}
 
                     if (mandar.getLugarAchado() != null) {
                         buscaCookies[i]="Lugar";
-                        buscaCookies[i+1]=mandar.getLugarAchado();
+                        buscaCookies[i+1]=lugares[Integer.parseInt(mandar.getLugarAchado())];
                         i+=2;}
 
                     if (mandar.getFoto() != null) {
@@ -306,7 +363,7 @@
         <p>Este item foi encontrado e bate com a descrição de um item perdido reportado por você.</p>
 
         <div class="actions">
-            <form action="home.jsp">
+            <form method="POST">
                 <button id="verde" type="submit" name="acao" value="apagar">Este item é meu</button>
             </form>
             <form method="POST">
@@ -315,20 +372,7 @@
 
         </div>
     </main>
-    <%
 
-        if ("POST".equalsIgnoreCase(request.getMethod()) && "apagar".equals(request.getParameter("acao"))) {
-            if (cookies != null) {
-                for (Cookie cookie : cookies) {
-                    if (cookie.getName().endsWith("dido")&&cookie.getName().contains(id)) {
-                        cookie.setMaxAge(0);
-                        response.addCookie(cookie);
-                    }
-                }
-            }
-            response.sendRedirect("index.jsp");
-        }
-    %>
 </div>
 </body>
 </html>

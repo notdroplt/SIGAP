@@ -1,6 +1,8 @@
 <%@ page import="br.cefetmg.inf.sigap.dto.Usuario" %>
 <%@ page import="br.cefetmg.inf.sigap.service.UsuarioService" %>
+<%@ page import="jakarta.servlet.*" %>
 <%
+
     Cookie[] cookies = request.getCookies();
     boolean redirecionar = false;
 
@@ -41,11 +43,6 @@
         <% if(session == null || session.getAttribute("Token") == null) response.sendRedirect("index.jsp"); %>
         <div class="sector">
             <h2>Setor de Achados e Perdidos</h2>
-            <p>Se você encontrou algo, clique no botão abaixo para registrar o achado.</p>
-            <a href="achado.jsp" class="button">Registrar Achado</a>
-        </div>
-        <div class="sector">
-            <h2>Setor de Achados e Perdidos</h2>
             <p>Se você perdeu algo, clique no botão abaixo para registrar a perda.</p>
             <a href="perdido.jsp" class="button">Registrar Perda</a>
         </div>
@@ -59,12 +56,17 @@
             <p>Se você deseja alterar suas configurações de usuário, clique no botão abaixo.</p>
             <a href="painelUsuario.jsp" class="button">Configurações</a>
         </div>
-        <% try{if(UsuarioService.verificarAutoridade((int) session.getAttribute("Token"), 2)) { %>
+        <% try{if(UsuarioService.verificarAutoridade((Integer) session.getAttribute("Token"), 2)) { %>
         <div class="sector">
             <h2>Pesquisa e Edição de Usuários</h2>
             <p>Se você deseja listar e alterar usuários, clique no botão abaixo</p>
             <a href="listaUsuarios.jsp" class="button">Configurações</a>
-        </div>  
+        </div>
+        <div class="sector">
+                    <h2>Setor de Achados e Perdidos</h2>
+                    <p>Se você encontrou algo, clique no botão abaixo para registrar o achado.</p>
+                    <a href="achado.jsp" class="button">Registrar Achado</a>
+        </div>
         <div class="sector">
             <h2>Relatórios e Gráficos de Itens</h2>
             <p>Se você deseja fazer relatórios ou gráficos dos itens, clique no botão abaixo</p>
