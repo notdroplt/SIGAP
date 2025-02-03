@@ -3,11 +3,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const filtersBox = document.getElementById('filtersBox');
     const applyFiltersButton = document.getElementById('applyFiltersButton');
     const itemSelect = document.getElementById('nome-item');
+    const marcaSelect = document.getElementById("marca");
     const descSelect = document.getElementById('desc-item');
     const campusSelect = document.getElementById('campus-item');
-    const marcaSelect = document.getElementById("marca");
 
-    if (!openFiltersButton || !filtersBox || !applyFiltersButton || !itemSelect || !descSelect || !campusSelect) {
+    if (!openFiltersButton || !filtersBox || !applyFiltersButton || !itemSelect || !marcaSelect || !descSelect || !campusSelect) {
         console.warn("Algum elemento do menu de filtros não foi encontrado.");
         return; // Para a execução se faltar algum elemento
     }
@@ -24,15 +24,15 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log('Aplicar Filtros clicado!'); // Debugging
 
         const item = itemSelect.value;
+        const marca = marcaSelect.value;
         const desc = Array.from(descSelect.selectedOptions).map(option => option.value).join(',');
         const campus = campusSelect.value;
-        const marca = marcaSelect.value;
 
-        let url = '/sua-aplicacao/Pesquisa?';
+        let url = '/SIGAP/Pesquisa?';
         if (item) url += `item=${encodeURIComponent(item)}&`;
+        if (marca) url += `marca=${encodeURIComponent(marca)}&`;
         if (desc) url += `desc=${encodeURIComponent(desc)}&`;
         if (campus) url += `campus=${encodeURIComponent(campus)}&`;
-        if (marca) url += `marca=${encodeURIComponent(marca)}&`;
 
         url = url.replace(/[&?]$/, ''); // Remove último "&" ou "?" se necessário
 
