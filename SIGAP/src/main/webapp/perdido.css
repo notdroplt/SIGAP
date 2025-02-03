@@ -35,3 +35,31 @@
 #item-box button {
     border: 2px
 }
+
+.notification {
+    color: white;
+    padding: 20px 30px;
+    margin: 10px 0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    border: 2px solid;
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.suc-notif {
+    background-color: green;
+    border-color: darkgreen
+}
+
+.fail-notif {
+    background-color: red;
+    border-color: darkred;
+}
+
+.notification.show {
+    opacity: 1;
+    transform: translateY(0);
+}

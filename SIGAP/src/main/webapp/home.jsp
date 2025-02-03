@@ -6,7 +6,7 @@
 
     if (cookies != null) {
         for (Cookie atual : cookies) {
-            if (atual.getName().length() >= 10 && atual.getName().substring(0, 10).equals("1nomeAluno")) {
+            if (atual.getName().length() >= 10 && atual.getName().contains("dido")) {
                 redirecionar = true;
                 break;
             }
@@ -64,7 +64,12 @@
             <h2>Pesquisa e Edição de Usuários</h2>
             <p>Se você deseja listar e alterar usuários, clique no botão abaixo</p>
             <a href="listaUsuarios.jsp" class="button">Configurações</a>
-        </div>
+        </div>  
+        <div class="sector">
+            <h2>Relatórios e Gráficos de Itens</h2>
+            <p>Se você deseja fazer relatórios ou gráficos dos itens, clique no botão abaixo</p>
+            <a href="Escolha.jsp" class="button">Configurações</a>
+        </div> 
         <%
             }} catch (Exception e) {
             e.printStackTrace();

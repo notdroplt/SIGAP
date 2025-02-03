@@ -17,6 +17,7 @@
                     <h1>CEFET-MG - SIGAP - Cadastrar Item Achado</h1>
                 </a>
                 <span>Sistema Integrado de Gestão de Achados e Perdidos</span>
+                <button id="homeButton" onclick="window.location.href='home.jsp'">Home</button>
             </div>
 
         </header>
@@ -34,11 +35,7 @@
                     <label for="marca">Marca:</label>
                     <input type="text" id="marca-item" name="marca" placeholder="Marca...">
                 </div>
-                <!-- TODO: Colocar descrição como dropdown -->
-                <div>
-                    <label for="lugar">Lugar que foi encontrado:</label>
-                    <input type="text" id="lugar-item" name="lugar" placeholder="lugar em que foi encontrado...">
-                </div>
+                <%@ include file="lugar.jsp" %>
                 <%@ include file="descricao.jsp" %>
                 <div>    
                     <label for="campus">Campus encontrado:</label>
@@ -70,6 +67,7 @@
 
                 <button id="formSubmit" type="submit" onClick="submit('/SIGAP/api/cadastro/item/achado', event)">Carregar
                     Item</button>
+                <div id="notification-container" style="position: fixed; top: 20px; right: 20px; z-index: 1000;"></div>
             </div>
         </main>
     </div>

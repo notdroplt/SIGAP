@@ -104,7 +104,7 @@ public class CadastroItemPerdidoServlet extends HttpServlet {
 
         HttpSession session = req.getSession(false);
 
-        Object uid = session.getAttribute("Token");
+        Integer uid = (Integer) session.getAttribute("Token");
 
         if (uid == null) {
             System.out.println("Erro: id de usuário == null");
@@ -113,11 +113,10 @@ public class CadastroItemPerdidoServlet extends HttpServlet {
         }
 
         service.adicionarItemPerdido(
-                (Long)uid, nome, valorCor, marca, LocalDate.now(), desc, local, campus, caminho
+                uid.longValue(), nome, valorCor, marca, LocalDate.now(), desc, local, campus, caminho
         );
 
         System.out.println("Item adicionado!");
-
 
         JSONObject respjson = new JSONObject();
 

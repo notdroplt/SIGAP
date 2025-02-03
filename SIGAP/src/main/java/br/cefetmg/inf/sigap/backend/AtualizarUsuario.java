@@ -22,7 +22,7 @@ public class AtualizarUsuario extends HttpServlet {
         int id = Integer.parseInt(request.getParameter("id"));
         String cpf = UsuarioService.extrairCpf(request.getParameter("cpf"));
         if(!UsuarioService.validarCpf(cpf)){
-            UsuarioService.printPage(out, "<p>CPF inválido</p><br><a href='painelUsuario.jsp'>Voltar</a>");
+            UsuarioService.printPage(out, "<h1>CPF inválido</h1><br><a href='painelUsuario.jsp'>Voltar</a>");
             return;
         }
 
