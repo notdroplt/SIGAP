@@ -1,0 +1,158 @@
+.search-bar {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+#openFiltersButton {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+#openFiltersButton:hover {
+    background-color: #0056b3;
+}
+
+.filters-box {
+    display: none; /* Inicialmente oculto */
+    position: relative;
+    top: 50px;
+    left: 0;
+    background-color: white;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    width: 300px;
+    min-height: 200px; /* Altura mínima para garantir que o conteúdo seja exibido */
+    overflow: visible;
+}
+
+.filters-box label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.filters-box select {
+    width: 100%;
+    padding: 5px;
+    margin-bottom: 15px;
+}
+
+.filters-box button[type="submit"] {
+    padding: 10px 20px;
+    background-color: #28a745;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+    border: 1px solid green;
+}
+
+.filters-box button[type="submit"]:hover {
+    background-color: #218838;
+}
+/* Estilo para o aviso */
+.alert-message {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 10px 20px;
+    background-color: #ff4444;
+    color: white;
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    animation: fadeInOut 3s ease-in-out;
+}
+
+@keyframes fadeInOut {
+    0% { opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { opacity: 0; }
+}
+
+/* Estilo para o container de resultados */
+.resultados {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilo para cada item da lista */
+.item-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    margin-bottom: 10px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+.item-container:hover {
+    border-color: #173a7a;
+    background-color: #f0f8ff;
+}
+
+/* Estilo para o nome do item */
+.item-nome {
+    font-size: 16px;
+    color: #333;
+    font-weight: bold;
+}
+
+/* Estilo para o botão "Registrar achado" */
+.registrar-achado {
+    padding: 8px 16px;
+    background-color: #173a7a;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+.registrar-achado:hover {
+    background-color: #0c2c5d;
+}
+
+/* Estilo para o resultado nulo */
+.resultado-nulo {
+    text-align: center;
+    padding: 20px;
+    background-color: #ffefef;
+    border: 1px solid #d9534f;
+    border-radius: 5px;
+    color: #d9534f;
+}
+
+.resultado-nulo p {
+    margin-bottom: 15px;
+    font-size: 16px;
+}
+
+/* Estilo para o botão "Tentar Novamente" */
+.tentar-novamente {
+    padding: 10px 20px;
+    background-color: #173a7a;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+.tentar-novamente:hover {
+    background-color: #0c2c5d;
+}
