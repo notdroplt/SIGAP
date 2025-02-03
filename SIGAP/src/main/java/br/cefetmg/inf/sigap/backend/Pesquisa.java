@@ -6,6 +6,8 @@ import jakarta.servlet.annotation.*;
 import java.io.*;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Objects;
+
 import br.cefetmg.inf.sigap.service.ItemService;
 import br.cefetmg.inf.sigap.dto.Item;
 
@@ -18,7 +20,10 @@ public class Pesquisa extends HttpServlet {
             response.setContentType("text/html;charset=UTF-8");
             try (PrintWriter out = response.getWriter()) {
                 String valor = request.getParameter("valor");
-                String[] filtrosSelecionados = request.getParameterValues("filtros");
+                String itemSelecionado = request.getParameter("item");
+                String marcaSelecionada = request.getParameter("valor-marca");
+                String descSelecionada = request.getParameter("desc");
+                String campusSelecionado = request.getParameter("campus");
 
                 if (valor != null && !valor.isEmpty()){
                     Cookie pesquisaCookie = new Cookie("pesquisa_" + valor, valor);
@@ -33,35 +38,22 @@ public class Pesquisa extends HttpServlet {
                 for (Item item : alvos) {
                     boolean matches = true;
 
-                    if (filtrosSelecionados != null && valor != null) {
-                        for (String filtro : filtrosSelecionados) {
-                            switch (filtro) {
-                                case "nome":
-                                    matches = matches && item.getNome().toLowerCase().contains(valor.toLowerCase());
-                                    break;
-                                case "cor":
-                                    try {
-                                        int cor = Integer.parseInt(valor);
-                                        matches = matches && item.getCor() == cor;
-                                    } catch (NumberFormatException e) {
-                                        matches = false;
-                                    }
-                                    break;
-                                case "marca":
-                                    matches = matches && item.getMarca().toLowerCase().contains(valor.toLowerCase());
-                                    break;
-                                case "campus1":
-                                    matches = matches && item.getLocal().toLowerCase().contains(valor.toLowerCase());
-                                    break;
-                                case "campus2":
-                                    matches = matches && item.getLocal().toLowerCase().contains(valor.toLowerCase());
-                                    break;
-                                default:
-                                    matches = false;
-                                    break;
-                            }
-                        }
+                    if (itemSelecionado != null && !itemSelecionado.isEmpty()){
+                        matches = item.getNome().equalsIgnoreCase(itemSelecionado);
                     }
+
+                    if (marcaSelecionada != null && !marcaSelecionada.isEmpty()){
+                        matches = matches && item.getMarca().toLowerCase().contains(Objects.requireNonNull(valor).toLowerCase());
+                    }
+
+                    if (descSelecionada != null && !descSelecionada.isEmpty()){
+                        matches = item.getDescricao().equalsIgnoreCase(descSelecionada);
+                    }
+
+                    if (campusSelecionado != null && !campusSelecionado.isEmpty()){
+                        matches = item.getLocal().equalsIgnoreCase(campusSelecionado);
+                    }
+
                     if (matches) {
                         itensFiltrados.add(item);
                     }
