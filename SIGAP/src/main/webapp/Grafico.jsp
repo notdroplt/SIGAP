@@ -39,7 +39,7 @@
                         LocalDate dataInicio = LocalDate.parse(dataInicioStr);
                         LocalDate dataFim = LocalDate.parse(dataFimStr);
 
-                        // Configuração da conexão com o banco (ajuste conforme o docker-compose)
+                        // Configuração da conexão com o banco
                         String dbUrl = "jdbc:postgresql://db:5432/sigap";
                         String dbUser = "sigap";
                         String dbPassword = "sigap";
@@ -48,7 +48,7 @@
                         Connection conn = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
 
                         // Consulta para itens achados
-                        String sqlAchados = "SELECT COUNT(*) AS total FROM Item WHERE dataAchado BETWEEN ? AND ?";
+                        String sqlAchados = "SELECT COUNT(*) AS total FROM Item WHERE data_achado BETWEEN ? AND ?";
                         PreparedStatement stmtAchados = conn.prepareStatement(sqlAchados);
                         stmtAchados.setDate(1, Date.valueOf(dataInicio));
                         stmtAchados.setDate(2, Date.valueOf(dataFim));
@@ -60,7 +60,7 @@
                         stmtAchados.close();
 
                         // Consulta para itens perdidos
-                        String sqlPerdidos = "SELECT COUNT(*) AS total FROM Item WHERE dataPerdido BETWEEN ? AND ?";
+                        String sqlPerdidos = "SELECT COUNT(*) AS total FROM Item WHERE data_perdido BETWEEN ? AND ?";
                         PreparedStatement stmtPerdidos = conn.prepareStatement(sqlPerdidos);
                         stmtPerdidos.setDate(1, Date.valueOf(dataInicio));
                         stmtPerdidos.setDate(2, Date.valueOf(dataFim));
