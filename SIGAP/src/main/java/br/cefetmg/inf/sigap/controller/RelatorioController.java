@@ -4,7 +4,7 @@ package br.cefetmg.inf.sigap.controller;
  *
  * @author luisg
  */
-
+/*
 import br.cefetmg.inf.sigap.dto.Item;
 import br.cefetmg.inf.sigap.service.RelatorioService;
 
@@ -41,3 +41,4 @@ public class RelatorioController extends HttpServlet {
         }
     }
 }
+*/

@@ -4,7 +4,7 @@ package br.cefetmg.inf.sigap.service;
  *
  * @author luisg
  */
-
+/*
 import br.cefetmg.inf.sigap.dto.Item;
 import br.cefetmg.inf.sigap.dto.StatusItem;
 
@@ -56,3 +56,4 @@ public class RelatorioService {
         return itens;
     }
 }
+*/
