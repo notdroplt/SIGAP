@@ -4,7 +4,7 @@ package br.cefetmg.inf.sigap.service;
  *
  * @author luisg
  */
-
+/*
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.HashMap;
@@ -48,3 +48,4 @@ public class GraficoService {
         return dados;
     }
 }
+*/

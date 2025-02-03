@@ -4,7 +4,7 @@ package br.cefetmg.inf.sigap.controller;
  *
  * @author luisg
  */
-
+/*
 import br.cefetmg.inf.sigap.service.GraficoService;
 import com.google.gson.Gson;
 
@@ -43,3 +43,4 @@ public class GraficoController extends HttpServlet {
         }
     }
 }
+*/
