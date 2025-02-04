@@ -6,14 +6,14 @@ Sistema de Gestão de Achados e Perdidos
 - Responsável: Arthur Tolomelli
 
 Subfunções:
-- [ ] Fornecimento de dados
-- [ ] Catálogo de itens
-- [ ] Controle de itens recuperados
-- [ ] Carregamento de fotos de itens encontrados / perdidos
+- [x] Fornecimento de dados
+- [x] Catálogo de itens
+- [x] Controle de itens recuperados
+- [x] Carregamento de fotos de itens encontrados / perdidos
 
 Casos de uso:
-- [ ] Cadastro de itens perdidos ou recuperados
-- [ ] Controle de itens dentro do sistema
+- [x] Cadastro de itens perdidos ou recuperados
+- [x] Controle de itens dentro do sistema
 
 ## Função 2: Gestão de usuários
 
@@ -45,20 +45,20 @@ Casos de uso:
 - Responsável: Luis Gustavo
 
 Subfunções:
-- [ ] Registro dos itens encontrados e perdidos
-- [ ] Mecanismo de estatísticas atualizadas sobre aspectos de todos os itens
+- [x] Registro dos itens encontrados e perdidos
+- [x] Mecanismo de estatísticas atualizadas sobre aspectos de todos os itens
 
 Casos de uso:
-- [ ] Gerar relatório de itens perdidos e encontrados
-- [ ] Gerar gráficos das incidências de perdas e achados nos locais 
+- [x] Gerar relatório de itens perdidos e encontrados
+- [x] Gerar gráficos das incidências de perdas e achados nos locais 
 
 ## Função 5: Notificação de itens
 
 - Responsável: Arthur Freitas
 
 Subfunções:
-- [ ] Enviar mensagens via e-mail sobre itens encontrados correspondentes ao item perdido
+- [x] Enviar mensagens via e-mail sobre itens encontrados correspondentes ao item perdido
 
 Casos de uso:
-- [ ] Controle de e-mails de alunos e funcionários
-- [ ] Controle e gestão do sistema de e-mails
+- [x] Controle de e-mails de alunos e funcionários
+- [x] Controle e gestão do sistema de e-mails
